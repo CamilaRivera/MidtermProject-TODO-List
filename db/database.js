@@ -3,6 +3,19 @@
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
+
+const todosColumnsNames = [
+  'title',
+  'description',
+  'start_date',
+  'end_date',
+  'priority',
+  'complete',
+  'cover_photo_url',
+  'todo_id',
+  'category_id',
+];
+
 const getUserById = function (id) {
   return db
     .query(`SELECT * FROM users WHERE id = $1;`, [id])
@@ -30,4 +43,62 @@ const updateCategory = function (db, editableCategory) {
     .then(res => res.rows[0]);
 };
 
-module.exports = { addCategory, getUserById, getCategoriesByUserId, deleteCategory, updateCategory };
+const getTodosByCategoryId = function (db, userId, categoryID) {
+  return db.query(`SELECT * FROM todos JOIN categories ON todos.category_id = categories.id WHERE
+  categories.user_id = $1 AND categories.id = $2`, [userId, categoryID])
+    .then(res => res.rows);
+};
+
+const getTodosByUserId = function (db, userId) {
+  return db.query(`SELECT todos.* FROM todos JOIN categories ON todos.category_id = categories.id WHERE
+  categories.user_id = $1`, [userId])
+    .then(res => res.rows);
+};
+
+const getTodoById = function (db, userId, todoId) {
+  return db.query(`SELECT todos.* FROM todos JOIN categories ON todos.category_id = categories.id WHERE
+  categories.user_id = $1 AND todos.id = $2`, [userId, todoId])
+    .then(res => res.rows[0]);
+};
+
+const updateTodo = function (db, todo, userId) {
+  const validColumns = todosColumnsNames.filter(column => column in todo);
+  const values = validColumns.map(column => todo[column]);
+
+  const sets = values.map((value, index) => `${validColumns[index]} = $${index + 1}`)
+
+  values.push(todo.id);
+  values.push(userId);
+
+  let query = `UPDATE todos
+    SET ${sets.join(', ')}
+    WHERE id = $${values.length - 1} AND todos.category_id = ANY(
+      SELECT id FROM categories WHERE categories.user_id = $${values.length})
+    RETURNING *;`
+
+  return db.query(query, values)
+    .then(res => res.rows[0]);
+}
+
+const addTodo = function (db, todo) {
+  const validColumns = todosColumnsNames.filter(column => column in todo);
+  const indexArray = validColumns.map((column, index) => `$${index + 1}`)
+  const values = validColumns.map(column => todo[column]);
+
+  return db.query(`INSERT INTO todos (${validColumns.join(', ')})
+    VALUES (${indexArray.join(', ')}) RETURNING *;`, values)
+    .then(function(res) {
+      return res.rows[0];
+    });
+};
+
+const deleteTodo = function (db, id, userId) {
+  return db.query(`DELETE FROM todos WHERE todos.id = $1 AND todos.category_id = ANY(
+    SELECT id FROM categories WHERE user_id = $2)`, [id, userId]);
+};
+
+module.exports = {
+  addCategory, getUserById,
+  getCategoriesByUserId, deleteCategory, updateCategory, getTodosByCategoryId,
+  getTodosByUserId, getTodoById, addTodo, updateTodo, deleteTodo
+};

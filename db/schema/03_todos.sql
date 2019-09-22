@@ -9,7 +9,7 @@ CREATE TABLE todos (
   end_date DATE,
   priority INTEGER NOT NULL DEFAULT 0,
   complete BOOLEAN NOT NULL DEFAULT FALSE,
-  cover_photo_url VARCHAR(255) NOT NULL,
+  cover_photo_url VARCHAR(255),
   todo_id INTEGER REFERENCES todos(id),
   category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE NOT NULL
 );
