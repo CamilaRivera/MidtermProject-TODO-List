@@ -7,11 +7,22 @@ module.exports = (db) => {
   });
   
   router.post('/', (req, res) => {
-    const {userName, email, password} = req.body;
-    const values = [userName, email, password];
+    const {userName, email, phoneNumber, password, avatar, date} = req.body;
+    const values = [userName, email, phoneNumber, password, avatar, date];
     const queryString = `
       INSERT INTO users (name, email, phone_number, password, avatar_url, birth_date)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *
     `;
+    db.query(queryString, values)
+      .then(data => {
+        const user = data.rows;
+        res.json({user});
+      })
+      .catch(err => {
+        res.status(500).json({error: err.message});
+      });
+      
   });
 
   return router;
