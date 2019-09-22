@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Register</title>
 
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<head>
+  <title>Register</title>
+
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
 
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  
-  </head>
 
-  <body>
-    <div class="row">
-    <form class="col s12">
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script type="text/javascript" src="/scripts/datepicker.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</head>
+
+<body>
+  <div class="row">
+    <form class="col s12" action="/register" method="POST">
       <div class="row">
         <div class="input-field col s6">
-          <i class="material-icons prefix">account_circle</i>
-          <input id="icon_prefix" type="text" class="validate">
-          <label for="icon_prefix">First Name</label>
-        </div>
-        <div class="input-field col s6">
-          <i class="material-icons prefix">phone</i>
-          <input id="icon_telephone" type="tel" class="validate">
-          <label for="icon_telephone">Telephone</label>
+          <input id="first_name" type="text" class="validate" name="userName">
+          <label for="first_name">First Name</label>
         </div>
       </div>
+      <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file">
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" name="avatar">
+          </div>
+        </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="email" type="email" class="validate" name="email">
+          <label for="email">Email</label>
+        </div>
+      </div>
+      <div class="row">
+          <div class="input-field col s12">
+            <input id="password" type="text" class="validate" name="phoneNumber">
+            <label for="password">Phone Number</label>
+          </div>
+        </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="password" type="password" class="validate" name="password">
+          <label for="password">Password</label>
+        </div>
+      </div>
+      <input type="text" class="datepicker" name="date">
+      <button class="btn waves-effect waves-light" type="submit">Register</button>
     </form>
   </div>
-  </body>
+</body>
+
 </html>
