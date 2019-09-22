@@ -7,7 +7,6 @@ module.exports = (db) => {
   });
   
   router.post('/', (req, res) => {
-  
   });
 
   return router;
