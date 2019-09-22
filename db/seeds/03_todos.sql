@@ -8,3 +8,5 @@ INSERT INTO todos (id, title, start_date, end_date, priority, cover_photo_url,to
 
 INSERT INTO todos (id, title, complete, cover_photo_url, todo_id, category_id) VALUES
 (5, 'Buy food', TRUE , 'https://images.pexels.com/photos/2091166/pexels-photo-2091166.jpeg', 1, 4);
+
+SELECT SETVAL('todos_id_seq', 50);
