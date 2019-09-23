@@ -1,5 +1,5 @@
 const express = require('express');
-
+const classifier = require('./helpers/classificator');
 const { getLoggedUserId } = require('../utils');
 const { addCategory, getCategoriesByUserId, deleteCategory, updateCategory } = require('../db/database.js');
 
@@ -29,7 +29,8 @@ module.exports = (db) => {
 
   router.post("/sort", (req, res) => {
     const {title} = req.body;
-    
+    res.send(classifier.categorize(title).predictedCategory);
+
   });
 
   router.post("/:id/delete", (req, res) => {

@@ -6,8 +6,10 @@ $(() => {
       $.ajax('/api/categories/sort', {
         method: "POST",
         data: taskName.serialize()
-      }).then(data => console.log(data));
+      }).then(cateogry => {
+        categoryFiller.focus();
+        categoryFiller.val(cateogry);
+      });
     }
   });
-  categoryFiller.val('movies');
 });
