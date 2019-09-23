@@ -1,7 +1,6 @@
 const rp = require('request-promise');
 const yelp = require('yelp-fusion');
 const client = yelp.client('KlApp9IJGJazvPakCx_WLYokoG2PezkELLTzRMgfo6hxE8MuVWiWhWJwtR7Gi-paJwgUAJXAWeW2GPucixzwte55ir5tu_IfcEvgfGW9xlbof0csEd9bo3VRJhKIXXYx');
-const AliExpressSpider = require('aliexpress');
 
 /**
  * imdb api
@@ -22,7 +21,7 @@ const findMovie = (userQuery) => {
       return {Title, Year, Genre, Plot, Poster, imdbRating, Type};
     })
     .catch(err => {
-      console.log('error during categorizing movie:', err);
+      console.log('error during fetching omdb api:', err);
     });
 };
 
@@ -48,7 +47,7 @@ const findBook = (userQuery) => {
       }
     })
     .catch(err => {
-      console.log('error during categorizing book:', err);
+      console.log('error during fetching google book api:', err);
     });
 };
 
@@ -65,20 +64,19 @@ const findRestaurant = (userQuery) => {
       const {jsonBody} = foodObj;
       const {name, image_url, review_count, rating, price, display_phone, is_closed, location, distance} = jsonBody.businesses[0];
       return {name, image: image_url, reviewCount: review_count, rating, price, phone: display_phone, open: is_closed, location: location.display_address.join(", "), distance: Math.round(distance)};
+    })
+    .catch(err => {
+      console.log('error during fetching yelp api:', err);
     });
 };
 
-
-
 /**
- * aliexpress api for product
- * this api does not stop so you have to do process.exit
+ * amazon search end point
  */
 const findProduct = (userQuery) => {
-  return AliExpressSpider.Search({
-    keyword: userQuery
-  });
+  return (`https://www.amazon.ca/s?k=${userQuery}`);
 };
+
 
 
 // const bookPromise = findBook('sweet and sour pork');
