@@ -51,9 +51,6 @@ app.use("/register", registerRoutes(db));
 app.use('/login', loginRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
-app.get("/testIndex" , (req, res) => {
-  res.render("testIndex");
-})
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
