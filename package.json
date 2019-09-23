@@ -14,13 +14,17 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
+    "classificator": "^0.3.3",
     "dotenv": "^2.0.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "morgan": "^1.9.1",
+    "movies-names": "0.0.0-semantically-released",
     "node-sass-middleware": "^0.11.0",
     "pg": "^6.4.2",
-    "pg-native": "^3.0.0"
+    "pg-native": "^3.0.0",
+    "request-promise": "^4.2.4",
+    "yelp-fusion": "^3.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
