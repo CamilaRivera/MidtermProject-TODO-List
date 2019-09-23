@@ -6,10 +6,27 @@ const AliExpressSpider = require('aliexpress');
 /**
  * imdb api
  * if movie is not found by the api, concludes that it is not a movie
+ *
+ * if the movie isnt there, it will return {"Response":"False","Error":"Movie not found!"}
+ *
+ * if the movie is there, we should extract out
+ * Title, Year, Genre, Plot, Poster, imdbRating, Type
+ * 
+ * the return value of the promise need to be parsed by json
  */
 const findMovie = (userQuery) => {
-  return rp(`http://www.omdbapi.com/?t=${userQuery}&apikey=94910d78`);
+  return rp(`http://www.omdbapi.com/?t=${userQuery}&apikey=94910d78`)
+    .then(data => {
+      const movieObj = JSON.parse(data);
+      const {Title, Year, Genre, Plot, Poster, imdbRating, Type} = movieObj;
+      return {Title, Year, Genre, Plot, Poster, imdbRating, Type};
+    })
+    .catch(err => {
+      console.log('error during categorizing movie:', err);
+    });
 };
+
+
 
 
 /**
@@ -23,7 +40,6 @@ const findBook = (userQuery) => {
 /**
  * yelp api for finding restauratns
  */
-
 const findRestaurant = (userQuery) => {
   return client.search({
     term: userQuery,
@@ -34,13 +50,21 @@ const findRestaurant = (userQuery) => {
 
 /**
  * aliexpress api for product
- * this api does not stop so you have to do
+ * this api does not stop so you have to do process.exit
  */
-
-
 const findProduct = (userQuery) => {
   return AliExpressSpider.Search({
     keyword: userQuery
   });
 };
 
+
+// const bookPromise = findBook('sweet and sour pork');
+// const foodPromise = findRestaurant('sweet and sour pork');
+
+// Promise.all([moviePromise, bookPromise, foodPromise])
+//   .then(values => {
+//     if (!values[0]) console.log('cant find movie');
+//     if (!values[1]) console.log('cant find book');
+//     if (!values[2]) console.log('cant find food');
+//   });
