@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const yelp = require('yelp-fusion');
 const client = yelp.client('KlApp9IJGJazvPakCx_WLYokoG2PezkELLTzRMgfo6hxE8MuVWiWhWJwtR7Gi-paJwgUAJXAWeW2GPucixzwte55ir5tu_IfcEvgfGW9xlbof0csEd9bo3VRJhKIXXYx');
+const AliExpressSpider = require('aliexpress');
 
 /**
  * imdb api
@@ -27,6 +28,19 @@ const findRestaurant = (userQuery) => {
   return client.search({
     term: userQuery,
     location: 'Vancouver, bc'
+  });
+};
+
+
+/**
+ * aliexpress api for product
+ * this api does not stop so you have to do
+ */
+
+
+const findProduct = (userQuery) => {
+  return AliExpressSpider.Search({
+    keyword: userQuery
   });
 };
 
