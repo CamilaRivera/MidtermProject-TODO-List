@@ -27,6 +27,11 @@ module.exports = (db) => {
       });
   });
 
+  router.post("/sort", (req, res) => {
+    const {title} = req.body;
+    
+  });
+
   router.post("/:id/delete", (req, res) => {
     const userId = getLoggedUserId();
     deleteCategory(db, req.params.id, userId)
