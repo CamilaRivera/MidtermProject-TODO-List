@@ -26,16 +26,31 @@ const findMovie = (userQuery) => {
     });
 };
 
-
-
-
 /**
  * google book api
  * if book is not found by the api, concludes that it is not a book
+ * 
+ * volumeInfo.title, volumeInfo.aurthors(array), publishedDate, description, pageCount, categories(array)
+ * imageLinks.thumbnail, infoLink
  */
 const findBook = (userQuery) => {
-  return rp(`https://www.googleapis.com/books/v1/volumes?q=${userQuery}`);
+  return rp(`https://www.googleapis.com/books/v1/volumes?q=${userQuery}`)
+    .then(data => {
+      const bookObj = JSON.parse(data);
+      if (!bookObj.totalItems) return 'Not a book';
+      else {
+        const {volumeInfo} = bookObj.items[0];
+        const {title, authors, publishedDate, description, pageCount, categories, imageLinks, infoLink} = volumeInfo;
+        const {thumbnail} = imageLinks;
+        return {title, authors, publishedDate, description, pageCount, categories, thumbnail, infoLink};
+      }
+    })
+    .catch(err => {
+      console.log('error during categorizing book:', err);
+    });
 };
+
+
 
 /**
  * yelp api for finding restauratns
