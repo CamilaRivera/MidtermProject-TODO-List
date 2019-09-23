@@ -24,14 +24,9 @@ const findBook = (userQuery) => {
  */
 
 const findRestaurant = (userQuery) => {
-  client.search({
+  return client.search({
     term: userQuery,
     location: 'Vancouver, bc'
-  })
-    .then(data => {
-      console.log(data);
-    })
-    .catch(err => console.log(err));
+  });
 };
 
-findRestaurant('sushi boss');
