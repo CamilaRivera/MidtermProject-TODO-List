@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { getLoggedUserId } = require('../utils');
-const { addCategory, getCategoriesByUserId, deleteCategory, editCategory } = require('../db/database.js');
+const { addCategory, getCategoriesByUserId, deleteCategory, updateCategory } = require('../db/database.js');
 
 const router = express.Router();
 
@@ -40,7 +40,7 @@ module.exports = (db) => {
 
   router.post("/:id/edit", (req, res) => {
     const userId = getLoggedUserId();
-    editCategory(db,  { ...req.body, user_id: userId, id: req.params.id })
+    updateCategory(db,  { ...req.body, user_id: userId, id: req.params.id })
     .then(data => {
       res.json({ categories: data });
     })
