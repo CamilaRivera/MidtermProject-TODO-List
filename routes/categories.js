@@ -7,7 +7,7 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     getCategoriesByUserId(db, userId)
       .then(data => {
         res.json({ categories: data });
@@ -16,7 +16,7 @@ module.exports = (db) => {
   });
 
   router.post("/", (req, res) => {
-    addCategory(db, { ...req.body, user_id: getLoggedUserId() })
+    addCategory(db, { ...req.body, user_id: getLoggedUserId(req) })
       .then(data => {
         res.json({ categories: data });
       })
@@ -34,7 +34,7 @@ module.exports = (db) => {
   });
 
   router.post("/:id/delete", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     deleteCategory(db, req.params.id, userId)
     .then( res.send("Success"))
       .catch(err => {
@@ -45,7 +45,7 @@ module.exports = (db) => {
   });
 
   router.post("/:id/edit", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     updateCategory(db,  { ...req.body, user_id: userId, id: req.params.id })
     .then(data => {
       res.json({ categories: data });

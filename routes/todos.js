@@ -16,7 +16,7 @@ module.exports = (db) => {
   // });
 
   router.get("/", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     getTodosByUserId(db, userId)
       .then(data => {
         res.json({ todo: data });
@@ -24,7 +24,7 @@ module.exports = (db) => {
   });
 
   router.get("/:id", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     const todoID = req.params.id;
     getTodoById(db, userId, todoID)
       .then(data => {
@@ -33,7 +33,7 @@ module.exports = (db) => {
   });
 
   router.post("/", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     addTodo(db, req.body , userId )
       .then(data => {
         res.json({ todo: data });
@@ -46,7 +46,7 @@ module.exports = (db) => {
   });
 
   router.post("/:id/delete", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     deleteTodo(db, req.params.id, userId)
     .then( res.send("Success"))
       .catch(err => {
@@ -57,7 +57,7 @@ module.exports = (db) => {
   });
 
   router.post("/:id/edit", (req, res) => {
-    const userId = getLoggedUserId();
+    const userId = getLoggedUserId(req);
     updateTodo(db,  { ...req.body, id: req.params.id }, userId)
     .then(data => {
       res.json({ todo: data });

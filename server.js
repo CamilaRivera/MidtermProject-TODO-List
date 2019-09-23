@@ -6,6 +6,7 @@ const PORT       = process.env.PORT || 8080;
 const ENV        = process.env.ENV || "development";
 const express    = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
@@ -23,6 +24,7 @@ db.connect();
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use("/styles", sass({
   src: __dirname + "/styles",
   dest: __dirname + "/public/styles",
@@ -30,6 +32,7 @@ app.use("/styles", sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
+
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
@@ -39,7 +42,7 @@ const categoriesRoutes = require('./routes/categories');
 const todosRoutes = require('./routes/todos');
 const registerRoutes = require("./routes/register");
 const loginRoutes = require('./routes/login');
-
+const logoutRoutes = require('./routes/logout');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -49,6 +52,7 @@ app.use('/api/categories', categoriesRoutes(db));
 app.use('/api/todos', todosRoutes(db));
 app.use("/register", registerRoutes(db));
 app.use('/login', loginRoutes(db));
+app.use('/logout', logoutRoutes());
 // Note: mount other resources here, using the same pattern above
 
 // Home page

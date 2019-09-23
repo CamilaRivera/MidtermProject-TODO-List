@@ -1,14 +1,15 @@
 const express = require('express');
-const router  = express.Router();
+const router = express.Router();
 
 module.exports = (db) => {
   router.get('/', (req, res) => {
     res.render('login');
   });
-  
+
   router.post('/', (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
     const values = [email, password];
+    console.log(email, password);
     const queryString = `
       SELECT * FROM users
       WHERE email = $1
@@ -17,10 +18,11 @@ module.exports = (db) => {
     db.query(queryString, values)
       .then(data => {
         const user = data.rows;
-        res.json({user});
+        res.cookie('userID', user[0].id);
+        res.json({ user });
       })
       .catch(err => {
-        res.status(500).json({error: err.message});
+        res.status(500).json({ error: err.message });
       });
   });
 

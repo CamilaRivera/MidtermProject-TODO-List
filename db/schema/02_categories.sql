@@ -5,5 +5,6 @@ CREATE TABLE categories (
   description VARCHAR(255) NOT NULL,
   creation_date DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  cover_photo_url VARCHAR(255) NOT NULL
+  cover_photo_url VARCHAR(255) NOT NULL,
+  main_category INTEGER NOT NULL DEFAULT 10
 );
