@@ -19,7 +19,7 @@ module.exports = (db) => {
     const userId = getLoggedUserId();
     getTodosByUserId(db, userId)
       .then(data => {
-        res.json({ todos: data });
+        res.json({ todo: data });
       })
   });
 
@@ -28,7 +28,7 @@ module.exports = (db) => {
     const todoID = req.params.id;
     getTodoById(db, userId, todoID)
       .then(data => {
-        res.json({ todos: data });
+        res.json({ todo: data });
       })
   });
 
@@ -36,7 +36,7 @@ module.exports = (db) => {
     const userId = getLoggedUserId();
     addTodo(db, req.body , userId )
       .then(data => {
-        res.json({ todos: data });
+        res.json({ todo: data });
       })
       .catch(err => {
         res
@@ -60,7 +60,7 @@ module.exports = (db) => {
     const userId = getLoggedUserId();
     updateTodo(db,  { ...req.body, id: req.params.id }, userId)
     .then(data => {
-      res.json({ todos: data });
+      res.json({ todo: data });
     })
       .catch(err => {
         res
