@@ -52,7 +52,9 @@ const getTodosByCategoryId = function (db, userId, categoryID) {
 const getTodosByUserId = function (db, userId) {
   return db.query(`SELECT todos.* FROM todos JOIN categories ON todos.category_id = categories.id WHERE
   categories.user_id = $1`, [userId])
-    .then(res => res.rows);
+    .then(res => {
+      console.log(res.rows);
+      return res.rows});
 };
 
 const getTodoById = function (db, userId, todoId) {
