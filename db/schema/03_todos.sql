@@ -7,7 +7,7 @@ CREATE TABLE todos (
   creation_date DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   start_date DATE,
   end_date DATE,
-  priority INTEGER NOT NULL DEFAULT 0,
+  priority INTEGER NOT NULL DEFAULT 4,
   complete BOOLEAN NOT NULL DEFAULT FALSE,
   cover_photo_url VARCHAR(255),
   todo_id INTEGER REFERENCES todos(id),
