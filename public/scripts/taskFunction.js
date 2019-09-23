@@ -39,7 +39,6 @@ const findBook = (userQuery) => {
       if (!bookObj.totalItems) return 'Not a book';
       else {
         const {volumeInfo} = bookObj.items[0];
-        console.log(bookObj.items[0]);
         const {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, imageLinks, infoLink} = volumeInfo;
         const {thumbnail} = imageLinks;
         const {textSnippet} = bookObj.items[0].searchInfo;
