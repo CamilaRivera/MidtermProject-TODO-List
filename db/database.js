@@ -28,8 +28,8 @@ const getCategoriesByUserId = function (db, userId) {
 };
 
 const addCategory = function (db, category) {
-  return db.query(`INSERT INTO categories (description, user_id, cover_photo_url)
-    VALUES ($1, $2, $3) RETURNING *;`, [category.description, category.user_id, category.cover_photo_url])
+  return db.query(`INSERT INTO categories (description, user_id, cover_photo_url, main_category)
+    VALUES ($1, $2, $3, $4) RETURNING *;`, [category.description, category.user_id, category.cover_photo_url, category.main_category])
     .then(res => res.rows[0]);
 };
 
@@ -38,8 +38,8 @@ const deleteCategory = function (db, id, userId) {
 };
 
 const updateCategory = function (db, editableCategory) {
-  return db.query(`UPDATE categories SET description = $1, cover_photo_url = $2 WHERE user_id = $3 AND id = $4 RETURNING *;`
-    , [editableCategory.description, editableCategory.cover_photo_url, editableCategory.user_id, editableCategory.id])
+  return db.query(`UPDATE categories SET description = $1, cover_photo_url = $2, main_category = $3 WHERE user_id = $4 AND id = $5 RETURNING *;`
+    , [editableCategory.description, editableCategory.cover_photo_url, editableCategory.main_category, editableCategory.user_id, editableCategory.id])
     .then(res => res.rows[0]);
 };
 
