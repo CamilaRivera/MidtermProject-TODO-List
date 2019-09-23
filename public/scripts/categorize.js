@@ -40,9 +40,11 @@ const findBook = (userQuery) => {
       if (!bookObj.totalItems) return 'Not a book';
       else {
         const {volumeInfo} = bookObj.items[0];
-        const {title, authors, publishedDate, description, pageCount, categories, imageLinks, infoLink} = volumeInfo;
+        console.log(bookObj.items[0]);
+        const {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, imageLinks, infoLink} = volumeInfo;
         const {thumbnail} = imageLinks;
-        return {title, authors, publishedDate, description, pageCount, categories, thumbnail, infoLink};
+        const {textSnippet} = bookObj.items[0].searchInfo;
+        return {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, thumbnail, infoLink, textSnippet};
       }
     })
     .catch(err => {
@@ -66,8 +68,6 @@ const findRestaurant = (userQuery) => {
     });
 };
 
-findRestaurant('chinese food')
-  .then(data => console.log(data));
 
 
 /**
