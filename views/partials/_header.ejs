@@ -1,0 +1,64 @@
+<nav>
+  <div class="nav-wrapper navbar-fixed">
+    <a href="#" class="brand-logo">TodoList</a>
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li>
+        <!-- Modal Trigger -->
+        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
+      </li>
+      <li><a href="badges.html">UserName</a></li>
+      <li><a href="collapsible.html">logout</a></li>
+
+    </ul>
+  </div>
+</nav>
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <div class="row">
+      <form class="col s12">
+        <div class="row">
+          <div class="input-field col s6">
+            <input required name="title" id="todo_title" type="text" class="validate">
+            <label for="todo_title">Title</label>
+            <span class="helper-text"  data-error="You need to fill this field" data-success="right">You need to fill this field</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="todo_description" name="description" type="text" class="validate">
+            <label for="todo_description">Description</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="todo_start_date" name = "start_date" type="text" class="datepicker">
+            <label for="todo_start_date">Start Date</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="end_date" name ="end_date" type="text" class="datepicker">
+            <label for="end_date">End Date</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s6">
+            <input name= "category_id" id="category_selection" type="text" class="validate">
+            <label for="category_selection">Category</label>
+          </div>
+          <div class="input-field col s6">
+            <select name="priority">
+              <option value="" disabled selected>Select Priority</option>
+              <option value="1">High</option>
+              <option value="2">Medium</option>
+              <option value="3">Low</option>
+              <option value="4">Non-priority</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <a class=" create-todo modal-close waves-effect waves-green btn-flat">Create todo</a>
+    </div>
+  </div>
+</div>
