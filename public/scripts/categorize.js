@@ -51,16 +51,23 @@ const findBook = (userQuery) => {
 };
 
 
-
 /**
  * yelp api for finding restauratns
  */
 const findRestaurant = (userQuery) => {
   return client.search({
     term: userQuery,
-    location: 'Vancouver, bc'
-  });
+    location: "South Granville, Vancouver, BC"
+  })
+    .then(foodObj => {
+      const {jsonBody} = foodObj;
+      const {name, image_url, review_count, rating, price, display_phone, is_closed, location, distance} = jsonBody.businesses[0];
+      return {name, image: image_url, reviewCount: review_count, rating, price, phone: display_phone, open: is_closed, location: location.display_address.join(", "), distance: Math.round(distance)};
+    });
 };
+
+findRestaurant('chinese food')
+  .then(data => console.log(data));
 
 
 /**
