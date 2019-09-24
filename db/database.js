@@ -16,9 +16,8 @@ const todosColumnsNames = [
   'category_id',
 ];
 
-const getUserById = function (id) {
-  return db
-    .query(`SELECT * FROM users WHERE id = $1;`, [id])
+const getUserById = function (db, id) {
+  return db.query(`SELECT * FROM users WHERE id = $1;`, [id])
     .then(res => res.rows[0]);
 };
 
@@ -78,7 +77,7 @@ const updateTodo = function (db, todo, userId) {
 
   return db.query(query, values)
     .then(res => res.rows[0]);
-}
+};
 
 const addTodo = function (db, todo) {
   const validColumns = todosColumnsNames.filter(column => column in todo);
