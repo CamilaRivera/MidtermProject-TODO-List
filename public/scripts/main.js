@@ -40,6 +40,26 @@ jQuery(document).ready(function ($) {
     }
   };
 
+  const getCreatedID = (data) => {
+    const queryString = data.split('&')[1];
+    return queryString.split('=')[1];
+  };
+
+  const refreshPage = (id) => {
+    if (id == 1) {
+      $('.watch-todos').trigger('click');
+    } 
+    if (id == 2) {
+      $('.buy-todos').trigger('click');
+    } 
+    if (id == 3) {
+      $('.read-todos').trigger('click');
+    } 
+    if (id == 4) {
+      $('.eat-todos').trigger('click');
+    } 
+  };
+
   // <-- NavBar -->
 
   //open modal Todo
@@ -66,7 +86,7 @@ jQuery(document).ready(function ($) {
         rerender(categories, todos);
       })
       .then(() => {
-        $('.watch-todos').trigger('click');
+        refreshPage(getCreatedID(data));
       });
 
   });
