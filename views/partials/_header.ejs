@@ -1,3 +1,4 @@
+<!-- Upper Nav -->
 <nav>
   <div class="nav-wrapper navbar-fixed">
     <a href="#" class="brand-logo center">TodoList</a>
@@ -11,24 +12,34 @@
     </ul>
   </div>
 </nav>
+<!-- Side Nav -->
 <ul id="slide-out" class="sidenav sidenav-fixed">
   <li>
     <div class="user-view">
       <div class="background">
-        <img src="images/office.jpg">
       </div>
-      <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
-      <a href="#name"><span class="white-text name">John Doe</span></a>
-      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      <a href="#user">
+        <% if (user.avatar_url) { %>
+        <img class="circle" src="<%= user.avatar_url %>">
+        <% } else { %>
+        <i class="large material-icons">account_circle</i>
+        <% } %>
+      </a>
+      <a href="#name"><span class="blue-text name"><%= user.name %></span></a>
+      <a href="#email"><span class="blue-text email"><%= user.email %></span></a>
     </div>
   </li>
-  <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-  <li><a href="#!">Second Link</a></li>
+  <li><a href="#!"><i class="material-icons">alarm</i>Today <span class="counter today"></span></a></li>
+  <li><a href="#!"><i class="material-icons">insert_invitation</i>Next 7 days <span class="counter week"></span></a>
+  </li>
   <li>
     <div class="divider"></div>
   </li>
-  <li><a class="subheader">Subheader</a></li>
-  <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  <li><a class="subheader">Categories</a></li>
+  <li><a href="#!"><i class="material-icons">local_movies</i>Watch <span class="counter to_watch"></span></a></li>
+  <li><a href="#!"><i class="material-icons">attach_money</i>Buy <span class="counter to_buy"></span></a></li>
+  <li><a href="#!"><i class="material-icons">library_books</i>Read <span class="counter to_read"></span></a></li>
+  <li><a href="#!"><i class="material-icons">local_dining</i>Eat <span class="counter to_eat"></span></a></li>
 </ul>
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 <!-- Modal Structure -->
