@@ -3,13 +3,17 @@ $(() => {
   $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
     .then(list => {
       const mainConatiner = $('main');
-      mainConatiner.css('padding-left', '100px');
+      mainConatiner.css('padding-left', '25vw');
       mainConatiner.css('transform', 'translateY(-30vh)');
       mainConatiner.html(`<div class="carousel" style="
         width: 100vw;
         height: 100vh;
         overflow: visible !important;
-      "></div>`);
+      "></div>
+        <p>
+          Hi Max, remember you wanted to watch these movies?
+        </p>
+      `);
       const slider = $('.carousel');
       const { data } = list;
       const moviePromise = [];
@@ -34,10 +38,6 @@ $(() => {
         <div class="card-content">
       <span class="card-title activator grey-text text-darken-4">${movie.Title}<i class="material-icons right">more_vert</i></span>
         </div>
-        <div class="card-reveal">
-        <span class="card-title grey-text text-darken-4">${movie.Title}<i class="material-icons right">close</i></span>
-          <p>Here is some more information about this product that is only revealed once clicked on.</p>
-        </div>
         </div>
         </div>
       </div>
@@ -56,3 +56,8 @@ $(() => {
 // <a class="carousel-item" href="#three!"><img src="https://lorempixel.com/250/250/nature/3"></a>
 // <a class="carousel-item" href="#four!"><img src="https://lorempixel.com/250/250/nature/4"></a>
 // <a class="carousel-item" href="#five!"><img src="https://lorempixel.com/250/250/nature/5"></a>
+
+{/* <div class="card-reveal">
+<span class="card-title grey-text text-darken-4">${movie.Title}<i class="material-icons right">close</i></span>
+  <p>Here is some more information about this product that is only revealed once clicked on.</p>
+</div> */}
