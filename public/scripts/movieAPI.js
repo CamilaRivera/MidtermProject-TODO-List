@@ -4,15 +4,14 @@
     $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
       .then(list => {
         const mainConatiner = $('main');
+        mainConatiner.css('display', 'flex');
         mainConatiner.css('padding-left', '25vw');
         mainConatiner.css('transform', 'translateY(-30vh)');
         mainConatiner.html(`<div class="carousel" style="
           width: 100vw;
           height: 100vh;
           overflow: visible !important;
-        "></div>
-          <p class="movie-info">
-          </p>
+        ">
         `);
         const slider = $('.carousel');
         const movieInfo = $('.movie-info');
@@ -24,7 +23,12 @@
         });
         Promise.all(moviePromise)
           .then(movies => {
-            console.log(movies);
+            mainConatiner.prepend(`
+          <div class="movie-info" style="
+          margin-top: 30vh;
+          ">
+          </div>
+            `);
             movies.forEach(movie => {
               slider.append(`
           <div class="row carousel-item">
@@ -52,7 +56,16 @@
               onCycleTo: function(data) {
                 const currentMovie = $(data).find('.movie-title').html();
                 $.ajax('api/widgets/movieInfo', { method: 'POST', data: currentMovie})
-                  .then(movieInfo => console.log(movieInfo));
+                  .then(movieInfo => {
+                    console.log(movieInfo);
+                    $('.movie-info').html(`
+                    <h2 class="genre">${movieInfo.Genre}</h2>
+                    <h3 class="type">${movieInfo.Type}</h3>
+                    <p class="plot">${movieInfo.Plot}</p>
+                    <h5 class="year">${movieInfo.Year}</h5>
+                    <p>${movieInfo.imdbRating}</p>
+                    `);
+                  });
               }
             });
           });
