@@ -17,7 +17,7 @@ module.exports = (db) => {
 
   router.get("/:id", (req, res) => {
     getTodosByCategoryId(db, req.cookies.userID, req.params.id)
-      .then(data => console.log(data));
+      .then(data => res.json({data}));
   });
 
   router.post("/", (req, res) => {
