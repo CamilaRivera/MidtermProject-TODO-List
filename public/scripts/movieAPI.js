@@ -1,4 +1,14 @@
-// $(() => {
+$(() => {
+  const generateStars = (rating) => {
+    let starHTML = '';
+    for (let i = 0; i < rating; i++) {
+      starHTML += `<i class="material-icons">star</i>`;
+    }
+    for (let i = 0; i < 10 - rating; i++) {
+      starHTML += `<i class="material-icons">star_border</i>`;
+    }
+    return starHTML;
+  };
 
   $('.watch-task').on('click', () => {
     $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
@@ -14,8 +24,6 @@
         ">
         `);
         const slider = $('.carousel');
-        const movieInfo = $('.movie-info');
-        const slideItem = $('.carousel-item');
         const { data } = list;
         const moviePromise = [];
         data.forEach((task) => {
@@ -25,7 +33,9 @@
           .then(movies => {
             mainConatiner.prepend(`
           <div class="movie-info" style="
-          margin-top: 30vh;
+          margin-top: 35vh;
+          margin-left: -2vw;
+          width: 100vw;
           ">
           </div>
             `);
@@ -59,11 +69,11 @@
                   .then(movieInfo => {
                     console.log(movieInfo);
                     $('.movie-info').html(`
-                    <h2 class="genre">${movieInfo.Genre}</h2>
-                    <h3 class="type">${movieInfo.Type}</h3>
-                    <p class="plot">${movieInfo.Plot}</p>
-                    <h5 class="year">${movieInfo.Year}</h5>
-                    <p>${movieInfo.imdbRating}</p>
+                    <h5 class="genre">Genere: ${movieInfo.Genre}</h3>
+                    <h5 class="type">Type: ${movieInfo.Type}</h3>
+                    <h5 class="plot">Plot: ${movieInfo.Plot}</h4>
+                    <h5 class="year">Year: ${movieInfo.Year}</h5>
+                    <h5 class="rating">Rating: ${generateStars(movieInfo.imdbRating)}</h5>
                     `);
                   });
               }
