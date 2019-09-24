@@ -68,6 +68,9 @@ jQuery(document).ready(function ($) {
       .then(resp => {
         todos.push(resp.todo);
         rerender(categories, todos);
+      })
+      .then(() => {
+        $('.watch-todos').trigger('click');
       });
 
   });
@@ -108,7 +111,7 @@ jQuery(document).ready(function ($) {
       .then(
         function (data) {
           renderTodos(data.todo);
-        })
+        });
   };
   loadTodos();
 
