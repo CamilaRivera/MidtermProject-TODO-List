@@ -32,9 +32,15 @@
       <a href="#email"><span class="blue-text email"><%= user.email %></span></a>
     </div>
   </li>
-  <li><a href="#!"><i class="material-icons">alarm</i>Today <span class="counter today"></span></a></li>
-  <li><a href="#!"><i class="material-icons">insert_invitation</i>Next 7 days <span class="counter week"></span></a>
+  <lu class="collapsible">
+  <li class="today-todos">
+    <div class="collapsible-header"><i class="material-icons">alarm</i>Today <span class="counter today"></span></div>
   </li>
+  <li class="weekly-todos">
+    <div class="collapsible-header"><i class="material-icons">insert_invitation</i>Next 7 days <span
+        class="counter week"></span></div>
+  </li>
+  </lu>
   <li>
     <div class="divider"></div>
   </li>
