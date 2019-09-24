@@ -62,12 +62,15 @@ jQuery(document).ready(function ($) {
       event.stopPropagation();
       return;
     }
-    // Clean empty fields (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
+    // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
     $.ajax({ url: '/api/todos', method: 'POST', data })
       .then(resp => {
         todos.push(resp.todo);
         rerender(categories, todos);
+      })
+      .then(() => {
+        $('.watch-todos').trigger('click');
       });
 
   });
@@ -108,7 +111,7 @@ jQuery(document).ready(function ($) {
       .then(
         function (data) {
           renderTodos(data.todo);
-        })
+        });
   };
   loadTodos();
 
