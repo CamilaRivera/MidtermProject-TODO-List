@@ -5,10 +5,13 @@
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li>
         <!-- Modal Trigger -->
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
+        <a class="addTodo waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
       </li>
-      <li><a href="#">UserName</a></li>
-      <li><a id="logout" href="#">logout</a></li>
+      <li>
+        <form class="form-inline" method="POST" action="/logout">
+          <button class="btn btn-flat m-r-20" id="logout" type="submit">Logout</button>
+        </form>
+      </li>
     </ul>
   </div>
 </nav>
