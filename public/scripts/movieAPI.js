@@ -36,7 +36,7 @@ $(() => {
           <img class="activator" src="${movie.Poster}">
         </div>
         <div class="card-content">
-      <span class="card-title activator grey-text text-darken-4">${movie.Title}<i class="material-icons right">more_vert</i></span>
+      <span class="card-title activator grey-text text-darken-4" style="text-align: center">${movie.Title}<i class="material-icons left">check_circle</i><i class="material-icons right">cancel</i></span>
         </div>
         </div>
         </div>
@@ -61,3 +61,4 @@ $(() => {
 <span class="card-title grey-text text-darken-4">${movie.Title}<i class="material-icons right">close</i></span>
   <p>Here is some more information about this product that is only revealed once clicked on.</p>
 </div> */}
+
