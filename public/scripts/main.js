@@ -3,10 +3,14 @@
  * jQuery is already loaded
  */
 
+let categories = [];
+let todos = [];
+
 const WATCH_MAIN_CATEGORY = 1;
 const BUY_MAIN_CATEGORY = 2;
 const READ_MAIN_CATEGORY = 3;
 const EAT_MAIN_CATEGORY = 4;
+
 
 jQuery(document).ready(function ($) {
 
@@ -46,7 +50,9 @@ jQuery(document).ready(function ($) {
   $('.modal').modal();
 
   // listen start_date
-  $('.datepicker').datepicker();
+  $('.datepicker').datepicker({
+    format: 'yyyy-mm-dd'
+  });
 
   //select priority
   $('select').formSelect();
@@ -54,8 +60,15 @@ jQuery(document).ready(function ($) {
   $('.create-todo').click(function (event) {
     if (!$('#todo_title').val() || !$('#todo_title').val().trim()) {
       event.stopPropagation();
+      return;
     }
-    $.ajax({ url: '/api/todos', method: 'POST', data: $('form').serialize() });
+    // Clean empty fields (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
+    const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
+    $.ajax({ url: '/api/todos', method: 'POST', data })
+      .then(resp => {
+        todos.push(resp.todo);
+        rerender(categories, todos);
+      });
 
   });
 
@@ -160,21 +173,25 @@ jQuery(document).ready(function ($) {
   };
 
 
-
-  function getCategoriesAndTodos() {
-    var categories = $.ajax({ url: '/api/categories', method: 'GET' });
-    var todos = categories.then(function (dataCategories) {
-      // some processing
-      return $.ajax({ url: '/api/todos', method: 'GET' });
-    });
-    return Promise.all([categories, todos]).then(function ([dataCategories, dataTodos]) {
-
-      renderCategories(dataCategories.categories);
-      countTodosPerCategory(dataCategories.categories, dataTodos.todo);
-      console.log("dataCategories is ", dataCategories.categories, "  and todos is ", dataTodos.todo);
-      return; // something using both resultA and resultB
+  function reloadAll() {
+    const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
+    const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
+    return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
+      categories = categoriesData.categories;
+      todos = todosData.todo;
+      return [categoriesData.categories, todosData.todo];
     });
   }
+
+  function rerender(categories, todos) {
+    renderCategories(categories);
+    countTodosPerCategory(categories, todos);
+  }
+
+  function getCategoriesAndTodos() {
+    reloadAll().then(data => rerender(data[0], data[1]));
+  }
+
 
 
   getCategoriesAndTodos();

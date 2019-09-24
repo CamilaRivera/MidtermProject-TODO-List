@@ -46,7 +46,7 @@
 <div id="modal1" class="modal">
   <div class="modal-content">
     <div class="row">
-      <form class="col s12">
+      <form class="col s12 todo-form">
         <div class="row">
           <div class="input-field col s6">
             <input required name="title" id="todo_title" type="text" class="validate">
@@ -78,11 +78,10 @@
           </div>
           <div class="input-field col s6">
             <select name="priority">
-              <option value="" disabled selected>Select Priority</option>
               <option value="1">High</option>
               <option value="2">Medium</option>
               <option value="3">Low</option>
-              <option value="4">Non-priority</option>
+              <option value="4" selected>Non-priority</option>
             </select>
           </div>
         </div>
