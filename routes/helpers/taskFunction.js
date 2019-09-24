@@ -77,6 +77,12 @@ const findProduct = (userQuery) => {
 };
 
 
+module.exports = {
+  findMovie,
+  findBook,
+  findRestaurant,
+  findProduct
+};
 
 // const bookPromise = findBook('sweet and sour pork');
 // const foodPromise = findRestaurant('sweet and sour pork');
