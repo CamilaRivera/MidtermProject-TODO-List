@@ -34,8 +34,7 @@ module.exports = (db) => {
 
   router.post("/sort", (req, res) => {
     const {title} = req.body;
-    res.send(classifier.categorize(title).predictedCategory);
-
+    res.send(classifier.categorize(title.toLowerCase()).predictedCategory);
   });
 
   router.post("/:id/delete", (req, res) => {

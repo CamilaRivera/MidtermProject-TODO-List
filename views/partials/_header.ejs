@@ -5,10 +5,13 @@
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li>
         <!-- Modal Trigger -->
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
+        <a class="addTodo waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
       </li>
-      <li><a href="#">UserName</a></li>
-      <li><a id="logout" href="#">logout</a></li>
+      <li>
+        <form class="form-inline" method="POST" action="/logout">
+          <button class="btn btn-flat m-r-20" id="logout" type="submit">Logout</button>
+        </form>
+      </li>
     </ul>
   </div>
 </nav>
@@ -73,8 +76,14 @@
         </div>
         <div class="row">
           <div class="input-field col s6">
-            <input name="category_id" id="category_selection" type="text" class="validate">
-            <label for="category_selection">Category</label>
+            <!--input name="category_id" id="category_selection" type="text" class="validate">
+            <label for="category_selection">Category</label-->
+            <select name="category_id" id="category_selection">
+              <option value="1">Movie</option>
+              <option value="2">Product</option>
+              <option value="3">Book</option>
+              <option value="4" selected>Food</option>
+            </select>
           </div>
           <div class="input-field col s6">
             <select name="priority">

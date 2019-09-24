@@ -18,7 +18,7 @@ module.exports = (db) => {
       .then(data => {
         const user = data.rows;
         res.cookie('userID', user[0].id);
-        res.json({ user });
+        res.redirect('/');
       })
       .catch(err => {
         res.status(500).json({ error: err.message });
