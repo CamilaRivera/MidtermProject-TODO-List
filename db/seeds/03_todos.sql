@@ -3,11 +3,14 @@ INSERT INTO todos (id, title, description, start_date, end_date, cover_photo_url
 (2, 'Watch Titanic', 'st wide empty alphabet', '2019-08-10', '2019-10-11', 'https://images.pexels.com/photos/2104146/pexels-photo-2104146.jpeg', 2),
 (3, 'Play tennis with Sam', 'ct distance fast pressure honor else lot plain tent arm parts whenever vote truth friend unit globe spell gone bent hundred', '2019-03-03', '2019-09-27', 'https://images.pexels.com/photos/63590/san-francisco-california-city-cities-63590.jpeg', 3);
 
+
 INSERT INTO todos (id, title, start_date, end_date, priority, cover_photo_url,todo_id, category_id) VALUES
 (4, 'Go to the Grand Palace', '2019-03-03', '2019-10-03', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1, 4);
 
 INSERT INTO todos (id, title, complete, cover_photo_url, todo_id, category_id) VALUES
 (5, 'Buy food', TRUE , 'https://images.pexels.com/photos/2091166/pexels-photo-2091166.jpeg', 1, 4);
+
+
 
 INSERT INTO todos (id, title, start_date, end_date, priority, cover_photo_url, category_id) VALUES
 (6, 'Watch kill bill 2', '2019-09-22', '2019-09-29', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1),
@@ -24,3 +27,4 @@ INSERT INTO todos (id, title, start_date, end_date, priority, cover_photo_url, c
 
 
 SELECT SETVAL('todos_id_seq', 50);
+

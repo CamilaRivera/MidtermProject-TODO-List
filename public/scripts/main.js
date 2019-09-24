@@ -68,7 +68,6 @@ jQuery(document).ready(function ($) {
     $.ajax({ url: '/api/todos', method: 'GET' })
       .then(
         function (data) {
-          console.log(data)
           renderTodos(data.todo);
         })
   };
