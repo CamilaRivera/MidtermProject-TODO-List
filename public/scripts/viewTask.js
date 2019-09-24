@@ -3,7 +3,13 @@ $(() => {
   $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
     .then(list => {
       const mainConatiner = $('main');
-      mainConatiner.html(`<div class="carousel"></div>`);
+      mainConatiner.css('padding-left', '100px');
+      mainConatiner.css('transform', 'translateY(-30vh)');
+      mainConatiner.html(`<div class="carousel" style="
+        width: 100vw;
+        height: 100vh;
+        overflow: visible !important;
+      "></div>`);
       const slider = $('.carousel');
       const { data } = list;
       const moviePromise = [];
@@ -17,8 +23,12 @@ $(() => {
             slider.append(`
         <div class="row carousel-item">
         <div class="col s12 m12">
-        <div class="card">
-        <div class="card-image waves-effect waves-block waves-light">
+        <div class="card" style="
+            width:20vw;
+        ">
+        <div class="card-image waves-effect waves-block waves-light" style="
+            width: 20vw;
+        ">
           <img class="activator" src="${movie.Poster}">
         </div>
         <div class="card-content">
