@@ -9,7 +9,6 @@ module.exports = (db) => {
   router.post('/', (req, res) => {
     const { email, password } = req.body;
     const values = [email, password];
-    console.log(email, password);
     const queryString = `
       SELECT * FROM users
       WHERE email = $1

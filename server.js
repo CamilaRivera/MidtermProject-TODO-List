@@ -63,7 +63,6 @@ app.use('/logout', logoutRoutes());
 // Separate them into separate routes files (see above).
 
 
-
 app.get("/", (req, res) => {
   const userId = getLoggedUserId(req);
   if ( !userId ) {

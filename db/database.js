@@ -17,8 +17,12 @@ const todosColumnsNames = [
 ];
 
 const getUserById = function (db, id) {
+<<<<<<< HEAD
   return db
     .query(`SELECT * FROM users WHERE id = $1;`, [id])
+=======
+  return db.query(`SELECT * FROM users WHERE id = $1;`, [id])
+>>>>>>> 46398c6621af6ccfa64fa9983f9fcf1dbe9d472c
     .then(res => res.rows[0]);
 };
 
@@ -52,7 +56,8 @@ const getTodosByCategoryId = function (db, userId, categoryID) {
 const getTodosByUserId = function (db, userId) {
   return db.query(`SELECT todos.* FROM todos JOIN categories ON todos.category_id = categories.id WHERE
   categories.user_id = $1`, [userId])
-    .then(res => res.rows);
+    .then(res => {
+      return res.rows});
 };
 
 const getTodoById = function (db, userId, todoId) {
@@ -78,7 +83,7 @@ const updateTodo = function (db, todo, userId) {
 
   return db.query(query, values)
     .then(res => res.rows[0]);
-}
+};
 
 const addTodo = function (db, todo) {
   const validColumns = todosColumnsNames.filter(column => column in todo);
