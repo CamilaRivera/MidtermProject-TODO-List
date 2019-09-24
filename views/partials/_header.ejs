@@ -1,41 +1,55 @@
+<!-- Upper Nav -->
 <nav>
   <div class="nav-wrapper navbar-fixed">
     <a href="#" class="brand-logo center">TodoList</a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li>
         <!-- Modal Trigger -->
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
+        <a class="addTodo waves-effect waves-light btn modal-trigger" href="#modal1">Add Todo</a>
       </li>
-      <li><a href="#">UserName</a></li>
-      <li><a id="logout" href="#">logout</a></li>
+      <li>
+        <form class="form-inline" method="POST" action="/logout">
+          <button class="btn btn-flat m-r-20" id="logout" type="submit">Logout</button>
+        </form>
+      </li>
     </ul>
   </div>
 </nav>
+<!-- Side Nav -->
 <ul id="slide-out" class="sidenav sidenav-fixed">
   <li>
     <div class="user-view">
       <div class="background">
-        <!-- <img src="images/office.jpg"> -->
       </div>
-      <!-- <a href="#user"><img class="circle" src="images/yuna.jpg"></a> -->
-      <a href="#name"><span class="white-text name">John Doe</span></a>
-      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      <a href="#user">
+        <% if (user.avatar_url) { %>
+        <img class="circle" src="<%= user.avatar_url %>">
+        <% } else { %>
+        <i class="large material-icons">account_circle</i>
+        <% } %>
+      </a>
+      <a href="#name"><span class="blue-text name"><%= user.name %></span></a>
+      <a href="#email"><span class="blue-text email"><%= user.email %></span></a>
     </div>
   </li>
-  <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-  <li><a href="#!">Second Link</a></li>
+  <li><a href="#!"><i class="material-icons">alarm</i>Today <span class="counter today"></span></a></li>
+  <li><a href="#!"><i class="material-icons">insert_invitation</i>Next 7 days <span class="counter week"></span></a>
+  </li>
   <li>
     <div class="divider"></div>
   </li>
-  <li><a class="subheader">Subheader</a></li>
-  <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+  <li><a class="subheader">Categories</a></li>
+  <li><a href="#!"><i class="material-icons">local_movies</i>Watch <span class="counter to_watch"></span></a></li>
+  <li><a href="#!"><i class="material-icons">attach_money</i>Buy <span class="counter to_buy"></span></a></li>
+  <li><a href="#!"><i class="material-icons">library_books</i>Read <span class="counter to_read"></span></a></li>
+  <li><a href="#!"><i class="material-icons">local_dining</i>Eat <span class="counter to_eat"></span></a></li>
 </ul>
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 <!-- Modal Structure -->
 <div id="modal1" class="modal">
   <div class="modal-content">
     <div class="row">
-      <form class="col s12">
+      <form class="col s12 todo-form">
         <div class="row">
           <div class="input-field col s6">
             <input required name="title" id="todo_title" type="text" class="validate">
@@ -62,16 +76,21 @@
         </div>
         <div class="row">
           <div class="input-field col s6">
-            <input name="category_id" id="category_selection" type="text" class="validate">
-            <label for="category_selection">Category</label>
+            <!--input name="category_id" id="category_selection" type="text" class="validate">
+            <label for="category_selection">Category</label-->
+            <select name="category_id" id="category_selection">
+              <option value="1">Movie</option>
+              <option value="2">Product</option>
+              <option value="3">Book</option>
+              <option value="4" selected>Food</option>
+            </select>
           </div>
           <div class="input-field col s6">
             <select name="priority">
-              <option value="" disabled selected>Select Priority</option>
               <option value="1">High</option>
               <option value="2">Medium</option>
               <option value="3">Low</option>
-              <option value="4">Non-priority</option>
+              <option value="4" selected>Non-priority</option>
             </select>
           </div>
         </div>
