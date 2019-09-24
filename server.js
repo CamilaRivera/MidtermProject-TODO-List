@@ -15,6 +15,9 @@ const morgan     = require('morgan');
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');
 const db = new Pool(dbParams);
+
+const { getUserById } = require('./db/database');
+const { getLoggedUserId } = require('./utils');
 db.connect();
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
@@ -61,7 +64,20 @@ app.use('/logout', logoutRoutes());
 
 
 app.get("/", (req, res) => {
-  res.render("index");
+  const userId = getLoggedUserId(req);
+  if ( !userId ) {
+    res.redirect('login');
+  }
+  else {
+    getUserById(db, userId).then(user => {
+      if ( !user) {
+        res.redirect('login');
+      }
+      else {
+        res.render('index', {user});
+      }
+    });
+  }
 });
 
 app.listen(PORT, () => {
