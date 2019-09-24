@@ -17,12 +17,8 @@ const todosColumnsNames = [
 ];
 
 const getUserById = function (db, id) {
-<<<<<<< HEAD
   return db
     .query(`SELECT * FROM users WHERE id = $1;`, [id])
-=======
-  return db.query(`SELECT * FROM users WHERE id = $1;`, [id])
->>>>>>> 46398c6621af6ccfa64fa9983f9fcf1dbe9d472c
     .then(res => res.rows[0]);
 };
 
