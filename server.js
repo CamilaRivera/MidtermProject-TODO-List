@@ -60,7 +60,6 @@ app.use('/logout', logoutRoutes());
 // Separate them into separate routes files (see above).
 
 
-
 app.get("/", (req, res) => {
   res.render("index");
 });
