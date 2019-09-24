@@ -73,10 +73,7 @@ jQuery(document).ready(function ($) {
         })
   };
   loadTodos();
-
 });
-
-
   // // listener on tweet submit
   // $('.new-tweet-submission').on('submit', function (event) {
   //   //prevents the normal post event

@@ -20,5 +20,3 @@ VALUES (13, 'Books', '2018-11-02', 1, 'https://images.pexels.com/photos/2104151/
 (16, 'Restaurants', '2019-03-03', 3, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350');
 
 SELECT SETVAL('categories_id_seq', 50);
-
-
