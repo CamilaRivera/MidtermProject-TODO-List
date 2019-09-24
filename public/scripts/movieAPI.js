@@ -38,18 +38,23 @@ $(() => {
             <img class="activator" src="${movie.Poster}">
           </div>
           <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4" style="text-align: center">${movie.Title}<i class="material-icons left">check_circle</i><i class="material-icons right">cancel</i></span>
+        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${movie.Title}</p><i class="material-icons left" style="transform: translateY(-100%);">check_circle</i><i class="material-icons right" style="transform: translateY(-100%);">cancel</i></span>
           </div>
           </div>
           </div>
         </div>
           `);
-              movieInfo.html(`
-              ${movie.Title}
-            `);
+            //   movieInfo.html(`
+            //   ${movie.Title}
+            // `);
             });
-            slider.carousel();
-            console.log(slider);
+            slider.carousel({
+              onCycleTo: function(data) {
+                const currentMovie = $(data).find('.movie-title').html();
+                $.ajax('api/widgets/movieInfo', { method: 'POST', data: currentMovie})
+                  .then(movieInfo => console.log(movieInfo));
+              }
+            });
           });
       });
   });
