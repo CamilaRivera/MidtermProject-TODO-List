@@ -1,0 +1,55 @@
+// This file is for the moke up of app.js
+@import url('https://fonts.googleapis.com/css?family=Mansalva&display=swap');
+
+html{
+  body{
+    main{
+      .container{
+        .row{
+          width: 100%;
+          h1{
+            font-family: 'Mansalva', cursive;
+            width: 100%;
+            font-size: 3rem;
+          }
+          .todos{
+            h4{
+              font-size: 2rem;
+            }
+            article{
+              .oneLine{
+                display: flex;
+                *{
+                  display: inline;
+                }
+                .title{
+                  margin-top: 0;
+                  margin-bottom: 0;
+                  margin-left: 20px;
+                  flex-grow: 1;
+                  font-size: 20px;
+                }
+              }
+              .secondLine{
+                display: grid;
+                text-align:center;
+                grid-template-columns: auto auto auto;
+                *{
+                  display: inline;
+                  margin: 0 10px 0;
+                }
+              }
+            }
+            .notodo{
+              text-align: center;
+              display: block;
+              a{
+                display: block;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

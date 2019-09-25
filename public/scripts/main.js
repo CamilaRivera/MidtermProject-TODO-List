@@ -40,6 +40,26 @@ jQuery(document).ready(function ($) {
     }
   };
 
+
+  const getCreatedID = (data) => {
+    const queryString = data.split('&')[1];
+    return queryString.split('=')[1];
+  };
+
+  const refreshPage = (id) => {
+    if (id == 1) {
+      $('.watch-todos').trigger('click');
+    } 
+    if (id == 2) {
+      $('.buy-todos').trigger('click');
+    } 
+    if (id == 3) {
+      $('.read-todos').trigger('click');
+    } 
+    if (id == 4) {
+      $('.eat-todos').trigger('click');
+    } 
+  };
   // <-- NavBar -->
 
   //open modal Todo
@@ -66,7 +86,7 @@ jQuery(document).ready(function ($) {
         rerender(categories, todos);
       })
       .then(() => {
-        $('.watch-todos').trigger('click');
+        refreshPage(getCreatedID(data));
       });
 
   });
@@ -154,6 +174,7 @@ jQuery(document).ready(function ($) {
 
     $(".collapsible-body").empty();
 
+
     for (let category of categories) {
       const categoryTodos = todos.filter(todo => category.id === todo.category_id);
       for (let todo of categoryTodos) {
@@ -184,8 +205,10 @@ jQuery(document).ready(function ($) {
       }
     }
 
+
     $(".weekly-todos").append(weekBody);
     $(".today-todos").append(todayBody);
+
     $(".watch-todos").append(watchBody);
     $(".buy-todos").append(buyBody);
     $(".read-todos").append(readBody)
@@ -204,8 +227,10 @@ jQuery(document).ready(function ($) {
     const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
     const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
     return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
+
       console.log('categories: ', categoriesData);
       console.log('todosData: ', todosData);
+
 
       categories = categoriesData.categories;
       todos = todosData.todo;

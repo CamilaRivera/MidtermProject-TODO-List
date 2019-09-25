@@ -4,11 +4,11 @@ INSERT INTO todos (id, title, description, start_date, end_date, cover_photo_url
 (3, 'Play tennis with Sam', 'ct distance fast pressure honor else lot plain tent arm parts whenever vote truth friend unit globe spell gone bent hundred', '2019-03-03', '2019-09-27', 'https://images.pexels.com/photos/63590/san-francisco-california-city-cities-63590.jpeg', 3);
 
 
-INSERT INTO todos (id, title, start_date, end_date, priority, cover_photo_url,todo_id, category_id) VALUES
-(4, 'Go to the Grand Palace', '2019-03-03', '2019-10-03', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1, 4);
+INSERT INTO todos (id, title, description, start_date, end_date, priority, cover_photo_url,todo_id, category_id) VALUES
+(4, 'Tacos', 'eat tacos with jenny', '2019-03-03', '2019-10-03', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1, 4);
 
-INSERT INTO todos (id, title, complete, cover_photo_url, todo_id, category_id) VALUES
-(5, 'Buy food', TRUE , 'https://images.pexels.com/photos/2091166/pexels-photo-2091166.jpeg', 1, 4);
+INSERT INTO todos (id, title, description, complete, cover_photo_url, todo_id, category_id) VALUES
+(5, 'sushi', 'eat sushi', TRUE , 'https://images.pexels.com/photos/2091166/pexels-photo-2091166.jpeg', 1, 4);
 
 
 
@@ -20,9 +20,9 @@ INSERT INTO todos (id, title, description, start_date, end_date, priority, cover
 (10, 'Buy ticket for Concert', 'some description', '2019-03-03', '2019-10-10', 2, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 2),
 (11, 'Read Damian', 'some description', '2019-03-03', '2019-10-03', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 3),
 (12, 'Read one book of Isaac Asimov', 'some description', '2019-03-03', '2019-10-11', 4, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 3),
-(13, 'Eat with Sam on monday', 'some description', '2019-03-03', '2019-09-24', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
+(13, 'brunch', 'eat brunch with sammy', '2019-03-03', '2019-09-24', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
 (14, 'Go to eat at the new place in Downtown', 'some description', '2019-03-03', '2019-10-03', 2, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
-(15, 'Go to a coffee with John', 'some description', '2019-03-03', '2019-09-23', 3, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
+(15, 'coffee', 'get coffee', '2019-03-03', '2019-09-23', 3, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
 (16, 'Vikings', 'some description', '2019-03-03', '2019-09-23', 4, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1);
 
 
