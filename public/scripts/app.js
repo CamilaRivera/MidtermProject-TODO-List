@@ -16,7 +16,7 @@ $(document).ready(function() { // Runs reloading the page
       return "Due today";
     } else {
       const day = Math.round(numberDay);
-      if (day === 1) 
+      if (day === 1)
         return `This is due ${day} day later`;
       return `This is due ${day} days later`;
     }
@@ -46,10 +46,10 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "oneLine">
           <label>
             <input type="checkbox" class="filled-in" id="checkoutBox"/>
-            <span class="${getColors(todo.priority)}"> Complete </span>
+            <span class=" todos-list ${getColors(todo.priority)}"> Complete </span>
           </label>
           <p class="title">${escape(todo.title)}</p>
-          
+
         </div>
         <div class = "secondLine">
           <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
@@ -174,6 +174,6 @@ $(document).ready(function() { // Runs reloading the page
     });
     // need have all data here since this is asyn
   }
-  
+
   getCategoriesAndTodos();
 });

@@ -5,6 +5,7 @@
 
 let categories = [];
 let todos = [];
+const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
 
 const WATCH_MAIN_CATEGORY = 1;
 const BUY_MAIN_CATEGORY = 2;
@@ -23,13 +24,12 @@ const generateStars = (rating, max) => {
   return starHTML;
 };
 
-const makeTaskListHTML = (listArr) => {
-  let html = '';
+const makeTaskListHTML = (listArr, category) => {
+  let html = `<h5>${category.description}</h5>`;
   for (let i = 0; i < listArr.length; i++) {
-    html += `<h5> Task ${i + 1}: Eat ${listArr[i].title} </h5>`;
+    html += `<h5> Task ${i + 1}:${listArr[i].title} </h5>`;
     html += `<h5> Task Description: ${listArr[i].description} </h5>`;
-    html += `<h5> Task Start At: ${listArr[i].start_date} </h5>`;
-    html += `<h5> Task End At: ${listArr[i].end_date} </h5>`;
+    html += listArr[i].end_date ? `<h5> Deadline: ${listArr[i].end_date.substring(0, 10)} </h5>`: "";
     html += `<h5> Priority${listArr[i].priority} </h5>`;
   }
   return html;
@@ -153,6 +153,87 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   $(".to_eat").text(`(${eat})`);
 };
 
+const createTodoElement = function(todo) {
+  const $HTMLele = $(
+    `<article class='todo'>
+      <div class = "oneLine">
+        <label>
+          <input type="checkbox" class="filled-in" id="checkoutBox"/>
+          <span class=" todos-list ${getColors(todo.priority)}"> Complete </span>
+        </label>
+        <p class="title">${escape(todo.title)}</p>
+
+      </div>
+      <div class = "secondLine">
+        <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
+        <a class="waves-effect waves-light btn">Update</a>
+        <a class="waves-effect waves-light btn">Delete</a>
+      </div>
+      <ul class="collapsible">
+      <li>
+        <div class="collapsible-header">Description</div>
+        <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
+      </li>
+      </ul>
+  </article>`
+  );
+  return $HTMLele;
+};
+
+// accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
+const renderTodos = function(todos) {
+  console.log('renderTodos', todos);
+  const $todos = $('.todos');
+  $todos.empty();
+  for (let i = 0; i < todos.length; i++) {
+    $todos.append(createTodoElement(todos[i]));
+  }
+  const $colla = $('.collapsible');
+  console.log("it finds", $colla);
+  $colla.collapsible();
+};
+
+const getDayStr = function(numberDay) {
+  if (numberDay === null) {
+    return null;
+  }
+  if (numberDay < 1) {
+    return "Due today";
+  } else {
+    const day = Math.round(numberDay);
+    if (day === 1)
+      return `This is due ${day} day later`;
+    return `This is due ${day} days later`;
+  }
+};
+
+//
+const getColors = function(priorityNumber) {
+  if (priorityNumber <= 3 && priorityNumber >= 1)
+    return priorityColorsArr[priorityNumber - 1];
+  return "grey-text";
+};
+
+// checks the input
+const escape = function(str) {
+  if (str === null) {
+    str = "No specify here";
+  }
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
+  // Gets a Date format string and returns a number which is the difference with the current date time
+  const getDaysDiff = function(unixTimestamp) {
+    if (unixTimestamp === null) {
+      console.log("here is some thewfasdfsdc");
+      return null;
+    }
+    let Difference_In_Time = new Date(unixTimestamp) - Date.now();
+    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+    return Difference_In_Days;
+  };
 
 jQuery(document).ready(function ($) {
 
@@ -219,48 +300,6 @@ jQuery(document).ready(function ($) {
       });
 
   });
-
-  //<-- Todos -->
-
-  const renderTodos = function (todos) {
-    const alltodos = [];
-    $('.todos').empty();
-    for (const todo of todos) {
-      alltodos.push(createTodoElement(todo));
-    }
-    $('.todos').append(alltodos);
-  };
-
-  const createTodoElement = function (todo) {
-    const $todo = $(
-      `<article class='todo'>
-        <header>
-          <p>${escape(todo.title)}</p>
-
-        </header>
-        <p>${escape(todo.description)}</p>
-        <footer>
-          <span>${getDaysAgo(todo.creation_date)}</span>
-        </footer>
-    </article>`
-    );
-    return $todo;
-  };
-
-  // load todos and render them
-  const loadTodos = () => {
-    $.ajax({ url: '/api/todos', method: 'GET' })
-      .then(
-        function (data) {
-          renderTodos(data.todo);
-        });
-  };
-  loadTodos();
-
-  // < -- Main View -->
-  // $('watch-todos').click(() => {
-  //   $('.task-info').append('.watch-todos');
-  // })
 
   // < -- Left Navbar -->
 
