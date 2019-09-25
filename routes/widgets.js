@@ -8,10 +8,10 @@
 const express = require('express');
 const router  = express.Router();
 
-const {findBook, findProduct} = require('./helpers/taskFunction');
 const fetchMovie = require('./helpers/fetchMovie');
 const fetchFood = require('./helpers/fetchFood');
-
+const fetchBook = require('./helpers/fetchBook');
+const fetchProduct = require('./helpers/fetchProduct');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -46,6 +46,21 @@ module.exports = (db) => {
     fetchFood(req, res);
   });
 
+  router.post('/bookInfo', (req, res) => {
+    fetchBook(req, res);
+  });
+
+  router.post('/book', (req, res) => {
+    fetchBook(req, res);
+  });
   
+  router.post('/productInfo', (req, res) => {
+    fetchProduct(req, res);
+  });
+
+  router.post('/product', (req, res) => {
+    fetchProduct(req, res);
+  });
+
   return router;
 };
