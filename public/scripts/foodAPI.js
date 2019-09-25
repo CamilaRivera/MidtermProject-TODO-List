@@ -1,6 +1,7 @@
 $(() => {
 
   $('.eat-todos').on('click', () => {
+    $('.list-title').html('Food List');
     const list = todos.filter(todo => todo.category_id === 4);
     renderTodos(list);
     console.log(list);
