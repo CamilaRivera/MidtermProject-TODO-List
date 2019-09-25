@@ -27,6 +27,12 @@ body {
     padding: 24px 32px;
     margin-top: 40px;
   }
+  .collapsible span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+  }
 }
 .margin-auto {
   margin: auto;

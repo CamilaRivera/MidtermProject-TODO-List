@@ -158,27 +158,27 @@ jQuery(document).ready(function ($) {
       const categoryTodos = todos.filter(todo => category.id === todo.category_id);
       for (let todo of categoryTodos) {
         if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
-          todayBody += `<div class="collapsible-body"><span>To ${category.description}: ${todo.title}</span></div>`;
+          todayBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
           today += 1;
         }
         if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
-          weekBody += `<div class="collapsible-body"><span>To ${category.description}: ${todo.title}</span></div>`;
+          weekBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
           week += 1;
         }
         if (category.main_category === WATCH_MAIN_CATEGORY) {
-          watchBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          watchBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           watch += 1;
         }
         if (category.main_category === BUY_MAIN_CATEGORY) {
-          buyBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          buyBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           buy += 1;
         }
         if (category.main_category === READ_MAIN_CATEGORY) {
-          readBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          readBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           read += 1;
         }
         if (category.main_category === EAT_MAIN_CATEGORY) {
-          eatBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          eatBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           eat += 1;
         }
       }
