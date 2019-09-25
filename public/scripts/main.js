@@ -142,7 +142,7 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 
 const createTodoElement = function(todo) {
   const $HTMLele = $(
-    `<article class='todo m-t-40 m-b-40' style="border-width:8px; border-left-style:dotted; padding: 20px;">
+    `<article class='todo m-t-40 m-b-40' style="border-width:8px; border-left-style:dotted; padding: 0 0 0 20px;">
       <div class = "oneLine row m-b-0">
         <form class= "checkbox-complete-todo col s1" action="#">
         <p>
