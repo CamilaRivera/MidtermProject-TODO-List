@@ -6,7 +6,16 @@ $(() => {
     slider.empty();
     const bookPromise = [];
     list.forEach((task) => {
-      bookPromise.push($.ajax('api/widgets/book', { method: 'POST', data: task.title }));
+      bookPromise.push($.ajax('api/widgets/book', {
+        method: 'POST',
+        data: task.title,
+        beforeSend: function() {
+          $('.preloader-wrapper').css('display', 'block');
+        },
+        complete: function() {
+          $('.preloader-wrapper').css('display', 'none');
+        }
+      }));
     });
     Promise.all(bookPromise)
       .then(books => {

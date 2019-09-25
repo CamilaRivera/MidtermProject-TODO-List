@@ -8,7 +8,16 @@ $(() => {
     slider.empty();
     const foodPromise = [];
     list.forEach((todo) => {
-      foodPromise.push($.ajax('api/widgets/food', { method: 'POST', data: todo.title }));
+      foodPromise.push($.ajax('api/widgets/food', {
+        method: 'POST',
+        data: todo.title,
+        beforeSend: function() {
+          $('.preloader-wrapper').css('display', 'block');
+        },
+        complete: function() {
+          $('.preloader-wrapper').css('display', 'none');
+        }
+      }));
     });
     Promise.all(foodPromise)
       .then(foods => {
