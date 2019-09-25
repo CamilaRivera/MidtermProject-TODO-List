@@ -156,12 +156,12 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 const createTodoElement = function(todo) {
   const $HTMLele = $(
     `<article class='todo'>
-      <div class = "oneLine">
-        <label>
+      <div class = "oneLine" style="display: flex; align-items: baseline; justify-content: space-between;">
+      <p class="title" style="display: inline;">${escape(todo.title)}</p>
+        <label style="display: inline;">
           <input type="checkbox" class="filled-in" id="checkoutBox"/>
           <span class=" todos-list ${getColors(todo.priority)}"> Complete </span>
         </label>
-        <p class="title">${escape(todo.title)}</p>
 
       </div>
       <div class = "secondLine">
