@@ -7,9 +7,11 @@
 
 const express = require('express');
 const router  = express.Router();
+
 const {findBook, findProduct} = require('./helpers/taskFunction');
 const fetchMovie = require('./helpers/fetchMovie');
 const fetchFood = require('./helpers/fetchFood');
+
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -35,6 +37,7 @@ module.exports = (db) => {
     fetchMovie(req, res);
   });
 
+
   router.post('/foodInfo', (req, res) => {
     fetchFood(req, res);
   });
@@ -42,6 +45,7 @@ module.exports = (db) => {
   router.post('/food', (req, res) => {
     fetchFood(req, res);
   });
+
   
   return router;
 };

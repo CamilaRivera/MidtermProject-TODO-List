@@ -40,6 +40,7 @@ jQuery(document).ready(function ($) {
     }
   };
 
+
   const getCreatedID = (data) => {
     const queryString = data.split('&')[1];
     return queryString.split('=')[1];
@@ -59,7 +60,6 @@ jQuery(document).ready(function ($) {
       $('.eat-todos').trigger('click');
     } 
   };
-
   // <-- NavBar -->
 
   //open modal Todo
@@ -169,34 +169,45 @@ jQuery(document).ready(function ($) {
     let buyBody = "";
     let readBody = "";
     let eatBody = "";
+    let todayBody = "";
+    let weekBody = "";
+
+    $(".collapsible-body").empty();
+
 
     for (let category of categories) {
       const categoryTodos = todos.filter(todo => category.id === todo.category_id);
       for (let todo of categoryTodos) {
         if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
+          todayBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
           today += 1;
         }
         if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
+          weekBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
           week += 1;
         }
         if (category.main_category === WATCH_MAIN_CATEGORY) {
-          watchBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          watchBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           watch += 1;
         }
         if (category.main_category === BUY_MAIN_CATEGORY) {
-          buyBody +=`<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          buyBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           buy += 1;
         }
         if (category.main_category === READ_MAIN_CATEGORY) {
-          readBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          readBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           read += 1;
         }
         if (category.main_category === EAT_MAIN_CATEGORY) {
-          eatBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
+          eatBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
           eat += 1;
         }
       }
     }
+
+
+    $(".weekly-todos").append(weekBody);
+    $(".today-todos").append(todayBody);
 
     $(".watch-todos").append(watchBody);
     $(".buy-todos").append(buyBody);
@@ -216,8 +227,10 @@ jQuery(document).ready(function ($) {
     const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
     const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
     return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-      console.log('categories: ' ,categoriesData);
-      console.log('todosData: ' ,todosData);
+
+      console.log('categories: ', categoriesData);
+      console.log('todosData: ', todosData);
+
 
       categories = categoriesData.categories;
       todos = todosData.todo;
