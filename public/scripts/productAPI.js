@@ -13,14 +13,12 @@ $(() => {
         data: task.title,
         beforeSend: function() {
           $('.preloader-wrapper').css('display', 'block');
-        },
-        complete: function() {
-          $('.preloader-wrapper').css('display', 'none');
         }
       }));
     });
     Promise.all(productPromise)
       .then(products => {
+        $('.preloader-wrapper').css('display', 'none');
         products.forEach(productInfo => {
           console.log("0", productInfo[0]);
           console.log("1", productInfo[1]);
