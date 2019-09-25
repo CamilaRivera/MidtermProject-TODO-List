@@ -155,7 +155,7 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 
 const createTodoElement = function(todo) {
   const $HTMLele = $(
-    `<article class='todo'>
+    `<article class='todo' style="margin-bottom: 4vw;">
       <div class = "oneLine" style="display: flex; align-items: baseline; justify-content: space-between;">
       <p class="title" style="display: inline;">${escape(todo.title)}</p>
         <label style="display: inline;">
@@ -164,17 +164,17 @@ const createTodoElement = function(todo) {
         </label>
 
       </div>
-      <div class = "secondLine">
-        <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
-        <a class="waves-effect waves-light btn">Update</a>
-        <a class="waves-effect waves-light btn">Delete</a>
-      </div>
       <ul class="collapsible">
       <li>
         <div class="collapsible-header">Description</div>
         <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
       </li>
       </ul>
+      <div class = "secondLine">
+        <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
+        <a class="waves-effect waves-light btn">Update</a>
+        <a class="waves-effect waves-light btn">Delete</a>
+      </div>
   </article>`
   );
   return $HTMLele;
