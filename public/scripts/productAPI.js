@@ -20,8 +20,7 @@ $(() => {
       .then(products => {
         $('.preloader-wrapper').css('display', 'none');
         products.forEach(productInfo => {
-          console.log("0", productInfo[0]);
-          console.log("1", productInfo[1]);
+          console.log('productInfo:', productInfo[1]);
           slider.append(`
             <div class="row carousel-item">
               <div class="col s12 m12">
