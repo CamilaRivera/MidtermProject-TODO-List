@@ -142,7 +142,7 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 
 const createTodoElement = function(todo) {
   const $HTMLele = $(
-    `<article class='todo m-t-40'>
+    `<article class='todo m-t-40 m-b-40' style="border-width:8px; border-left-style:dotted; padding: 20px;">
       <div class = "oneLine row m-b-0">
         <form class= "checkbox-complete-todo col s1" action="#">
         <p>
@@ -156,21 +156,17 @@ const createTodoElement = function(todo) {
           <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
           <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
       </div>
+      <ul class="collapsible more-info-collapsible">
+      <li>
+      <div class="collapsible-header"><i class="large material-icons">arrow_drop_down_circle</i>More info</div>
+      <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
+      </li>
+      </ul>
       <div class="row secondLine">
         <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
 
       </div>
-      <ul class="collapsible more-info-collapsible">
-      <li>
-        <div class="collapsible-header"><i class="large material-icons">arrow_drop_down_circle</i>More info</div>
-        <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
-      </li>
-      </ul>
-      <div class = "secondLine">
-        <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
-        <a class="waves-effect waves-light btn">Update</a>
-        <a class="waves-effect waves-light btn">Delete</a>
-      </div>
+
   </article>`
   );
   return $HTMLele;
