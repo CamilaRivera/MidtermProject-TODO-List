@@ -40,9 +40,25 @@ jQuery(document).ready(function ($) {
     }
   };
 
-  function createDate() {
-    return
-  }
+  const getCreatedID = (data) => {
+    const queryString = data.split('&')[1];
+    return queryString.split('=')[1];
+  };
+
+  const refreshPage = (id) => {
+    if (id == 1) {
+      $('.watch-todos').trigger('click');
+    } 
+    if (id == 2) {
+      $('.buy-todos').trigger('click');
+    } 
+    if (id == 3) {
+      $('.read-todos').trigger('click');
+    } 
+    if (id == 4) {
+      $('.eat-todos').trigger('click');
+    } 
+  };
 
   // <-- NavBar -->
 
@@ -62,12 +78,15 @@ jQuery(document).ready(function ($) {
       event.stopPropagation();
       return;
     }
-    // Clean empty fields (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
+    // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
     $.ajax({ url: '/api/todos', method: 'POST', data })
       .then(resp => {
         todos.push(resp.todo);
         rerender(categories, todos);
+      })
+      .then(() => {
+        refreshPage(getCreatedID(data));
       });
 
   });
@@ -108,11 +127,17 @@ jQuery(document).ready(function ($) {
       .then(
         function (data) {
           renderTodos(data.todo);
-        })
+        });
   };
   loadTodos();
 
   // < -- Left Navbar -->
+
+  //collapsible todos for each category
+  $('.collapsible').collapsible({
+    inDuration: 150,
+    outDuration: 200
+  });
 
   const renderCategories = function (categories) {
     console.log(categories);
@@ -126,12 +151,12 @@ jQuery(document).ready(function ($) {
 
   const createCategoryElement = function (category) {
     const $category = $(
-      ` <li class='category'><a>${escape(category.description)}</a></li>`
+      ` <li class='category collapsible'><a>${escape(category.description)}</a></li>`
     );
     return $category;
   };
 
-  const countTodosPerCategory = function (categories, todos) {
+  const countAndAddTodosPerCategory = function (categories, todos) {
     let watch = 0;
     let buy = 0;
     let read = 0;
@@ -140,6 +165,10 @@ jQuery(document).ready(function ($) {
     let week = 0;
     const date = new Date();
     const dateToString = date.toISOString().substring(0, 10);
+    let watchBody = "";
+    let buyBody = "";
+    let readBody = "";
+    let eatBody = "";
 
     for (let category of categories) {
       const categoryTodos = todos.filter(todo => category.id === todo.category_id);
@@ -151,19 +180,29 @@ jQuery(document).ready(function ($) {
           week += 1;
         }
         if (category.main_category === WATCH_MAIN_CATEGORY) {
+          watchBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
           watch += 1;
         }
         if (category.main_category === BUY_MAIN_CATEGORY) {
+          buyBody +=`<div class="collapsible-body"><span>${todo.title}</span></div>`;
           buy += 1;
         }
         if (category.main_category === READ_MAIN_CATEGORY) {
+          readBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
           read += 1;
         }
         if (category.main_category === EAT_MAIN_CATEGORY) {
+          eatBody += `<div class="collapsible-body"><span>${todo.title}</span></div>`;
           eat += 1;
         }
       }
     }
+
+    $(".watch-todos").append(watchBody);
+    $(".buy-todos").append(buyBody);
+    $(".read-todos").append(readBody)
+    $(".eat-todos").append(eatBody);
+
     $(".week").text(`(${week})`);
     $(".today").text(`(${today})`);
     $(".to_watch").text(`(${watch})`);
@@ -177,6 +216,9 @@ jQuery(document).ready(function ($) {
     const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
     const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
     return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
+      console.log('categories: ' ,categoriesData);
+      console.log('todosData: ' ,todosData);
+
       categories = categoriesData.categories;
       todos = todosData.todo;
       return [categoriesData.categories, todosData.todo];
@@ -185,7 +227,7 @@ jQuery(document).ready(function ($) {
 
   function rerender(categories, todos) {
     renderCategories(categories);
-    countTodosPerCategory(categories, todos);
+    countAndAddTodosPerCategory(categories, todos);
   }
 
   function getCategoriesAndTodos() {

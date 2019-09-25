@@ -7,7 +7,9 @@
 
 const express = require('express');
 const router  = express.Router();
-const {findMovie, findBook, findRestaurant, findProduct} = require('./helpers/taskFunction');
+const {findBook, findProduct} = require('./helpers/taskFunction');
+const fetchMovie = require('./helpers/fetchMovie');
+const fetchFood = require('./helpers/fetchFood');
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -25,13 +27,21 @@ module.exports = (db) => {
       });
   });
 
-  router.post('/movie', (req, res) => {
-    const movie = Object.keys(req.body)[0];
-    findMovie(movie)
-      .then(movieInfo => {
-        res.send(movieInfo);
-      });
+  router.post('/movieInfo', (req, res) => {
+    fetchMovie(req, res);
   });
 
+  router.post('/movie', (req, res) => {
+    fetchMovie(req, res);
+  });
+
+  router.post('/foodInfo', (req, res) => {
+    fetchFood(req, res);
+  });
+
+  router.post('/food', (req, res) => {
+    fetchFood(req, res);
+  });
+  
   return router;
 };
