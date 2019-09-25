@@ -12,6 +12,148 @@ const READ_MAIN_CATEGORY = 3;
 const EAT_MAIN_CATEGORY = 4;
 
 
+const generateStars = (rating, max) => {
+  let starHTML = '';
+  for (let i = 0; i < rating; i++) {
+    starHTML += `<i class="material-icons">star</i>`;
+  }
+  for (let i = 0; i < max - rating; i++) {
+    starHTML += `<i class="material-icons">star_border</i>`;
+  }
+  return starHTML;
+};
+
+const makeTaskListHTML = (listArr) => {
+  let html = '';
+  for (let i = 0; i < listArr.length; i++) {
+    html += `<h5> Task ${i + 1}: Eat ${listArr[i].title} </h5>`;
+    html += `<h5> Task Description: ${listArr[i].description} </h5>`;
+    html += `<h5> Task Start At: ${listArr[i].start_date} </h5>`;
+    html += `<h5> Task End At: ${listArr[i].end_date} </h5>`;
+    html += `<h5> Priority${listArr[i].priority} </h5>`;
+  }
+  return html;
+};
+
+
+function reloadAll() {
+  const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
+  const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
+  return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
+    console.log('categories: ' ,categoriesData);
+    console.log('todosData: ' ,todosData);
+
+    categories = categoriesData.categories;
+    todos = todosData.todo;
+    return [categoriesData.categories, todosData.todo];
+  });
+}
+
+function rerender(categories, todos) {
+  renderCategories(categories);
+  countAndAddTodosPerCategory(categories, todos);
+}
+
+function getCategoriesAndTodos() {
+  reloadAll().then(data => rerender(data[0], data[1]));
+}
+
+const renderCategories = function (categories) {
+  console.log(categories);
+  const allcategories = [];
+  $('.categories').empty();
+  for (const category of categories) {
+    allcategories.push(createCategoryElement(category));
+  }
+  $('.categories').append(allcategories);
+};
+
+const createCategoryElement = function (category) {
+  const $category = $(
+    ` <li class='category collapsible'><a>${escape(category.description)}</a></li>`
+  );
+  return $category;
+};
+
+const countAndAddTodosPerCategory = function (categories, todos) {
+  let watch = 0;
+  let buy = 0;
+  let read = 0;
+  let eat = 0;
+  let today = 0;
+  let week = 0;
+  const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
+  const dateToString = date.toISOString().substring(0, 10);
+  let watchBody = "";
+  let buyBody = "";
+  let readBody = "";
+  let eatBody = "";
+  let todayBody = "";
+  let weekBody = "";
+
+  $(".collapsible-body").empty();
+
+
+  for (let category of categories) {
+    const categoryTodos = todos.filter(todo => category.id === todo.category_id);
+    for (let todo of categoryTodos) {
+      if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
+        todayBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
+        today += 1;
+      }
+      if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
+        weekBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
+        week += 1;
+      }
+      if (category.main_category === WATCH_MAIN_CATEGORY) {
+        watchBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
+        watch += 1;
+      }
+      if (category.main_category === BUY_MAIN_CATEGORY) {
+        buyBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
+        buy += 1;
+      }
+      if (category.main_category === READ_MAIN_CATEGORY) {
+        readBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
+        read += 1;
+      }
+      if (category.main_category === EAT_MAIN_CATEGORY) {
+        eatBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
+        eat += 1;
+      }
+    }
+  }
+
+  function isDateInNextWeek(date) {
+    const dateToTime = new Date(date).getTime();
+    const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
+    const dateEightDaysMore = new Date(new Date().getTime() + 8 * 24 * 3600 * 1000).getTime();
+
+    if (dateToTime >= dateTomorrow && dateToTime <= dateEightDaysMore) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+
+  $(".weekly-todos").append(weekBody);
+  $(".today-todos").append(todayBody);
+
+  $(".watch-todos").append(watchBody);
+  $(".buy-todos").append(buyBody);
+  $(".read-todos").append(readBody)
+  $(".eat-todos").append(eatBody);
+
+  $(".week").text(`(${week})`);
+  $(".today").text(`(${today})`);
+  $(".to_watch").text(`(${watch})`);
+  $(".to_buy").text(`(${buy})`);
+  $(".to_read").text(`(${read})`);
+  $(".to_eat").text(`(${eat})`);
+};
+
+
 jQuery(document).ready(function ($) {
 
   // Get number of days passed since timestamp
@@ -27,19 +169,6 @@ jQuery(document).ready(function ($) {
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
-
-  function isDateInNextWeek(date) {
-    const dateToTime = new Date(date).getTime();
-    const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
-    const dateEightDaysMore = new Date(new Date().getTime() + 8 * 24 * 3600 * 1000).getTime();
-
-    if (dateToTime >= dateTomorrow && dateToTime <= dateEightDaysMore) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
 
   const getCreatedID = (data) => {
     const queryString = data.split('&')[1];
@@ -93,9 +222,6 @@ jQuery(document).ready(function ($) {
 
   //<-- Todos -->
 
-  // loops through tweets
-  // calls createTweetElement for each tweet
-  // takes return value and appends it to the tweets container
   const renderTodos = function (todos) {
     const alltodos = [];
     $('.todos').empty();
@@ -131,119 +257,25 @@ jQuery(document).ready(function ($) {
   };
   loadTodos();
 
+  // < -- Main View -->
+  // $('watch-todos').click(() => {
+  //   $('.task-info').append('.watch-todos');
+  // })
+
   // < -- Left Navbar -->
 
   //collapsible todos for each category
   $('.collapsible').collapsible({
     inDuration: 150,
-    outDuration: 200
+    outDuration: 200,
   });
 
-  const renderCategories = function (categories) {
-    console.log(categories);
-    const allcategories = [];
-    $('.categories').empty();
-    for (const category of categories) {
-      allcategories.push(createCategoryElement(category));
-    }
-    $('.categories').append(allcategories);
-  };
-
-  const createCategoryElement = function (category) {
-    const $category = $(
-      ` <li class='category collapsible'><a>${escape(category.description)}</a></li>`
-    );
-    return $category;
-  };
-
-  const countAndAddTodosPerCategory = function (categories, todos) {
-    let watch = 0;
-    let buy = 0;
-    let read = 0;
-    let eat = 0;
-    let today = 0;
-    let week = 0;
-    const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
-    const dateToString = date.toISOString().substring(0, 10);
-    let watchBody = "";
-    let buyBody = "";
-    let readBody = "";
-    let eatBody = "";
-    let todayBody = "";
-    let weekBody = "";
-
-    $(".collapsible-body").empty();
 
 
-    for (let category of categories) {
-      const categoryTodos = todos.filter(todo => category.id === todo.category_id);
-      for (let todo of categoryTodos) {
-        if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
-          todayBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
-          today += 1;
-        }
-        if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
-          weekBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
-          week += 1;
-        }
-        if (category.main_category === WATCH_MAIN_CATEGORY) {
-          watchBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-          watch += 1;
-        }
-        if (category.main_category === BUY_MAIN_CATEGORY) {
-          buyBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-          buy += 1;
-        }
-        if (category.main_category === READ_MAIN_CATEGORY) {
-          readBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-          read += 1;
-        }
-        if (category.main_category === EAT_MAIN_CATEGORY) {
-          eatBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-          eat += 1;
-        }
-      }
-    }
 
 
-    $(".weekly-todos").append(weekBody);
-    $(".today-todos").append(todayBody);
-
-    $(".watch-todos").append(watchBody);
-    $(".buy-todos").append(buyBody);
-    $(".read-todos").append(readBody)
-    $(".eat-todos").append(eatBody);
-
-    $(".week").text(`(${week})`);
-    $(".today").text(`(${today})`);
-    $(".to_watch").text(`(${watch})`);
-    $(".to_buy").text(`(${buy})`);
-    $(".to_read").text(`(${read})`);
-    $(".to_eat").text(`(${eat})`);
-  };
 
 
-  function reloadAll() {
-    const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
-    const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
-    return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-      console.log('categories: ' ,categoriesData);
-      console.log('todosData: ' ,todosData);
-
-      categories = categoriesData.categories;
-      todos = todosData.todo;
-      return [categoriesData.categories, todosData.todo];
-    });
-  }
-
-  function rerender(categories, todos) {
-    renderCategories(categories);
-    countAndAddTodosPerCategory(categories, todos);
-  }
-
-  function getCategoriesAndTodos() {
-    reloadAll().then(data => rerender(data[0], data[1]));
-  }
 
 
 
