@@ -1,7 +1,7 @@
 // This file deals with body Ajax thing.
 
 $(document).ready(function() { // Runs reloading the page
-
+  const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
   let todayTODO = [];
   let next7TODO = [];
   let allTODOsArray = [];
@@ -10,21 +10,29 @@ $(document).ready(function() { // Runs reloading the page
   const $todos = $('.todos');
   const getDayStr = function(numberDay) {
     if (numberDay === null) {
-      console.log("in getdatstr");
       return null;
     }
     if (numberDay < 1) {
-      return "This is due today";
+      return "Due today";
     } else {
       const day = Math.round(numberDay);
-      return `This is due ${day} later`;
+      if (day === 1) 
+        return `This is due ${day} day later`;
+      return `This is due ${day} days later`;
     }
+  };
+
+  //
+  const getColors = function(priorityNumber) {
+    if (priorityNumber <= 3 && priorityNumber >= 1)
+      return priorityColorsArr[priorityNumber - 1];
+    return "grey-text";
   };
 
   // checks the input
   const escape = function(str) {
     if (str === null) {
-      str = "No specify here.";
+      str = "No specify here";
     }
     const div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
@@ -35,13 +43,25 @@ $(document).ready(function() { // Runs reloading the page
   const createTodoElement = function(todo) {
     const $HTMLele = $(
       `<article class='todo'>
-        <header>
-          <p>${escape(todo.title)}</p>
-        </header>
-        <p>${escape(todo.description)}</p>
-        <footer>
-          <span>${escape(getDayStr(getDaysDiff(todo.end_date)))}</span>
-        </footer>
+        <div class = "oneLine">
+          <label>
+            <input type="checkbox" class="filled-in" id="checkoutBox"/>
+            <span class="${getColors(todo.priority)}"> Complete </span>
+          </label>
+          <p class="title">${escape(todo.title)}</p>
+          
+        </div>
+        <div class = "secondLine">
+          <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
+          <a class="waves-effect waves-light btn">Update</a>
+          <a class="waves-effect waves-light btn">Delete</a>
+        </div>
+        <ul class="collapsible">
+        <li>
+          <div class="collapsible-header">Description</div>
+          <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
+        </li>
+        </ul>
     </article>`
     );
     return $HTMLele;
@@ -52,27 +72,30 @@ $(document).ready(function() { // Runs reloading the page
     for (let i = 0; i < todos.length; i++) {
       $todos.append(createTodoElement(todos[i]));
     }
+    const $colla = $('.collapsible');
+    console.log("it finds", $colla);
+    $colla.collapsible();
   };
 
   // called by function generateCategories, will return a HTML string for each category
-  const createCategoryElement = function(categories) {
-    const $HTMLele = $(
-      `<article class='todo'>
-        <header>
-          <p>${escape(categories.description)}</p>
-        </header>
-        <img src="${escape(categories.cover_photo_url)}" alt="cover_photo_url" width="42" height="42">
-        <p>${escape(categories.creation_date)}</p>
-    </article>`
-    );
-    return $HTMLele;
-  };
-  // Generate the HTML structure for ONLY categories
-  const generateCategories = function(categories) {
-    for (let i = 0; i < categories.length; i++) {
-      $todos.append(createCategoryElement(categories[i]));
-    }
-  };
+  // const createCategoryElement = function(categories) {
+  //   const $HTMLele = $(
+  //     `<article class='todo'>
+  //       <header>
+  //         <p>${escape(categories.description)}</p>
+  //       </header>
+  //       <img src="${escape(categories.cover_photo_url)}" alt="cover_photo_url" width="42" height="42">
+  //       <p>${escape(categories.creation_date)}</p>
+  //   </article>`
+  //   );
+  //   return $HTMLele;
+  // };
+  // // Generate the HTML structure for ONLY categories
+  // const generateCategories = function(categories) {
+  //   for (let i = 0; i < categories.length; i++) {
+  //     $todos.append(createCategoryElement(categories[i]));
+  //   }
+  // };
 
   // Gets a Date format string and returns a number which is the difference with the current date time
   const getDaysDiff = function(unixTimestamp) {
@@ -115,35 +138,42 @@ $(document).ready(function() { // Runs reloading the page
       }
 
       // checks the input and generate the heading sentence
-      const headingTitle = ["Task(s) due today", "task(s) for next 7 days", "All the tasks", "All the Categories"];
       if (todayTODO.length > 0) {
         if (todayTODO.length === 1){
-          $todos.append(`<h3> Task due today </h3>`);
+          $todos.append(`<h4> Task due today </h4>`);
         } else {
-          $todos.append(`<h3> Tasks due today </h3>`);
+          $todos.append(`<h4> Tasks due today </h4>`);
         }
         renderTodos(todayTODO);
       } else if (next7TODO.length > 0) {
         if (next7TODO.length === 1) {
-          $todos.append(`<h3> task for next 7 days </h3>`);
+          $todos.append(`<h4> task for next 7 days </h4>`);
         } else {
-          $todos.append(`<h3> Tasks for next 7 days</h3>`);
+          $todos.append(`<h4> Tasks for next 7 days</h4>`);
         }
         renderTodos(next7TODO);
       } else if (allTODOsArray.length > 0) {
         if (next7TODO.length === 1) {
-          $todos.append(`<h3> All the task </h3>`);
+          $todos.append(`<h4> All the task </h4>`);
         } else {
-          $todos.append(`<h3> All the tasks </h3>`);
+          $todos.append(`<h4> All the tasks </h4>`);
         }
         renderTodos(allTODOsArray);
-      } else {
-        $todos.append(`<h3> All the Categories </h3>`);
+      } else { // no todo tasks
+        $todos.append(`<h4> All the Categories </h4>`);
         generateCategories(cateList);
+        $todos.append(`
+        <div class= "notodo">
+          <h4> No todo task </h4>
+          <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
+          <a class="waves-effect waves-light btn">Add new todo task</a>
+        </div>
+        `);
       }
       return; // something using both resultA and resultB
     });
     // need have all data here since this is asyn
   }
+  
   getCategoriesAndTodos();
 });
