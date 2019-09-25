@@ -1,20 +1,30 @@
 $(() => {
 
   $('.buy-todos').on('click', () => {
+    $('.list-title').html('Buy List');
     const list = todos.filter(todo => todo.category_id === 2);
     renderTodos(list);
     const slider = $('.carousel');
     slider.empty();
-        const productPromise = [];
-        list.forEach((task) => {
-          productPromise.push($.ajax('api/widgets/product', { method: 'POST', data: task.title }));
-        });
-        Promise.all(productPromise)
-          .then(products => {
-            products.forEach(productInfo => {
-              console.log("0", productInfo[0]);
-              console.log("1", productInfo[1]);
-              slider.append(`
+    const productPromise = [];
+    list.forEach((task) => {
+      productPromise.push($.ajax('api/widgets/product', {
+        method: 'POST',
+        data: task.title,
+        beforeSend: function() {
+          $('.preloader-wrapper').css('display', 'block');
+        },
+        complete: function() {
+          $('.preloader-wrapper').css('display', 'none');
+        }
+      }));
+    });
+    Promise.all(productPromise)
+      .then(products => {
+        products.forEach(productInfo => {
+          console.log("0", productInfo[0]);
+          console.log("1", productInfo[1]);
+          slider.append(`
             <div class="row carousel-item">
               <div class="col s12 m12">
               <div class="card">
@@ -31,10 +41,10 @@ $(() => {
         </div>
         </div>
           `);
-            });
-            slider.carousel();
-            $('.tooltipped').tooltip();
-          });
+        });
+        slider.carousel();
+        $('.tooltipped').tooltip();
       });
   });
+});
 

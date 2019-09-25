@@ -1,6 +1,7 @@
 $(() => {
 
   $('.eat-todos').on('click', () => {
+    $('.list-title').html('Food List');
     const list = todos.filter(todo => todo.category_id === 4);
     renderTodos(list);
     console.log(list);
@@ -8,7 +9,16 @@ $(() => {
     slider.empty();
     const foodPromise = [];
     list.forEach((todo) => {
-      foodPromise.push($.ajax('api/widgets/food', { method: 'POST', data: todo.title }));
+      foodPromise.push($.ajax('api/widgets/food', {
+        method: 'POST',
+        data: todo.title,
+        beforeSend: function() {
+          $('.preloader-wrapper').css('display', 'block');
+        },
+        complete: function() {
+          $('.preloader-wrapper').css('display', 'none');
+        }
+      }));
     });
     Promise.all(foodPromise)
       .then(foods => {
@@ -22,7 +32,7 @@ $(() => {
                   <img class="activator" src="${food.image}">
                 </div>
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="food-title">${food.name}</p><i class="material-icons left" style="transform: translateY(-100%);">check_circle</i><i class="material-icons right" style="transform: translateY(-100%);">cancel</i></span>
+                  <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="food-title">${food.name}</p></span>
                 </div>
                 <div class="card-reveal">
                   <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>

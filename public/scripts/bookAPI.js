@@ -1,12 +1,22 @@
 $(() => {
   $('.read-todos').on('click', () => {
+    $('.list-title').html('Read List');
     const list = todos.filter(todo => todo.category_id === 3);
     renderTodos(list);
     const slider = $('.carousel');
     slider.empty();
     const bookPromise = [];
     list.forEach((task) => {
-      bookPromise.push($.ajax('api/widgets/book', { method: 'POST', data: task.title }));
+      bookPromise.push($.ajax('api/widgets/book', {
+        method: 'POST',
+        data: task.title,
+        beforeSend: function() {
+          $('.preloader-wrapper').css('display', 'block');
+        },
+        complete: function() {
+          $('.preloader-wrapper').css('display', 'none');
+        }
+      }));
     });
     Promise.all(bookPromise)
       .then(books => {
@@ -19,7 +29,7 @@ $(() => {
             <img class="activator" src="${book.thumbnail}">
           </div>
           <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="book-title">${book.title}</p><i class="material-icons left" style="transform: translateY(-100%);">check_circle</i><i class="material-icons right" style="transform: translateY(-100%);">cancel</i></span>
+        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="book-title">${book.title}</p></span>
           </div>
           <div class="card-reveal">
           <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
