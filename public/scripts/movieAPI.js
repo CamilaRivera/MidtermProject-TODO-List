@@ -7,7 +7,7 @@ $(() => {
     console.log($('.brand-logo'));
     const list = todos.filter(todo => todo.category_id === 1);
     renderTodos(list);
-    console.log(list);
+    console.log('todo-list', list);
     const slider = $('.carousel');
     slider.empty();
     // const foodPromise = [];
@@ -18,13 +18,7 @@ $(() => {
     list.forEach((task) => {
       moviePromise.push($.ajax('api/widgets/movie', {
         method: 'POST',
-        data: task.title,
-        beforeSend: function() {
-          $('.preloader-wrapper').css('display', 'block');
-        },
-        complete: function() {
-          $('.preloader-wrapper').css('display', 'none');
-        }
+        data: task.title
       }));
     });
     Promise.all(moviePromise)
