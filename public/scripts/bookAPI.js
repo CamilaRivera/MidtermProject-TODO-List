@@ -12,14 +12,12 @@ $(() => {
         data: task.title,
         beforeSend: function() {
           $('.preloader-wrapper').css('display', 'block');
-        },
-        complete: function() {
-          $('.preloader-wrapper').css('display', 'none');
         }
       }));
     });
     Promise.all(bookPromise)
       .then(books => {
+        $('.preloader-wrapper').css('display', 'none');
         books.forEach(book => {
           slider.append(`
           <div class="row carousel-item">

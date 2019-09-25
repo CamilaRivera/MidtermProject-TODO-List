@@ -14,15 +14,12 @@ $(() => {
         data: todo.title,
         beforeSend: function() {
           $('.preloader-wrapper').css('display', 'block');
-        },
-        complete: function() {
-          $('.preloader-wrapper').css('display', 'none');
         }
       }));
     });
     Promise.all(foodPromise)
       .then(foods => {
-        console.log(foods);
+        $('.preloader-wrapper').css('display', 'none');
         foods.forEach(food => {
           slider.append(`
           <div class="row carousel-item">
