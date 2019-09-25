@@ -45,7 +45,7 @@ $(document).ready(function() { // Runs reloading the page
       `<article class='todo'>
         <div class = "oneLine">
           <label>
-            <input type="checkbox" class="filled-in" id="checkoutBox"/>
+            <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
             <span class="${getColors(todo.priority)}"> Complete </span>
           </label>
           <p class="title">${escape(todo.title)}</p>
@@ -54,12 +54,13 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "secondLine">
           <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
           <a class="waves-effect waves-light btn">Update</a>
-          <a class="waves-effect waves-light btn">Delete</a>
+          <a class="waves-effect waves-light btn" onclick=checkDelete(${todo.id})>Delete</a>
         </div>
         <ul class="collapsible">
         <li>
           <div class="collapsible-header">Description</div>
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
+          <div class="collapsible-body"><span>${escape(todo.complete)}</span></div>
         </li>
         </ul>
     </article>`
@@ -73,7 +74,6 @@ $(document).ready(function() { // Runs reloading the page
       $todos.append(createTodoElement(todos[i]));
     }
     const $colla = $('.collapsible');
-    console.log("it finds", $colla);
     $colla.collapsible();
   };
 
@@ -120,20 +120,23 @@ $(document).ready(function() { // Runs reloading the page
       todosList = dataTodos.todo;
       cateList = dataCategories.categories;
       // check each date difference
-      console.log(todosList);
       for (let todo of todosList) {
         if (todo.end_date !== null) {
           if (getDaysDiff(todo.end_date) < 1 && todo.complete === false && getDaysDiff(todo.end_date) > -2) {
             todayTODO.push(todo);
-            allTODOsArray.push(todo);
+            // allTODOsArray.push(todo);
           } else if (getDaysDiff(todo.end_date) < 7 && todo.complete === false) {
             next7TODO.push(todo);
-            allTODOsArray.push(todo);
+            // allTODOsArray.push(todo);
           } else {
-            allTODOsArray.push(todo);
+            if (todo.complete === false){
+              allTODOsArray.push(todo);  
+            }
           }
         } else {
-          allTODOsArray.push(todo);
+          if (todo.complete === false){
+            allTODOsArray.push(todo);  
+          }
         }
       }
 
@@ -160,13 +163,13 @@ $(document).ready(function() { // Runs reloading the page
         }
         renderTodos(allTODOsArray);
       } else { // no todo tasks
-        $todos.append(`<h4> All the Categories </h4>`);
-        generateCategories(cateList);
+        // $todos.append(`<h4> All the Categories </h4>`);
+        // generateCategories(cateList);
         $todos.append(`
         <div class= "notodo">
           <h4> No todo task </h4>
           <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
-          <a class="waves-effect waves-light btn">Add new todo task</a>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
         </div>
         `);
       }
