@@ -1,38 +1,5 @@
 $(() => {
 
-  const reloadAll = () => {
-    const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
-    const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
-    return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-      return [categoriesData.categories, todosData.todo];
-    });
-  };
-
-  const makeTaskListHTML = (listArr) => {
-    let html = '';
-    for (let i = 0; i < listArr.length; i++) {
-      html += `<h5> Task ${i + 1}: Eat ${listArr[i].title} </h5>`;
-      html += `<h5> Task Description: ${listArr[i].description} </h5>`;
-      html += `<h5> Task Start At: ${listArr[i].start_date} </h5>`;
-      html += `<h5> Task End At: ${listArr[i].end_date} </h5>`;
-      html += `<h5> Priority${listArr[i].priority} </h5>`;
-    }
-    return html;
-  };
-
-
-  const generateStars = (rating) => {
-    let starHTML = '';
-    for (let i = 0; i < rating; i++) {
-      starHTML += `<i class="material-icons">star</i>`;
-    }
-    for (let i = 0; i < 5 - rating; i++) {
-      starHTML += `<i class="material-icons">star_border</i>`;
-    }
-    return starHTML;
-  };
-
-
   $('.eat-todos').on('click', () => {
     $.ajax('api/categories/4', { method: 'GET' }) //where 1 is has to be dynamic
       .then(list => {
@@ -108,7 +75,7 @@ $(() => {
                     <h5 class="type">Distance: ${foodInfo.distance} m</h3>
                     <h5 class="plot">Open: ${foodInfo.open}</h4>
                     <h5 class="year">Phone: ${foodInfo.phone}</h5>
-                    <h5 class="rating">Rating: ${generateStars(foodInfo.rating)}</h5>
+                    <h5 class="rating">Rating: ${generateStars(foodInfo.rating, 5)}</h5>
                     <h5 class="rating-count">Number of Reviews: ${foodInfo.reviewCount}</h5>
                     `);
                   });
