@@ -1,5 +1,8 @@
 // See: https://sass-lang.com/
-
+nav {
+  z-index: 3;
+  position: fixed;
+}
 body {
   background-color: #EEE;
 
@@ -42,6 +45,8 @@ body {
 .carousel-container {
   // padding-left: 25vw;
   // transform: translateY(-30vh);
+  position: sticky;
+  top: 3px;
   .carousel {
     width: 100%;
     height: 400px;
