@@ -18,7 +18,7 @@ INSERT INTO todos (id, title, description, start_date, end_date, priority, cover
 (8, 'Wonder Woman', 'some description', '2019-03-03', '2019-09-29', 3, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1),
 (9, 'Buy a new pc', 'some description', '2019-03-03', '2019-10-10', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 2),
 (10, 'Buy ticket for Concert', 'some description', '2019-03-03', '2019-10-10', 2, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 2),
-(11, 'Read Damian', 'some description', '2019-03-03', '2019-10-03', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 3),
+(11, 'Game of Thrones', 'some description', '2019-03-03', '2019-10-03', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 3),
 (12, 'Read one book of Isaac Asimov', 'some description', '2019-03-03', '2019-10-11', 4, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 3),
 (13, 'brunch', 'eat brunch with sammy', '2019-03-03', '2019-09-24', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
 (14, 'Go to eat at the new place in Downtown', 'some description', '2019-03-03', '2019-10-03', 2, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
