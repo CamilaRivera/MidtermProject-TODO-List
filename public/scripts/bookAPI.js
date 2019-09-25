@@ -1,5 +1,6 @@
 $(() => {
   $('.read-todos').on('click', () => {
+    $('.brand-logo').html('Read List');
     const list = todos.filter(todo => todo.category_id === 3);
     renderTodos(list);
     const slider = $('.carousel');
