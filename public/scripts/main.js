@@ -143,7 +143,7 @@ jQuery(document).ready(function ($) {
     let eat = 0;
     let today = 0;
     let week = 0;
-    const date = new Date();
+    const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
     const dateToString = date.toISOString().substring(0, 10);
     let watchBody = "";
     let buyBody = "";
