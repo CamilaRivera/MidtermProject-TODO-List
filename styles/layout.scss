@@ -39,6 +39,29 @@ body {
   margin: auto;
 }
 
+div .btn.btn-flat {
+  background-color: transparent;
+}
+
+div .btn {
+  background-color: #8c9eff;
+}
+
+div .btn:hover, div .btn-large:hover, div .btn-small:hover  {
+  background-color: #8c9eff;
+}
+
+div .oneLine, div .secondLine {
+  margin-bottom: 0;
+  margin-bottom: 0;
+}
+.collapsible.more-info-collapsible{
+  box-shadow: none;
+  border: none;
+}
+div .collapsible-header{
+  background-color: transparent;
+}
 .carousel-container {
   // padding-left: 25vw;
   // transform: translateY(-30vh);

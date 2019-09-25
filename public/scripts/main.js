@@ -24,18 +24,6 @@ const generateStars = (rating, max) => {
   return starHTML;
 };
 
-const makeTaskListHTML = (listArr, category) => {
-  let html = `<h5>${category.description}</h5>`;
-  for (let i = 0; i < listArr.length; i++) {
-    html += `<h5> Task ${i + 1}:${listArr[i].title} </h5>`;
-    html += `<h5> Task Description: ${listArr[i].description} </h5>`;
-    html += listArr[i].end_date ? `<h5> Deadline: ${listArr[i].end_date.substring(0, 10)} </h5>`: "";
-    html += `<h5> Priority${listArr[i].priority} </h5>`;
-  }
-  return html;
-};
-
-
 function reloadAll() {
   const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
   const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
@@ -136,7 +124,6 @@ const countAndAddTodosPerCategory = function (categories, todos) {
     }
   };
 
-
   $(".weekly-todos").append(weekBody);
   $(".today-todos").append(todayBody);
 
@@ -155,23 +142,27 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 
 const createTodoElement = function(todo) {
   const $HTMLele = $(
-    `<article class='todo'>
-      <div class = "oneLine">
-        <label>
-          <input type="checkbox" class="filled-in" id="checkoutBox"/>
-          <span class=" todos-list ${getColors(todo.priority)}"> Complete </span>
-        </label>
-        <p class="title">${escape(todo.title)}</p>
+    `<article class='todo m-t-40'>
+      <div class = "oneLine row m-b-0">
+        <form class= "checkbox-complete-todo col s1" action="#">
+        <p>
+          <label>
+            <input type="checkbox" />
+             <span></span>
+          </label>
+        </p>
+        </form>
+          <h5 class="title col s8">${escape(todo.title)}</h5>
+          <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
+          <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
+      </div>
+      <div class="row secondLine">
+        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
 
       </div>
-      <div class = "secondLine">
-        <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
-        <a class="waves-effect waves-light btn">Update</a>
-        <a class="waves-effect waves-light btn">Delete</a>
-      </div>
-      <ul class="collapsible">
+      <ul class="collapsible more-info-collapsible">
       <li>
-        <div class="collapsible-header">Description</div>
+        <div class="collapsible-header"><i class="large material-icons">arrow_drop_down_circle</i>More info</div>
         <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
       </li>
       </ul>
