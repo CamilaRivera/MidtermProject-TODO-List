@@ -50,7 +50,7 @@ $(() => {
         <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${movie.Title}</p></span>
           </div>
           <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+          <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
           <p class="hidden-card-content">Here is some more information about this product that is only revealed once clicked on.</p>
           </div>
           </div>
@@ -73,11 +73,13 @@ $(() => {
             $.ajax('api/widgets/movieInfo', { method: 'POST', data: currentMovie })
               .then(movieInfo => {
                 $('.hidden-card-content').html(`
-                    <h5 class="genre">Genere: ${movieInfo.Genre}</h3>
-                    <h5 class="type">Type: ${movieInfo.Type}</h3>
-                    <h5 class="plot">Plot: ${movieInfo.Plot}</h4>
+                    <h5 class="genre">Genere: ${movieInfo.Genre}</h5>
+                    <h5 class="type">Type: ${movieInfo.Type}</h5>
+                    <h5 class="plot">Plot:</h5>
+                    <p class="plot-text" style="font-size: 18px">${movieInfo.Plot}</p>
                     <h5 class="year">Year: ${movieInfo.Year}</h5>
-                    <h5 class="rating">Rating: ${generateStars(movieInfo.imdbRating, 10)}</h5>
+                    <h5 class="rating">Rating:</h5>
+                    <div class="stars">${generateStars(movieInfo.imdbRating, 9)}</div>
                     `);
               });
           }
