@@ -2,6 +2,11 @@
 nav {
   z-index: 3;
   position: fixed;
+  .nav-wrapper {
+    .brand-logo {
+      margin-left: 8vw;
+    }
+  }
 }
 body {
   background-color: #EEE;
