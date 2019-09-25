@@ -40,6 +40,7 @@ jQuery(document).ready(function ($) {
     }
   };
 
+<<<<<<< Updated upstream
 
   const getCreatedID = (data) => {
     const queryString = data.split('&')[1];
@@ -49,17 +50,19 @@ jQuery(document).ready(function ($) {
   const refreshPage = (id) => {
     if (id == 1) {
       $('.watch-todos').trigger('click');
-    } 
+    }
     if (id == 2) {
       $('.buy-todos').trigger('click');
-    } 
+    }
     if (id == 3) {
       $('.read-todos').trigger('click');
-    } 
+    }
     if (id == 4) {
       $('.eat-todos').trigger('click');
-    } 
+    }
   };
+=======
+>>>>>>> Stashed changes
   // <-- NavBar -->
 
   //open modal Todo
@@ -227,10 +230,8 @@ jQuery(document).ready(function ($) {
     const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
     const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
     return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-
-      console.log('categories: ', categoriesData);
-      console.log('todosData: ', todosData);
-
+      console.log('categories: ' ,categoriesData);
+      console.log('todosData: ' ,todosData);
 
       categories = categoriesData.categories;
       todos = todosData.todo;
