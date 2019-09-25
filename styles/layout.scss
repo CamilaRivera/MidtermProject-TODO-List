@@ -1,5 +1,14 @@
 // See: https://sass-lang.com/
-
+nav {
+  z-index: 3;
+  position: fixed;
+  .nav-wrapper {
+    .brand-logo {
+      font-size: 3em;
+      margin-left: 8vw;
+    }
+  }
+}
 body {
   background-color: #EEE;
 
@@ -33,9 +42,68 @@ body {
     display: block;
     white-space: nowrap;
   }
+
 }
 .margin-auto {
   margin: auto;
+}
+
+div .btn.btn-flat {
+  background-color: transparent;
+}
+
+div .btn {
+  background-color: #8c9eff;
+}
+
+div .btn:hover, div .btn-large:hover, div .btn-small:hover  {
+  background-color: #8c9eff;
+}
+
+div .oneLine, div .secondLine {
+  margin-bottom: 0;
+  margin-bottom: 0;
+}
+.collapsible.more-info-collapsible{
+  box-shadow: none;
+  border: none;
+}
+div .collapsible-header{
+  background-color: transparent;
+}
+.carousel-container {
+  // padding-left: 25vw;
+  // transform: translateY(-30vh);
+  position: sticky;
+  top: 3px;
+  .preloader-wrapper {
+    display: none;
+    margin-top: 30vh;
+    margin-left: 15vw;
+  }
+  .carousel {
+    width: 100%;
+    height: 400px;
+    overflow: visible;
+    .card.food .card-image {
+      height: 300px;
+      overflow: hidden;
+      img {
+        height: 300px;
+        width: 100%;
+      }
+    }
+    .card.movie {
+      width: 300px;
+      .card-image {
+        width: 300px;
+        overflow: hidden;
+        img {
+          width: 300px;
+        }
+      }
+    }
+  }
 }
 
 // helpers for padding and margin https://gist.github.com/jacurtis/30da4bf9a6c9b9b5cc0aebac512ca7c9

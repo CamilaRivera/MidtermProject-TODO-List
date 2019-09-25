@@ -73,7 +73,7 @@ const findRestaurant = (userQuery) => {
  * amazon search end point
  */
 const findProduct = (userQuery) => {
-  return (`https://www.amazon.ca/s?k=${userQuery}`);
+  return `https://www.amazon.ca/s?k=${userQuery}`;
 };
 
 

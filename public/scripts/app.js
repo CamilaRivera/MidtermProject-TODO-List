@@ -1,6 +1,7 @@
 // This file deals with body Ajax thing.
 
 $(document).ready(function() { // Runs reloading the page
+  $('.modal').modal();
   const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
   let todayTODO = [];
   let next7TODO = [];
@@ -16,7 +17,7 @@ $(document).ready(function() { // Runs reloading the page
       return "Due today";
     } else {
       const day = Math.round(numberDay);
-      if (day === 1) 
+      if (day === 1)
         return `This is due ${day} day later`;
       return `This is due ${day} days later`;
     }
@@ -39,6 +40,33 @@ $(document).ready(function() { // Runs reloading the page
     return div.innerHTML;
   };
 
+//   `<article class='todo m-t-40 m-b-40' style="border-width:8px; border-left-style:dotted; padding: 0 0 0 20px;">
+//   <div class = "oneLine row m-b-0">
+//     <form class= "checkbox-complete-todo col s1" action="#">
+//     <p>
+//       <label>
+//         <input type="checkbox" />
+//          <span></span>
+//       </label>
+//     </p>
+//     </form>
+//       <h5 class="title col s8">${escape(todo.title)}</h5>
+//       <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
+//       <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
+//   </div>
+//   <ul class="collapsible more-info-collapsible">
+//   <li>
+//   <div class="collapsible-header"><i class="large material-icons">arrow_drop_down_circle</i>More info</div>
+//   <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
+//   </li>
+//   </ul>
+//   <div class="row secondLine">
+//     <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
+
+//   </div>
+
+// </article>`
+
   // passed by createTodoElement
   const createTodoElement = function(todo) {
     const $HTMLele = $(
@@ -46,26 +74,28 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "oneLine">
           <label>
             <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
-            <span class="${getColors(todo.priority)}"> Complete </span>
+            <span class="todos-list ${getColors(todo.priority)}"> Complete </span>
           </label>
           <p class="title">${escape(todo.title)}</p>
-          
+          <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
+          <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
         </div>
         <div class = "secondLine">
           <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
-          <a class="waves-effect waves-light btn">Update</a>
-          <a class="waves-effect waves-light btn" onclick=checkDelete(${todo.id})>Delete</a>
+          <button data-target="modalUpdate" class="waves-effect waves-light btn updateTodo modal-trigger" onclick=clickUpdate(${todo.id})>Update</button>
+          <a class="waves-effect waves-light btn" onclick=clickDelete(${todo.id})>Delete</a>
         </div>
         <ul class="collapsible">
         <li>
           <div class="collapsible-header">Description</div>
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
-          <div class="collapsible-body"><span>${escape(todo.complete)}</span></div>
         </li>
         </ul>
     </article>`
     );
     return $HTMLele;
+
+    
   };
 
   // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
@@ -76,26 +106,6 @@ $(document).ready(function() { // Runs reloading the page
     const $colla = $('.collapsible');
     $colla.collapsible();
   };
-
-  // called by function generateCategories, will return a HTML string for each category
-  // const createCategoryElement = function(categories) {
-  //   const $HTMLele = $(
-  //     `<article class='todo'>
-  //       <header>
-  //         <p>${escape(categories.description)}</p>
-  //       </header>
-  //       <img src="${escape(categories.cover_photo_url)}" alt="cover_photo_url" width="42" height="42">
-  //       <p>${escape(categories.creation_date)}</p>
-  //   </article>`
-  //   );
-  //   return $HTMLele;
-  // };
-  // // Generate the HTML structure for ONLY categories
-  // const generateCategories = function(categories) {
-  //   for (let i = 0; i < categories.length; i++) {
-  //     $todos.append(createCategoryElement(categories[i]));
-  //   }
-  // };
 
   // Gets a Date format string and returns a number which is the difference with the current date time
   const getDaysDiff = function(unixTimestamp) {
@@ -177,6 +187,6 @@ $(document).ready(function() { // Runs reloading the page
     });
     // need have all data here since this is asyn
   }
-  
+
   getCategoriesAndTodos();
 });
