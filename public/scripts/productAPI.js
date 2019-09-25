@@ -1,7 +1,6 @@
 $(() => {
 
   $('.buy-todos').on('click', () => {
-    $('.brand-logo').html('Buy List');
     const list = todos.filter(todo => todo.category_id === 2);
     renderTodos(list);
     const slider = $('.carousel');

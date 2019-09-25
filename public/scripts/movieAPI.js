@@ -3,7 +3,6 @@ $(() => {
   $('.watch-todos').on('click', () => {
     // $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
     //   .then(list => {
-    $('.brand-logo').html('Watch List');
     console.log($('.brand-logo'));
     const list = todos.filter(todo => todo.category_id === 1);
     renderTodos(list);
