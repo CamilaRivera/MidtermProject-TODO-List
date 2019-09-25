@@ -40,7 +40,6 @@ jQuery(document).ready(function ($) {
     }
   };
 
-<<<<<<< Updated upstream
 
   const getCreatedID = (data) => {
     const queryString = data.split('&')[1];
@@ -61,8 +60,6 @@ jQuery(document).ready(function ($) {
       $('.eat-todos').trigger('click');
     }
   };
-=======
->>>>>>> Stashed changes
   // <-- NavBar -->
 
   //open modal Todo
