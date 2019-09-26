@@ -12,11 +12,15 @@ $(() => {
     list.forEach((task) => {
       moviePromise.push($.ajax('api/widgets/movie', {
         method: 'POST',
-        data: task.title
+        data: task.title,
+        beforeSend: function() {
+          $('.preloader-wrapper').css('display', 'block');
+        }
       }));
     });
     Promise.all(moviePromise)
       .then(movies => {
+        $('.preloader-wrapper').css('display', 'none');
         movies.forEach(movie => {
           let [poster, title] = ["", ""];
           if (!Object.entries(movie).length) {
