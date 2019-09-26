@@ -3,6 +3,7 @@
  * jQuery is already loaded
  */
 
+ let creating = true;
 let categories = [];
 let todos = [];
 const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
@@ -11,6 +12,25 @@ const WATCH_MAIN_CATEGORY = 1;
 const BUY_MAIN_CATEGORY = 2;
 const READ_MAIN_CATEGORY = 3;
 const EAT_MAIN_CATEGORY = 4;
+
+const fillModal = function(todo){
+  $('#todo_title').val(todo.title || '');
+  $('#todo_description').val(todo.description || '');
+  $('#todo_start_date').val(todo.start_date ? todo.start_date.substring(0, 10): '');
+  $('#todo_end_date').val(todo.end_date ? todo.end_date.substring(0, 10): '');
+  $('#category_selection').val(todo.category_id);
+  $('#priority').val(todo.priority);
+  $('.create-todo.modal-close').text('Update todo');
+  M.updateTextFields();
+  $("#category_selection").formSelect();
+  $("#priority").formSelect();
+  if (todo.id) {
+    creating = true;
+  }
+  else {
+    creating = false;
+  }
+};
 
 
 const generateStars = (rating, max) => {
@@ -166,6 +186,29 @@ const renderTodos = function (todos) {
     inDuration: 150,
     outDuration: 200,
   });
+
+  $('.edit-button').on('click', function () {
+    const todoId = Number($(this).data('todoid'));
+    $("#category_selection").formSelect()
+    const todo = todos.find(todo => todo.id === todoId);
+    fillModal(todo);
+  //   $(function() {
+  //     $("#select1").on('change', function() {
+  //         $('#myselect').val("1");
+
+  //         // re-initialize material-select
+  //         $('#myselect').material_select();
+  //     });
+  // });
+
+    $('#modal1').modal('open');
+
+  })
+
+  $('.addTodo.modal-trigger').on('click', function() {
+    fillModal({category_id: 1, priority: 4});
+    $('.create-todo.modal-close').text('Create todo');
+  })
 
   $('.todo input[type=checkbox]').change(function () {
     const todoId = Number($(this).data('todoid'));
