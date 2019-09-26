@@ -63,6 +63,9 @@ const getTodoById = function (db, userId, todoId) {
 };
 
 const updateTodo = function (db, todo, userId) {
+
+  console.log('todo>>>', todo);
+  
   const validColumns = todosColumnsNames.filter(column => column in todo);
   const values = validColumns.map(column => todo[column]);
 

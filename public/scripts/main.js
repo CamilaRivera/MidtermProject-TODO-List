@@ -164,9 +164,7 @@ const createTodoElement = function(todo) {
       </ul>
       <div class="row secondLine">
         <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
-
       </div>
-
   </article>`
   );
   return $HTMLele;
@@ -229,94 +227,18 @@ const escape = function(str) {
 
 jQuery(document).ready(function ($) {
 
+  // Get number of days passed since timestamp
+  const getDaysAgo = function (unixTimestamp) {
+    const days = Math.round((Date.now() - new Date(unixTimestamp)) / (1000 * 60 * 60 * 24));
+    const daysNoun = days > 1 ? 'days' : 'day'; // Handle plural/singular
+    return `${days} ${daysNoun} ago`;
+  };
 
-function reloadAll() {
-  const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
-  const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
-  return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-    console.log('categories: ' ,categoriesData);
-    console.log('todosData: ' ,todosData);
-
-    categories = categoriesData.categories;
-    todos = todosData.todo;
-    return [categoriesData.categories, todosData.todo];
-  });
-}
-
-function rerender(categories, todos) {
-  renderCategories(categories);
-  countAndAddTodosPerCategory(categories, todos);
-  // location.reload();
-}
-
-function getCategoriesAndTodos() {
-  reloadAll().then(data => rerender(data[0], data[1]));
-}
-
-const renderCategories = function (categories) {
-  console.log(categories);
-  const allcategories = [];
-  $('.categories').empty();
-  for (const category of categories) {
-    allcategories.push(createCategoryElement(category));
-  }
-  $('.categories').append(allcategories);
-};
-
-const createCategoryElement = function (category) {
-  const $category = $(
-    ` <li class='category collapsible'><a>${escape(category.description)}</a></li>`
-  );
-  return $category;
-};
-
-const countAndAddTodosPerCategory = function (categories, todos) {
-  let watch = 0;
-  let buy = 0;
-  let read = 0;
-  let eat = 0;
-  let today = 0;
-  let week = 0;
-  const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
-  const dateToString = date.toISOString().substring(0, 10);
-  let watchBody = "";
-  let buyBody = "";
-  let readBody = "";
-  let eatBody = "";
-  let todayBody = "";
-  let weekBody = "";
-
-  $(".collapsible-body").empty();
-
-
-  for (let category of categories) {
-    const categoryTodos = todos.filter(todo => category.id === todo.category_id);
-    for (let todo of categoryTodos) {
-      if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
-        todayBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
-        today += 1;
-      }
-      if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
-        weekBody += `<div class="collapsible-body m-l-20"><span>To ${category.description}: ${todo.title}</span></div>`;
-        week += 1;
-      }
-      if (category.main_category === WATCH_MAIN_CATEGORY) {
-        watchBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-        watch += 1;
-      }
-      if (category.main_category === BUY_MAIN_CATEGORY) {
-        buyBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-        buy += 1;
-      }
-      if (category.main_category === READ_MAIN_CATEGORY) {
-        readBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-        read += 1;
-      }
-      if (category.main_category === EAT_MAIN_CATEGORY) {
-        eatBody += `<div class="collapsible-body m-l-20"><span>${todo.title}</span></div>`;
-        eat += 1;
-      }
-    }
+  //escape potential malicious todos
+  const escape = function (str) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
   }
 
   const getCreatedID = (data) => {
@@ -351,7 +273,6 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   //select priority
   $('select').formSelect();
 
-  // the button in the modal
   $('.create-todo').click(function (event) {
     if (!$('#todo_title').val() || !$('#todo_title').val().trim()) {
       event.stopPropagation();
@@ -359,7 +280,6 @@ const countAndAddTodosPerCategory = function (categories, todos) {
     }
     // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-    console.log(data);
     $.ajax({ url: '/api/todos', method: 'POST', data })
       .then(resp => {
         todos.push(resp.todo);
@@ -390,6 +310,4 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 
   getCategoriesAndTodos();
 
-}
 });
-

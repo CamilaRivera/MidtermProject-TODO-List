@@ -80,8 +80,9 @@ module.exports = (db) => {
   });
 
   router.post("/:id/edit", (req, res) => {
-    console.log(req.body);
+
     const userId = getLoggedUserId(req);
+    
     updateTodo(db, { ...req.body, id: req.params.id }, userId)
       .then(data => {
         res.json({ todo: data });

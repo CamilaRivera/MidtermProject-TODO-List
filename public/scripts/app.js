@@ -23,6 +23,16 @@ $(document).ready(function() { // Runs reloading the page
     }
   };
 
+  const setStyle = function(priorityNumber) {
+    if (priorityNumber === 1)
+      return "color: red";
+    else if (priorityNumber === 2)
+      return "color: blue";
+    else if (priorityNumber === 3)
+      return "color: green";
+    return "visibility: hidden"
+  };
+
   //
   const getColors = function(priorityNumber) {
     if (priorityNumber <= 3 && priorityNumber >= 1)
@@ -39,34 +49,6 @@ $(document).ready(function() { // Runs reloading the page
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   };
-
-//   `<article class='todo m-t-40 m-b-40' style="border-width:8px; border-left-style:dotted; padding: 0 0 0 20px;">
-//   <div class = "oneLine row m-b-0">
-//     <form class= "checkbox-complete-todo col s1" action="#">
-//     <p>
-//       <label>
-//         <input type="checkbox" />
-//          <span></span>
-//       </label>
-//     </p>
-//     </form>
-//       <h5 class="title col s8">${escape(todo.title)}</h5>
-//       <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
-//       <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
-//   </div>
-//   <ul class="collapsible more-info-collapsible">
-//   <li>
-//   <div class="collapsible-header"><i class="large material-icons">arrow_drop_down_circle</i>More info</div>
-//   <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
-//   </li>
-//   </ul>
-//   <div class="row secondLine">
-//     <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
-
-//   </div>
-
-// </article>`
-
   // passed by createTodoElement
   const createTodoElement = function(todo) {
     const $HTMLele = $(
@@ -74,7 +56,8 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "oneLine">
           <label>
             <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
-            <span class="todos-list ${getColors(todo.priority)}"> Complete </span>
+            <span class="todos-list"></span> 
+            <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
           </label>
           <p class="title">${escape(todo.title)}</p>
           <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
@@ -83,7 +66,7 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "secondLine">
           <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
           <button data-target="modalUpdate" class="waves-effect waves-light btn updateTodo modal-trigger" onclick=clickUpdate(${todo.id})>Update</button>
-          <a class="waves-effect waves-light btn" onclick=clickDelete(${todo.id})>Delete</a>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete</a>
         </div>
         <ul class="collapsible">
         <li>
@@ -93,10 +76,15 @@ $(document).ready(function() { // Runs reloading the page
         </ul>
     </article>`
     );
+    $('#flagLogo').css('color', 'red');
     return $HTMLele;
-
-    
   };
+
+  const setFlagColor = function(priorityID){
+    if (priorityID === 1) {
+      $('#flagLogo').css('color', 'red');
+    }
+  }
 
   // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
   const renderTodos = function(todos) {
@@ -104,6 +92,7 @@ $(document).ready(function() { // Runs reloading the page
       $todos.append(createTodoElement(todos[i]));
     }
     const $colla = $('.collapsible');
+    $('#flagLogo').css('color', 'red');
     $colla.collapsible();
   };
 
@@ -132,12 +121,11 @@ $(document).ready(function() { // Runs reloading the page
       // check each date difference
       for (let todo of todosList) {
         if (todo.end_date !== null) {
-          if (getDaysDiff(todo.end_date) < 1 && todo.complete === false && getDaysDiff(todo.end_date) > -2) {
+          if (getDaysDiff(todo.end_date) < 0 && todo.complete === false && getDaysDiff(todo.end_date) > -2) {
+            console.log("dite diff is ", getDaysDiff(todo.end_date));
             todayTODO.push(todo);
-            // allTODOsArray.push(todo);
           } else if (getDaysDiff(todo.end_date) < 7 && todo.complete === false) {
             next7TODO.push(todo);
-            // allTODOsArray.push(todo);
           } else {
             if (todo.complete === false){
               allTODOsArray.push(todo);  
