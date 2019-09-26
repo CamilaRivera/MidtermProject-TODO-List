@@ -39,8 +39,7 @@ $(() => {
               <p>${name}</p>
             </div>
             <div class="card-action">
-              <a class="btn-floating pulse" style="float: left; transform: translateY(-0.15em)"><i class="material-icons right">shopping_cart</i></a>
-              <a href="${productInfo[0]}" class="btn tooltipped" data-position="bottom" data-tooltip="This Will Take You to A Third Party Website Which May Uses Cookies">Buy Now!</a>
+              <a href="${productInfo[0]}" class="btn pulse waves-effect tooltipped" data-position="bottom" data-tooltip="This Will Take You to A Third Party Website Which May Uses Cookies">Shop Now!</a>
             </div>
           </div>
         </div>
