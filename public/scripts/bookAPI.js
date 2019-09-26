@@ -27,10 +27,12 @@ $(() => {
             <img class="activator" src="${book.thumbnail}">
           </div>
           <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="book-title">${book.title}</p></span>
+        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="book-title">${book.title}</p>
+        <a class="btn-floating pulse" style="float: left; transform: translateY(-2.5em)">info</a>
+        </span>
           </div>
           <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+          <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
           <p class="hidden-card-content">Here is some more information about this product that is only revealed once clicked on.</p>
           </div>
           </div>
@@ -54,6 +56,10 @@ $(() => {
                     `);
               });
           }
+        });
+        $('[class*="task-"]').on('click', function() {
+          let taskID = ($(this)[0].classList[2]);
+          slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });

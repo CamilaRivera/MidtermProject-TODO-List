@@ -33,15 +33,25 @@ $(() => {
         // </div>
         //   `);
         movies.forEach(movie => {
+          let [poster, title] = ["", ""];
+          if (!Object.entries(movie).length) {
+            poster = 'https://eatatpinkys.com/wp-content/uploads/2019/03/no-image-found.jpg';
+            title = 'We can\'t find information about your movie 🙃';
+          } else {
+            poster = movie.Poster;
+            title = movie.Title;
+          }
           slider.append(`
           <div class="row carousel-item">
           <div class="col s12 m12">
           <div class="card movie">
           <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="${movie.Poster}">
+            <img class="activator" src="${poster}" style="height: 55vh;">
           </div>
           <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${movie.Title}</p></span>
+        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${title}</p>
+        <a class="btn-floating pulse" style="float: left; transform: translateY(-2.5em)">info</a>
+        </span>
           </div>
           <div class="card-reveal">
           <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
@@ -77,6 +87,10 @@ $(() => {
                     `);
               });
           }
+        });
+        $('[class*="task-"]').on('click', function () {
+          let taskID = ($(this)[0].classList[2]);
+          slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });
