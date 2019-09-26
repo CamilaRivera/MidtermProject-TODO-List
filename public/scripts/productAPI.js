@@ -48,8 +48,9 @@ $(() => {
         });
         slider.carousel();
         $('.tooltipped').tooltip();
-        $('[class*="task-"]').on('click', function () {
-          let taskID = ($(this)[0].classList[2]);
+        $('[class*="taskButton-"]').on('click', function () {
+          console.log("LOOK AT THIS:", $(this)[0].classList);
+          let taskID = ($(this)[0].classList[4]);
           slider.carousel('set', taskID.split('-')[1]);
         });
       });

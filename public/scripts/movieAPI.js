@@ -60,13 +60,10 @@ $(() => {
               });
           }
         });
-        $('[class*="task-"]').on('click', function () {
+        $('[class*="taskButton"]').on('click', function () {
           let taskID = ($(this)[0].classList[2]);
           slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });
-});
-
-
-
+})
