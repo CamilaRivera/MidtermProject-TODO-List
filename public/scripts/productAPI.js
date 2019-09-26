@@ -33,7 +33,7 @@ $(() => {
               <div class="col s12 m12">
               <div class="card product" style="width: 20vw;">
               <div class="card-image">
-              <img src="${image}" style="height: 30vh">
+              <img src="${image}" style="height: 35vh">
             </div>
             <div class="card-content">
               <p>${name}</p>
