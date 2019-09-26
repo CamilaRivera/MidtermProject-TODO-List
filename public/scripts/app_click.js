@@ -1,5 +1,5 @@
-const clickProfileUpdate = function(userID) {
-  console.log(userID);
+// const clickProfileUpdate = function(userID) {
+//   console.log(userID);
   // $('.modal').modal();
   // $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
   // .then(resp => {
@@ -13,7 +13,7 @@ const clickProfileUpdate = function(userID) {
   //   $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
   //   console.log("after modal update called");
   // });
-}
+// }
 
 const checkComplete = function(id) {
   // alert("This is in checkComplete " + id);
