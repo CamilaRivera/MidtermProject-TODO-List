@@ -35,7 +35,7 @@ $(() => {
         movies.forEach(movie => {
           let [poster, title] = ["", ""];
           if (!Object.entries(movie).length) {
-            poster = 'https://previews.123rf.com/images/mousemd/mousemd1710/mousemd171000009/87405336-404-not-found-concept-glitch-style-vector.jpg'
+            poster = 'https://eatatpinkys.com/wp-content/uploads/2019/03/no-image-found.jpg';
             title = 'We can\'t find information about your movie 🙃';
           } else {
             poster = movie.Poster;

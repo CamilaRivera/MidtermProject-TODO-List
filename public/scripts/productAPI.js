@@ -22,7 +22,7 @@ $(() => {
         products.forEach(productInfo => {
           let [image, name] = ['', ''];
           if (!productInfo[1].length) {
-            image = 'https://previews.123rf.com/images/mousemd/mousemd1710/mousemd171000009/87405336-404-not-found-concept-glitch-style-vector.jpg';
+            image = 'https://eatatpinkys.com/wp-content/uploads/2019/03/no-image-found.jpg';
             name = 'The picture couldn\'t be fetched, but we still found you something 😏';
           } else {
             image = productInfo[1][0].img;
