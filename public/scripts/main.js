@@ -140,7 +140,7 @@ const createTodoElement = function(todo, i) {
       <ul class="collapsible more-info-collapsible">
         <li>
           <div class="collapsible-header">
-            ${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}
+            ${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))): ''}
             <span class="more-info">(+ More info)</span>
           </div>
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
@@ -148,6 +148,9 @@ const createTodoElement = function(todo, i) {
       </ul>
     </article>`
   );
+  if(!todo.description){
+    $HTMLele.find('.more-info').remove();
+  }
   return $HTMLele;
 };
 
@@ -158,6 +161,11 @@ const renderTodos = function (todos) {
   for (let i = 0; i < todos.length; i++) {
     $todos.append(createTodoElement(todos[i], i));
   }
+
+  $('.collapsible').collapsible({
+    inDuration: 150,
+    outDuration: 200,
+  });
 
   $('.todo input[type=checkbox]').change(function () {
     const todoId = Number($(this).data('todoid'));
@@ -296,12 +304,6 @@ jQuery(document).ready(function ($) {
   });
 
   // < -- Left Navbar -->
-
-  //collapsible todos for each category
-  $('.collapsible').collapsible({
-    inDuration: 150,
-    outDuration: 200,
-  });
 
   getCategoriesAndTodos();
 
