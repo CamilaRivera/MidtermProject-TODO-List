@@ -1,4 +1,4 @@
-const checkComplete = function(id) {
+const checkComplete = function (id) {
   // alert("This is in checkComplete " + id);
   $.ajax(`api/todos/${id}/completed`, {
     method: "POST"
@@ -6,7 +6,7 @@ const checkComplete = function(id) {
   location.reload();
 };
 
-const makeDeleteCsontent = function (todo){
+const makeDeleteCsontent = function (todo) {
   return `
   <div class="modal-content">
     <h4>Are you sure to delete the Task ${todo.title}</h4>
@@ -18,38 +18,38 @@ const makeDeleteCsontent = function (todo){
   `};
 
 // This file is the reaction for all jQuery events for app.js
-const clickDelete = function(id) {
+const clickDelete = function (id) {
   $('.modal').modal();
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-  .then(resp => {
-    const todo = resp.todo;
-    $("#modalDelete").html(makeDeleteCsontent(todo));
-  });
+    .then(resp => {
+      const todo = resp.todo;
+      $("#modalDelete").html(makeDeleteCsontent(todo));
+    });
 };
 
-const clickUpdate = function(id) {
+const clickUpdate = function (id) {
   $('.modal').modal();
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-  .then(resp => {
-    const todo = resp.todo;
-    console.log(todo);
+    .then(resp => {
+      const todo = resp.todo;
+      console.log(todo);
 
-    // console.log(todo.end_date);
-    
-    // const endDateAfterSlice = (todo.end_date).slice(0, 10);
-    // var d = new Date("todo.end_date");
-    $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
-    
-    $('.datepicker').datepicker({
-      // defaultDate: new Date(todo.end_date),
-      // setDefaultDate: true,
-      format: 'yyyy-mm-dd'
+      // console.log(todo.end_date);
+
+      // const endDateAfterSlice = (todo.end_date).slice(0, 10);
+      // var d = new Date("todo.end_date");
+      $("#modalUpdate .modal-content").html(takeInputTOHTML(todo));
+
+      $('.datepicker').datepicker({
+        // defaultDate: new Date(todo.end_date),
+        // setDefaultDate: true,
+        format: 'yyyy-mm-dd'
+      });
+      $('select').formSelect();
     });
-    $('select').formSelect();
-  });
 }
 
-const takeInputTOHTML = function(todo){
+const takeInputTOHTML = function (todo) {
   return `
   <form id="submitUpdate" class="col s12 todo-form">
     <div class="row">
@@ -115,22 +115,22 @@ $(() => {
     const data = $form.serialize();
     const todoID = $form.find('[name="todo_id"]').val();
     $.ajax({ url: `/api/todos/${todoID}/edit`, method: 'POST', data })
-    .then(() => {
-      console.log("sent to the dB");
-      location.reload();
-    })
-    .catch(function(err){
-      console.log("errr is", err);
-    });
+      .then(() => {
+        console.log("sent to the dB");
+        location.reload();
+      })
+      .catch(function (err) {
+        console.log("errr is", err);
+      });
   });
 
 });
 
 
 
-const updateComplete = function(id){
+const updateComplete = function (id) {
   // var e = document.getElementById("ddlViewBy");
-  $("#elementId :selected").val(); 
+  $("#elementId :selected").val();
   // console.log("todo_id is ", $("#category_selection :selected").val());
   // console.log(typeof $("#category_selection :selected").val());
   // console.log("todo_id is ", $("#priorityID :selected").val());
@@ -141,20 +141,20 @@ const updateComplete = function(id){
 
 
   // const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-  
-  $('body').on('submit', '#submitUpdate', (e) =>{
+
+  $('body').on('submit', '#submitUpdate', (e) => {
     e.preventDefault();
     const $form = $(e.target).closest('form');
     const data = $form.serialize();
     const todoID = $form.find('[name="todo_id"]').val();
     $.ajax({ url: `/api/todos/${todoID}/edit`, method: 'POST', data })
-    .then(() => {
-      console.log("sent to the dB");
-      location.reload();
-    })
-    .catch(function(err){
-      console.log("errr is", err);
-    });
+      .then(() => {
+        console.log("sent to the dB");
+        location.reload();
+      })
+      .catch(function (err) {
+        console.log("errr is", err);
+      });
   });
 
 
@@ -162,22 +162,22 @@ const updateComplete = function(id){
   const data = $('form.todo-form:first').serialize();
 
   $.ajax({ url: `/api/todos/${id}/edit`, method: 'POST', data })
-  .then(() => {
-    console.log("sent to the dB");
-    location.reload();
-  })
-  .catch(function(err){
-    console.log("errr is", err);
-  });
+    .then(() => {
+      console.log("sent to the dB");
+      location.reload();
+    })
+    .catch(function (err) {
+      console.log("errr is", err);
+    });
 };
 
-const deleteComplete = function(id){
+const deleteComplete = function (id) {
   $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', })
-  .then(() => {
-    console.log("sent to the dB");
-    location.reload();
-  })
-  .catch(function(err){
-    console.log("errr is", err);
-  });
+    .then(() => {
+      console.log("sent to the dB");
+      location.reload();
+    })
+    .catch(function (err) {
+      console.log("errr is", err);
+    });
 };
