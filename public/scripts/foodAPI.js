@@ -24,8 +24,8 @@ $(() => {
           slider.append(`
           <div class="row carousel-item">
             <div class="col s12 m12">
-              <div class="card food" style="width:20vw;">
-                <div class="card-image waves-effect waves-block waves-light" style="width: 20vw;">
+              <div class="card food" style="width: 20vw;">
+                <div class="card-image waves-effect waves-block waves-light">
                   <img class="activator" src="${food.image}">
                 </div>
                 <div class="card-content">
