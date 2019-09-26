@@ -120,7 +120,7 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   $(".to_completed").text(`(${pastTodos})`);
 };
 
-const createTodoElement = function(todo, i) {
+const createTodoElement = function (todo, i) {
   const $HTMLele = $(
     `<article class="todo task-${i}">
       <div class="todo-header">
@@ -140,7 +140,7 @@ const createTodoElement = function(todo, i) {
       <ul class="collapsible more-info-collapsible">
         <li>
           <div class="collapsible-header">
-            ${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))): ''}
+            ${todo.end_date ? escape(getDayStr(getDaysDiff(todo.end_date))) : ''}
             <span class="more-info">(+ More info)</span>
           </div>
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
@@ -148,12 +148,11 @@ const createTodoElement = function(todo, i) {
       </ul>
 
       <div class="row secondLine">
-        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
+        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date ? escape(getDayStr(getDaysDiff(todo.end_date))) : ""}</p>
       </div>
   </article>`
-    </article>`
   );
-  if(!todo.description){
+  if (!todo.description) {
     $HTMLele.find('.more-info').remove();
   }
   return $HTMLele;
@@ -193,7 +192,7 @@ const renderTodos = function (todos) {
     todos = todos.filter(todo => todo.id !== todoId);
 
     $(this).parent().parent().parent().remove();
-    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST'});
+    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
     countAndAddTodosPerCategory(categories, todos);
   });
 };
@@ -238,20 +237,20 @@ const getDaysDiff = function (unixTimestamp) {
 
 jQuery(document).ready(function ($) {
 
-  $(".today-todos").on('click', function() {
+  $(".today-todos").on('click', function () {
     const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
     const dateToString = date.toISOString().substring(0, 10);
-    const list = todos.filter(todo =>!todo.complete && todo.end_date && todo.end_date.substring(0, 10) === dateToString);
+    const list = todos.filter(todo => !todo.complete && todo.end_date && todo.end_date.substring(0, 10) === dateToString);
     renderTodos(list);
     $('.list-title').html('Today Todos');
   });
-  $(".weekly-todos").on('click',function() {
-    const list = todos.filter(todo =>!todo.complete && todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10)));
+  $(".weekly-todos").on('click', function () {
+    const list = todos.filter(todo => !todo.complete && todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10)));
     console.log('weekly-todos', list);
     renderTodos(list);
     $('.list-title').html('Next 7 days Todos');
   });
-  $(".completed-todos").on('click',function() {
+  $(".completed-todos").on('click', function () {
     const list = todos.filter(todo => todo.complete === true);
     renderTodos(list);
     $('.list-title').html('Completed Todos');
