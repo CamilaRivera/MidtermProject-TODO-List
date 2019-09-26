@@ -146,6 +146,11 @@ const createTodoElement = function(todo, i) {
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
         </li>
       </ul>
+
+      <div class="row secondLine">
+        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
+      </div>
+  </article>`
     </article>`
   );
   if(!todo.description){
@@ -308,4 +313,3 @@ jQuery(document).ready(function ($) {
   getCategoriesAndTodos();
 
 });
-

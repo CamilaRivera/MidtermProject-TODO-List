@@ -1,6 +1,7 @@
 // This file deals with body Ajax thing.
 
 $(document).ready(function() { // Runs reloading the page
+  $('.modal').modal();
   const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
   let todayTODO = [];
   let next7TODO = [];
@@ -12,14 +13,24 @@ $(document).ready(function() { // Runs reloading the page
     if (numberDay === null) {
       return null;
     }
-    if (numberDay < 1) {
+    if (numberDay < 0) {
       return "Due today";
     } else {
       const day = Math.round(numberDay);
-      if (day === 1)
+      if (day >= 0)
         return `This is due ${day} day later`;
       return `This is due ${day} days later`;
     }
+  };
+
+  const setStyle = function(priorityNumber) {
+    if (priorityNumber === 1)
+      return "color: red";
+    else if (priorityNumber === 2)
+      return "color: blue";
+    else if (priorityNumber === 3)
+      return "color: green";
+    return "visibility: hidden"
   };
 
   //
@@ -38,23 +49,25 @@ $(document).ready(function() { // Runs reloading the page
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   };
-
   // passed by createTodoElement
   const createTodoElement = function(todo) {
     const $HTMLele = $(
       `<article class='todo'>
         <div class = "oneLine">
           <label>
-            <input type="checkbox" class="filled-in" id="checkoutBox"/>
-            <span class=" todos-list ${getColors(todo.priority)}"> <i class="large material-icons">delete</i> </span>
+            <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
+            <span class="todos-list"></span> 
+            <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
+
           </label>
           <p class="title">${escape(todo.title)}</p>
-
+          <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
+          <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
         </div>
         <div class = "secondLine">
           <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
-          <a class="waves-effect waves-light btn">Update</a>
-          <a class="waves-effect waves-light btn">Delete</a>
+          <button data-target="modalUpdate" class="waves-effect waves-light btn updateTodo modal-trigger" onclick=clickUpdate(${todo.id})>Update</button>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete</a>
         </div>
         <ul class="collapsible">
         <li>
@@ -64,8 +77,15 @@ $(document).ready(function() { // Runs reloading the page
         </ul>
     </article>`
     );
+    $('#flagLogo').css('color', 'red');
     return $HTMLele;
   };
+
+  const setFlagColor = function(priorityID){
+    if (priorityID === 1) {
+      $('#flagLogo').css('color', 'red');
+    }
+  }
 
   // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
   const renderTodos = function(todos) {
@@ -73,29 +93,9 @@ $(document).ready(function() { // Runs reloading the page
       $todos.append(createTodoElement(todos[i]));
     }
     const $colla = $('.collapsible');
-    console.log("it finds", $colla);
+    $('#flagLogo').css('color', 'red');
     $colla.collapsible();
   };
-
-  // called by function generateCategories, will return a HTML string for each category
-  // const createCategoryElement = function(categories) {
-  //   const $HTMLele = $(
-  //     `<article class='todo'>
-  //       <header>
-  //         <p>${escape(categories.description)}</p>
-  //       </header>
-  //       <img src="${escape(categories.cover_photo_url)}" alt="cover_photo_url" width="42" height="42">
-  //       <p>${escape(categories.creation_date)}</p>
-  //   </article>`
-  //   );
-  //   return $HTMLele;
-  // };
-  // // Generate the HTML structure for ONLY categories
-  // const generateCategories = function(categories) {
-  //   for (let i = 0; i < categories.length; i++) {
-  //     $todos.append(createCategoryElement(categories[i]));
-  //   }
-  // };
 
   // Gets a Date format string and returns a number which is the difference with the current date time
   const getDaysDiff = function(unixTimestamp) {
@@ -120,20 +120,22 @@ $(document).ready(function() { // Runs reloading the page
       todosList = dataTodos.todo;
       cateList = dataCategories.categories;
       // check each date difference
-      console.log(todosList);
       for (let todo of todosList) {
         if (todo.end_date !== null) {
-          if (getDaysDiff(todo.end_date) < 1 && todo.complete === false && getDaysDiff(todo.end_date) > -2) {
+          if (getDaysDiff(todo.end_date) < 0 && todo.complete === false && getDaysDiff(todo.end_date) > -2) {
+            console.log("dite diff is ", getDaysDiff(todo.end_date));
             todayTODO.push(todo);
-            allTODOsArray.push(todo);
           } else if (getDaysDiff(todo.end_date) < 7 && todo.complete === false) {
             next7TODO.push(todo);
-            allTODOsArray.push(todo);
           } else {
-            allTODOsArray.push(todo);
+            if (todo.complete === false){
+              allTODOsArray.push(todo);  
+            }
           }
         } else {
-          allTODOsArray.push(todo);
+          if (todo.complete === false){
+            allTODOsArray.push(todo);  
+          }
         }
       }
 
@@ -160,13 +162,13 @@ $(document).ready(function() { // Runs reloading the page
         }
         renderTodos(allTODOsArray);
       } else { // no todo tasks
-        $todos.append(`<h4> All the Categories </h4>`);
-        generateCategories(cateList);
+        // $todos.append(`<h4> All the Categories </h4>`);
+        // generateCategories(cateList);
         $todos.append(`
         <div class= "notodo">
           <h4> No todo task </h4>
           <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
-          <a class="waves-effect waves-light btn">Add new todo task</a>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
         </div>
         `);
       }
