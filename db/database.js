@@ -44,7 +44,7 @@ const updateCategory = function (db, editableCategory) {
 };
 
 const getTodosByCategoryId = function (db, userId, categoryID) {
-  return db.query(`SELECT * FROM todos JOIN categories ON todos.category_id = categories.id WHERE
+  return db.query(`SELECT todos.id as id, category_id, complete, todos.creation_date, todos.description, end_date, priority, start_date, title FROM todos JOIN categories ON todos.category_id = categories.id WHERE
   categories.user_id = $1 AND categories.id = $2`, [userId, categoryID])
     .then(res => res.rows);
 };
@@ -53,7 +53,8 @@ const getTodosByUserId = function (db, userId) {
   return db.query(`SELECT todos.* FROM todos JOIN categories ON todos.category_id = categories.id WHERE
   categories.user_id = $1`, [userId])
     .then(res => {
-      return res.rows});
+      return res.rows;
+    });
 };
 
 const getTodoById = function (db, userId, todoId) {
@@ -65,7 +66,7 @@ const getTodoById = function (db, userId, todoId) {
 const updateTodo = function (db, todo, userId) {
 
   console.log('todo>>>', todo);
-  
+
   const validColumns = todosColumnsNames.filter(column => column in todo);
   const values = validColumns.map(column => todo[column]);
 
@@ -91,7 +92,7 @@ const addTodo = function (db, todo) {
 
   return db.query(`INSERT INTO todos (${validColumns.join(', ')})
     VALUES (${indexArray.join(', ')}) RETURNING *;`, values)
-    .then(function(res) {
+    .then(function (res) {
       return res.rows[0];
     });
 };

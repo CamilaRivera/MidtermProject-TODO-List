@@ -221,10 +221,12 @@ const renderTodos = function (todos) {
     todos = todos.filter(todo => todo.id !== todoId);
     const deleteEL = $($(this).parents()[2]); //max
     const deleteCategoryID = getClickCategoryID(deleteEL);
-    console.log(deleteCategoryID);
     $(this).parent().parent().parent().remove();
+    console.log($(this).data('todoid'));
     $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
-      .then(() => refreshPage(deleteCategoryID));
+      .then(() =>{
+        refreshPage(deleteCategoryID);
+      });
     countAndAddTodosPerCategory(categories, todos);
   });
 

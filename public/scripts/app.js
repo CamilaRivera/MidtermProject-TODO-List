@@ -1,6 +1,7 @@
+/* eslint-disable func-style */
 // This file deals with body Ajax thing.
 
-$(document).ready(function() { // Runs reloading the page
+$(document).ready(function () { // Runs reloading the page
   $('.modal').modal();
   const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
   let todayTODO = [];
@@ -9,7 +10,7 @@ $(document).ready(function() { // Runs reloading the page
   let todosList = {};
   let cateList = {};
   const $todos = $('.todos');
-  const getDayStr = function(numberDay) {
+  const getDayStr = function (numberDay) {
     if (numberDay === null) {
       return null;
     }
@@ -23,7 +24,7 @@ $(document).ready(function() { // Runs reloading the page
     }
   };
 
-  const setStyle = function(priorityNumber) {
+  const setStyle = function (priorityNumber) {
     if (priorityNumber === 1)
       return "color: red";
     else if (priorityNumber === 2)
@@ -34,14 +35,14 @@ $(document).ready(function() { // Runs reloading the page
   };
 
   //
-  const getColors = function(priorityNumber) {
+  const getColors = function (priorityNumber) {
     if (priorityNumber <= 3 && priorityNumber >= 1)
       return priorityColorsArr[priorityNumber - 1];
     return "grey-text";
   };
 
   // checks the input
-  const escape = function(str) {
+  const escape = function (str) {
     if (str === null) {
       str = "No specify here";
     }
@@ -50,7 +51,7 @@ $(document).ready(function() { // Runs reloading the page
     return div.innerHTML;
   };
   // passed by createTodoElement
-  const createTodoElement = function(todo) {
+  const createTodoElement = function (todo) {
     const $HTMLele = $(
       `<article class='todo'>
         <div class = "oneLine">
@@ -81,14 +82,14 @@ $(document).ready(function() { // Runs reloading the page
     return $HTMLele;
   };
 
-  const setFlagColor = function(priorityID){
+  const setFlagColor = function (priorityID) {
     if (priorityID === 1) {
       $('#flagLogo').css('color', 'red');
     }
   }
 
   // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
-  const renderTodos = function(todos) {
+  const renderTodos = function (todos) {
     for (let i = 0; i < todos.length; i++) {
       $todos.append(createTodoElement(todos[i]));
     }
@@ -98,7 +99,7 @@ $(document).ready(function() { // Runs reloading the page
   };
 
   // Gets a Date format string and returns a number which is the difference with the current date time
-  const getDaysDiff = function(unixTimestamp) {
+  const getDaysDiff = function (unixTimestamp) {
     if (unixTimestamp === null) {
       console.log("here is some thewfasdfsdc");
       return null;
@@ -110,11 +111,11 @@ $(document).ready(function() { // Runs reloading the page
 
   function getCategoriesAndTodos() {
     let categories = $.ajax({ url: '/api/categories', method: 'GET' });
-    let todos = categories.then(function(dataCategories) {
+    let todos = categories.then(function (dataCategories) {
       // some processing
       return $.ajax({ url: '/api/todos', method: 'GET' });
     });
-    return Promise.all([categories, todos]).then(function([dataCategories, dataTodos]) {
+    return Promise.all([categories, todos]).then(function ([dataCategories, dataTodos]) {
       $todos.empty();
       // more processing
       todosList = dataTodos.todo;
@@ -128,20 +129,20 @@ $(document).ready(function() { // Runs reloading the page
           } else if (getDaysDiff(todo.end_date) < 7 && todo.complete === false) {
             next7TODO.push(todo);
           } else {
-            if (todo.complete === false){
-              allTODOsArray.push(todo);  
+            if (todo.complete === false) {
+              allTODOsArray.push(todo);
             }
           }
         } else {
-          if (todo.complete === false){
-            allTODOsArray.push(todo);  
+          if (todo.complete === false) {
+            allTODOsArray.push(todo);
           }
         }
       }
 
       // checks the input and generate the heading sentence
       if (todayTODO.length > 0) {
-        if (todayTODO.length === 1){
+        if (todayTODO.length === 1) {
           $todos.append(`<h4> Task due today </h4>`);
         } else {
           $todos.append(`<h4> Tasks due today </h4>`);

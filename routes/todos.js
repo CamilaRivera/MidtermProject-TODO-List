@@ -46,7 +46,6 @@ module.exports = (db) => {
   });
 
   router.post("/:id/delete", (req, res) => {
-    console.log("jereerrer");
     const userId = getLoggedUserId(req);
     deleteTodo(db, req.params.id, userId)
       // .then(res.send("Success"))
