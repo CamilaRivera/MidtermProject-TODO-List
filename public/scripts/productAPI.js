@@ -33,13 +33,13 @@ $(() => {
               <div class="col s12 m12">
               <div class="card product" style="width: 20vw;">
               <div class="card-image">
-              <img src="${image}" style="height: 30vh">
+              <img src="${image}" style="height: 35vh">
             </div>
             <div class="card-content">
               <p>${name}</p>
             </div>
             <div class="card-action">
-              <a href="${productInfo[0]}" class="btn tooltipped" data-position="bottom" data-tooltip="This Will Take You to A Third Party Website Which May Uses Cookies">Buy Now!</a>
+              <a href="${productInfo[0]}" class="btn pulse waves-effect tooltipped" data-position="bottom" data-tooltip="This Will Take You to A Third Party Website Which May Uses Cookies">Shop Now!</a>
             </div>
           </div>
         </div>
