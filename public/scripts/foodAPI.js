@@ -29,7 +29,9 @@ $(() => {
                   <img class="activator" src="${food.image}">
                 </div>
                 <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="food-title">${food.name}</p></span>
+                  <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="food-title">${food.name}</p>
+                  <a class="btn-floating pulse" style="float: left; transform: translateY(-2.5em)">info</a>
+                  </span>
                 </div>
                 <div class="card-reveal">
                   <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
