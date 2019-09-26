@@ -42,7 +42,11 @@ const findBook = (userQuery) => {
         const {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, imageLinks, infoLink} = volumeInfo;
         const {thumbnail} = imageLinks;
         const {textSnippet} = bookObj.items[0].searchInfo;
-        return {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, thumbnail, infoLink, textSnippet};
+        const bookInfo = {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, thumbnail, infoLink, textSnippet};
+        for (let info in bookInfo) {
+          if (!bookInfo[info]) bookInfo[info] = 'N/A';
+        }
+        return bookInfo;
       }
     })
     .catch(err => {
@@ -62,7 +66,16 @@ const findRestaurant = (userQuery) => {
     .then(foodObj => {
       const {jsonBody} = foodObj;
       const {name, image_url, review_count, rating, price, display_phone, is_closed, location, distance} = jsonBody.businesses[0];
-      return {name, image: image_url, reviewCount: review_count, rating, price, phone: display_phone, open: is_closed, location: location.display_address.join(", "), distance: Math.round(distance)};
+      console.log('this is my shit', jsonBody.businesses[0]);
+      const foodInfo = {name, image: image_url, reviewCount: review_count, rating, price, phone: display_phone, open: is_closed, location: location.display_address.join(", "), distance: Math.round(distance)};
+      foodInfo.phone = foodInfo.phone.split(' ');
+      foodInfo.phone[0] = '(+1)';
+      foodInfo.phone = foodInfo.phone.join(' ');
+      for (let info in foodInfo) {
+        if (!foodInfo[info] && info !== 'open') foodInfo[info] = 'N/A';
+      }
+      
+      return foodInfo;
     })
     .catch(err => {
       console.log('error during fetching yelp api:', err);
