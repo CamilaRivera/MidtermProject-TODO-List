@@ -217,9 +217,11 @@ const renderTodos = function (todos) {
 
     // Update server
     const data = { complete: todo.complete };
-    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
-    $.ajax({ url: '/api/todos', method: 'GET' })
-    .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
+    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data })
+    .then( () => {
+      $.ajax({ url: '/api/todos', method: 'GET' })
+      .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
+    })
   });
 
   $('.delete-button').on('click', function () {
@@ -227,9 +229,11 @@ const renderTodos = function (todos) {
     todos = todos.filter(todo => todo.id !== todoId);
 
     $(this).parent().parent().parent().remove();
-    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
-    $.ajax({ url: '/api/todos', method: 'GET' })
-    .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
+    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
+   .then( () => {
+     $.ajax({ url: '/api/todos', method: 'GET' })
+   .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)})
+  })
   });
 };
 
