@@ -35,11 +35,11 @@ const clickUpdate = function(id) {
     console.log(todo);
 
     // console.log(todo.end_date);
-    
+
     // const endDateAfterSlice = (todo.end_date).slice(0, 10);
     // var d = new Date("todo.end_date");
     $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
-    
+
     $('.datepicker').datepicker({
       // defaultDate: new Date(todo.end_date),
       // setDefaultDate: true,
@@ -130,7 +130,7 @@ $(() => {
 
 const updateComplete = function(id){
   // var e = document.getElementById("ddlViewBy");
-  $("#elementId :selected").val(); 
+  $("#elementId :selected").val();
   // console.log("todo_id is ", $("#category_selection :selected").val());
   // console.log(typeof $("#category_selection :selected").val());
   // console.log("todo_id is ", $("#priorityID :selected").val());
@@ -141,7 +141,7 @@ const updateComplete = function(id){
 
 
   // const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-  
+
   $('body').on('submit', '#submitUpdate', (e) =>{
     e.preventDefault();
     const $form = $(e.target).closest('form');
