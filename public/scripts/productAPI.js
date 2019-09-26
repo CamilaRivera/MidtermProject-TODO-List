@@ -2,7 +2,7 @@ $(() => {
 
   $('.buy-todos').on('click', () => {
     $('.list-title').html('Buy List');
-    const list = todos.filter(todo => todo.category_id === 2);
+    const list = todos.filter(todo => !todo.complete && todo.category_id === 2);
     renderTodos(list);
     const slider = $('.carousel');
     slider.empty();
