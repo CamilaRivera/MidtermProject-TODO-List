@@ -1,19 +1,13 @@
 $(() => {
 
   $('.watch-todos').on('click', () => {
-    // $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
-    //   .then(list => {
     $('.list-title').html('Watch List');
     console.log($('.brand-logo'));
-    const list = todos.filter(todo => todo.category_id === 1);
+    const list = todos.filter(todo =>!todo.complete && todo.category_id === 1);
     renderTodos(list);
     console.log('todo-list', list);
     const slider = $('.carousel');
     slider.empty();
-    // const foodPromise = [];
-
-    // const mainConatiner = $('.carousel-container');
-    // const slider = $('.carousel');
     const moviePromise = [];
     list.forEach((task) => {
       moviePromise.push($.ajax('api/widgets/movie', {
@@ -23,15 +17,6 @@ $(() => {
     });
     Promise.all(moviePromise)
       .then(movies => {
-        //   mainConatiner.prepend(`
-        // <div class="task-info" style="
-        // margin-top: 35vh;
-        // margin-left: -2vw;
-        // width: 100vw;
-        // ">
-        // <section class='todos'>
-        // </div>
-        //   `);
         movies.forEach(movie => {
           let [poster, title] = ["", ""];
           if (!Object.entries(movie).length) {
@@ -42,35 +27,22 @@ $(() => {
             title = movie.Title;
           }
           slider.append(`
-          <div class="row carousel-item">
-          <div class="col s12 m12">
-          <div class="card movie">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="${poster}" style="height: 55vh;">
+          <div class="carousel-item">
+            <div class="card movie">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="${poster}">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${title}</p></span>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                <p class="hidden-card-content">Here is some more information about this product that is only revealed once clicked on.</p>
+              </div>
+            </div>
           </div>
-          <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${title}</p>
-        <a class="btn-floating pulse" style="float: left; transform: translateY(-2.5em)">info</a>
-        </span>
-          </div>
-          <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-          <p class="hidden-card-content">Here is some more information about this product that is only revealed once clicked on.</p>
-          </div>
-          </div>
-          </div>
-        </div>
           `);
-          //   movieInfo.html(`
-          //   ${movie.Title}
-          // `);
         });
-
-        //           reloadAll()
-        //             .then((array) => {
-        //               const categoryTodos = array[1].filter(todo => 1 === todo.category_id);
-        //               renderTodos(categoryTodos);
-        //             });
         slider.carousel({
           onCycleTo: function (data) {
             const currentMovie = $(data).find('.movie-title').html();
@@ -88,11 +60,10 @@ $(() => {
               });
           }
         });
-        $('[class*="task-"]').on('click', function () {
+        $('[class*="taskButton"]').on('click', function () {
           let taskID = ($(this)[0].classList[2]);
           slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });
-
 })

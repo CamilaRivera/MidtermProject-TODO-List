@@ -58,6 +58,7 @@ $(document).ready(function() { // Runs reloading the page
             <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
             <span class="todos-list"></span> 
             <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
+
           </label>
           <p class="title">${escape(todo.title)}</p>
           <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
