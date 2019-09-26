@@ -4,7 +4,7 @@ $(() => {
     $('.list-title').html('Buy List');
     const list = todos.filter(todo => !todo.complete && todo.category_id === 2);
     renderTodos(list);
-    $('article').addClass('product-todo');
+    $('article').addClass('task-box-2');
     const slider = $('.carousel');
     slider.empty();
     const productPromise = [];

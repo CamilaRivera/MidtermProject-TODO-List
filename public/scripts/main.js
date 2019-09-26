@@ -158,6 +158,22 @@ const createTodoElement = function (todo, i) {
   return $HTMLele;
 };
 
+//move refresh page here so more functinos can access it
+const refreshPage = (id) => {
+  if (id == 1) {
+    $('.watch-todos').trigger('click');
+  }
+  if (id == 2) {
+    $('.buy-todos').trigger('click');
+  }
+  if (id == 3) {
+    $('.read-todos').trigger('click');
+  }
+  if (id == 4) {
+    $('.eat-todos').trigger('click');
+  }
+};
+
 // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
 const renderTodos = function (todos) {
   const $todos = $('.todos');
@@ -187,16 +203,31 @@ const renderTodos = function (todos) {
 
     countAndAddTodosPerCategory(categories, todos);
   });
+
+  /**
+   * This function is made by Max 10:36am Sept 26
+   * This function takes advanage of the new class I added in each articles that presents a todo task
+   * and gets the according category ID that a button is clicked
+   * This function is supposed to be used to solve the bug where the slider does not sync with the edit and delete button
+   * zongxi implemented
+   */
+  const getClickCategoryID = (clickEL) => {
+    const clickCategory = clickEL[0].classList[2];
+    return clickCategory.split('-')[2];
+  };
+
   $('.delete-button').on('click', function () {
     const todoId = Number($(this).data('todoid'));
     todos = todos.filter(todo => todo.id !== todoId);
-    const deleteEL = $($(this).parents()[2]);
-    const deleteCategory = deleteEL[0].classList[2];
-    console.log(deleteCategory);
+    const deleteEL = $($(this).parents()[2]); //max
+    const deleteCategoryID = getClickCategoryID(deleteEL);
+    console.log(deleteCategoryID);
     $(this).parent().parent().parent().remove();
-    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
+    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
+      .then(() => refreshPage(deleteCategoryID));
     countAndAddTodosPerCategory(categories, todos);
   });
+
 };
 
 const getDayStr = function (numberDay) {
@@ -263,20 +294,6 @@ jQuery(document).ready(function ($) {
     return queryString.split('=')[1];
   };
 
-  const refreshPage = (id) => {
-    if (id == 1) {
-      $('.watch-todos').trigger('click');
-    }
-    if (id == 2) {
-      $('.buy-todos').trigger('click');
-    }
-    if (id == 3) {
-      $('.read-todos').trigger('click');
-    }
-    if (id == 4) {
-      $('.eat-todos').trigger('click');
-    }
-  };
   // <-- NavBar -->
 
   //open modal Todo
