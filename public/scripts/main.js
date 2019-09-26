@@ -76,9 +76,26 @@ function reloadAll() {
   });
 }
 
+const textToNumber = function(string){
+  return string.replace("(", "").replace(")","")
+}
+
 function rerender(categories, todos) {
   renderCategories(categories);
   countAndAddTodosPerCategory(categories, todos);
+  if(textToNumber($(".today").text()) > 0){
+    $('.today-todos').trigger('click');
+  } else if(textToNumber($(".week").text()) > 0){
+    $('.weekly-todos').trigger('click');
+  } else {
+    $('.todos').append(`
+    <div class= "notodo">
+      <h4> No todo task </h4>
+      <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
+      <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
+    </div>`)
+  }
+
 }
 
 function getCategoriesAndTodos() {
