@@ -45,10 +45,12 @@ $(() => {
             const currentFood = $(data).find('.food-title').html();
             $.ajax('api/widgets/foodInfo', { method: 'POST', data: currentFood })
               .then(foodInfo => {
+                let open = 'Open Now!';
+                if (!open) open = 'Closed';
                 $('.hidden-card-content').html(`
                     <h5 class="genre">Price ${foodInfo.price}</h3>
                     <h5 class="type">Distance: ${foodInfo.distance} m</h3>
-                    <h5 class="plot">Open: ${foodInfo.open}</h4>
+                    <h5 class="plot">Hours: ${open}</h4>
                     <h5 class="year">Phone: ${foodInfo.phone}</h5>
                     <h5 class="rating">Rating: ${generateStars(foodInfo.rating, 5)}</h5>
                     <h5 class="rating-count">Number of Reviews: ${foodInfo.reviewCount}</h5>
