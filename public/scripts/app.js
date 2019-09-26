@@ -36,11 +36,6 @@ $(document).ready(function() { // Runs reloading the page
   //
   // const getColors = function(priorityNumber) {
   //   if (priorityNumber <= 3 && priorityNumber >= 1)
-  //     return priorityColorsArr[priorityNumber - 1];
-  //   return "grey-text";
-  // };
-
-  // checks the input
   // const escape = function(str) {
   //   if (str === null) {
   //     str = "No specify here";
