@@ -31,9 +31,9 @@ $(() => {
           slider.append(`
             <div class="row carousel-item">
               <div class="col s12 m12">
-              <div class="card product">
+              <div class="card product" style="width: 20vw;">
               <div class="card-image">
-              <img src="${image}">
+              <img src="${image}" style="height: 30vh">
             </div>
             <div class="card-content">
               <p>${name}</p>
