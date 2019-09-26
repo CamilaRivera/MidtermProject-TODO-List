@@ -3,6 +3,7 @@ $(() => {
     $('.list-title').html('Read List');
     const list = todos.filter(todo =>!todo.complete && todo.category_id === 3);
     renderTodos(list);
+    $('article').addClass('book-todo');
     const slider = $('.carousel');
     slider.empty();
     const bookPromise = [];

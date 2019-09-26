@@ -190,7 +190,9 @@ const renderTodos = function (todos) {
   $('.delete-button').on('click', function () {
     const todoId = Number($(this).data('todoid'));
     todos = todos.filter(todo => todo.id !== todoId);
-
+    const deleteEL = $($(this).parents()[2]);
+    const deleteCategory = deleteEL[0].classList[2];
+    console.log(deleteCategory);
     $(this).parent().parent().parent().remove();
     $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
     countAndAddTodosPerCategory(categories, todos);

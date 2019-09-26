@@ -4,6 +4,7 @@ $(() => {
     $('.list-title').html('Food List');
     const list = todos.filter(todo => !todo.complete && todo.category_id === 4);
     renderTodos(list);
+    $('article').addClass('food-todo');
     const slider = $('.carousel');
     slider.empty();
     const foodPromise = [];

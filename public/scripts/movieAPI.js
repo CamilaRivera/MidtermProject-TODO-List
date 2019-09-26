@@ -5,7 +5,7 @@ $(() => {
     console.log($('.brand-logo'));
     const list = todos.filter(todo =>!todo.complete && todo.category_id === 1);
     renderTodos(list);
-    console.log('todo-list', list);
+    $('article').addClass('movie-todo'); //<<<< this is used for debuggin delete button and slider sync
     const slider = $('.carousel');
     slider.empty();
     const moviePromise = [];
