@@ -3,7 +3,7 @@ $(() => {
   $('.watch-todos').on('click', () => {
     $('.list-title').html('Watch List');
     console.log($('.brand-logo'));
-    const list = todos.filter(todo => todo.category_id === 1);
+    const list = todos.filter(todo =>!todo.complete && todo.category_id === 1);
     renderTodos(list);
     console.log('todo-list', list);
     const slider = $('.carousel');
@@ -27,22 +27,20 @@ $(() => {
             title = movie.Title;
           }
           slider.append(`
-          <div class="row carousel-item">
-          <div class="col s12 m12">
-          <div class="card movie">
-          <div class="card-image waves-effect waves-block waves-light">
-            <img class="activator" src="${poster}" style="height: 55vh">
+          <div class="carousel-item">
+            <div class="card movie">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="${poster}">
+              </div>
+              <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${title}</p></span>
+              </div>
+              <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+                <p class="hidden-card-content">Here is some more information about this product that is only revealed once clicked on.</p>
+              </div>
+            </div>
           </div>
-          <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4" style="text-align: center"><p class="movie-title">${title}</p></span>
-          </div>
-          <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
-          <p class="hidden-card-content">Here is some more information about this product that is only revealed once clicked on.</p>
-          </div>
-          </div>
-          </div>
-        </div>
           `);
         });
         slider.carousel({

@@ -1,7 +1,7 @@
 $(() => {
   $('.read-todos').on('click', () => {
     $('.list-title').html('Read List');
-    const list = todos.filter(todo => todo.category_id === 3);
+    const list = todos.filter(todo =>!todo.complete && todo.category_id === 3);
     renderTodos(list);
     const slider = $('.carousel');
     slider.empty();
