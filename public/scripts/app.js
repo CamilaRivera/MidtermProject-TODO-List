@@ -1,7 +1,7 @@
 // This file deals with body Ajax thing.
 
 $(document).ready(function() { // Runs reloading the page
-  $('.modal').modal();
+  // $('.modal').modal();
   const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
   let todayTODO = [];
   let next7TODO = [];

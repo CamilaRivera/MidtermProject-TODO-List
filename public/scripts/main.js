@@ -95,7 +95,6 @@ function rerender(categories, todos) {
       <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
     </div>`)
   }
-
 }
 
 function getCategoriesAndTodos() {
