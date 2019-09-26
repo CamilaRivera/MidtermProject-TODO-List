@@ -122,7 +122,7 @@ const countAndAddTodosPerCategory = function (categories, todos) {
 
 const createTodoElement = function(todo, i) {
   const $HTMLele = $(
-    `<article class="todo">
+    `<article class="todo task-${i}">
       <div class="todo-header">
         <label>
           <input data-todoid="${todo.id}" type="checkbox"/>
@@ -132,7 +132,7 @@ const createTodoElement = function(todo, i) {
           ${escape(todo.title)}
         </h5>
         <div class="todo-header-buttons">
-          <a class="btn btn-flat"><i class="large material-icons task-${i}">more</i></a>
+          <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
           <a data-todoid="${todo.id}" class="edit-button btn btn-flat"><i class="large material-icons">mode_edit</i></a>
           <a data-todoid="${todo.id}" class="delete-button btn btn-flat"><i class="large material-icons">delete</i></a>
         </div>
