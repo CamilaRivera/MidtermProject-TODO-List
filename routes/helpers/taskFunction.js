@@ -42,7 +42,11 @@ const findBook = (userQuery) => {
         const {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, imageLinks, infoLink} = volumeInfo;
         const {thumbnail} = imageLinks;
         const {textSnippet} = bookObj.items[0].searchInfo;
-        return {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, thumbnail, infoLink, textSnippet};
+        const bookInfo = {title, authors, publishedDate, averageRating, ratingsCount, pageCount, categories, thumbnail, infoLink, textSnippet};
+        for (let info in bookInfo) {
+          if (!bookInfo[info]) bookInfo[info] = 'N/A';
+        }
+        return bookInfo;
       }
     })
     .catch(err => {
