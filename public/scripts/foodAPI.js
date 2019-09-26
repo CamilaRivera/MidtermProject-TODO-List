@@ -2,9 +2,8 @@ $(() => {
 
   $('.eat-todos').on('click', () => {
     $('.list-title').html('Food List');
-    const list = todos.filter(todo => todo.category_id === 4);
+    const list = todos.filter(todo => !todo.complete && todo.category_id === 4);
     renderTodos(list);
-    console.log(list);
     const slider = $('.carousel');
     slider.empty();
     const foodPromise = [];
@@ -60,7 +59,7 @@ $(() => {
               });
           }
         });
-        $('[class*="task-"]').on('click', function() {
+        $('[class*="taskButton"]').on('click', function() {
           let taskID = ($(this)[0].classList[2]);
           slider.carousel('set', taskID.split('-')[1]);
         });
