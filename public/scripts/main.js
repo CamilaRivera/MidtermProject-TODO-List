@@ -28,8 +28,6 @@ function reloadAll() {
   const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
   const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
   return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-    console.log('categories: ' ,categoriesData);
-    console.log('todosData: ' ,todosData);
 
     categories = categoriesData.categories;
     todos = todosData.todo;
@@ -140,20 +138,20 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   $(".to_eat").text(`(${eat})`);
 };
 
-const createTodoElement = function(todo) {
+const createTodoElement = function (todo) {
   const $HTMLele = $(
     `<article class='todo m-t-40 m-b-40' style="border-width:8px; border-left-style:dotted; padding: 0 0 0 20px;">
       <div class = "oneLine row m-b-0">
-        <form class= "checkbox-complete-todo col s1" action="#">
+        <form data-todoid="${todo.id}" class= "checkbox-complete-todo col s1" action="#">
         <p>
           <label>
-            <input type="checkbox" />
+            <input  class="s1 checkbox" type="checkbox" />
              <span></span>
           </label>
         </p>
         </form>
           <h5 class="title col s8">${escape(todo.title)}</h5>
-          <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
+          <a data-target="modal1" class="btn modal-trigger edit-todo-main-view btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
           <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
       </div>
       <ul class="collapsible more-info-collapsible">
@@ -163,29 +161,30 @@ const createTodoElement = function(todo) {
       </li>
       </ul>
       <div class="row secondLine">
-        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date?escape(getDayStr(getDaysDiff(todo.end_date))):""}</p>
+        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date ? escape(getDayStr(getDaysDiff(todo.end_date))) : ""}</p>
 
       </div>
 
   </article>`
   );
+
   return $HTMLele;
 };
 
 // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
-const renderTodos = function(todos) {
-  console.log('renderTodos', todos);
+const renderTodos = function (todos) {
   const $todos = $('.todos');
   $todos.empty();
   for (let i = 0; i < todos.length; i++) {
     $todos.append(createTodoElement(todos[i]));
   }
-  const $colla = $('.collapsible');
-  console.log("it finds", $colla);
-  $colla.collapsible();
+  $('.checkbox-complete-todo').change(function () {
+    const data = { complete: true }
+    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/edit`, method: 'POST', data })
+  });
 };
 
-const getDayStr = function(numberDay) {
+const getDayStr = function (numberDay) {
   if (numberDay === null) {
     return null;
   }
@@ -199,15 +198,15 @@ const getDayStr = function(numberDay) {
   }
 };
 
-//
-const getColors = function(priorityNumber) {
+
+const getColors = function (priorityNumber) {
   if (priorityNumber <= 3 && priorityNumber >= 1)
     return priorityColorsArr[priorityNumber - 1];
   return "grey-text";
 };
 
 // checks the input
-const escape = function(str) {
+const escape = function (str) {
   if (str === null) {
     str = "No specify here";
   }
@@ -216,25 +215,26 @@ const escape = function(str) {
   return div.innerHTML;
 };
 
-  // Gets a Date format string and returns a number which is the difference with the current date time
-  const getDaysDiff = function(unixTimestamp) {
-    if (unixTimestamp === null) {
-      console.log("here is some thewfasdfsdc");
-      return null;
-    }
-    let Difference_In_Time = new Date(unixTimestamp) - Date.now();
-    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    return Difference_In_Days;
-  };
+// Gets a Date format string and returns a number which is the difference with the current date time
+const getDaysDiff = function (unixTimestamp) {
+  if (unixTimestamp === null) {
+    return null;
+  }
+  let Difference_In_Time = new Date(unixTimestamp) - Date.now();
+  let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  return Difference_In_Days;
+};
 
 jQuery(document).ready(function ($) {
 
-  // Get number of days passed since timestamp
-  const getDaysAgo = function (unixTimestamp) {
-    const days = Math.round((Date.now() - new Date(unixTimestamp)) / (1000 * 60 * 60 * 24));
-    const daysNoun = days > 1 ? 'days' : 'day'; // Handle plural/singular
-    return `${days} ${daysNoun} ago`;
-  };
+  // <-- Dinamic Titles Todos -->
+  $('.today-todos').on('click', () => {
+    $('.list-title').html('Today Todos');
+  });
+
+  $('.weekly-todos').on('click', () => {
+    $('.list-title').html('Next 7 days Todos');
+  });
 
   //escape potential malicious todos
   const escape = function (str) {
@@ -282,6 +282,7 @@ jQuery(document).ready(function ($) {
     }
     // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
+    console.log('the data sended: ', data);
     $.ajax({ url: '/api/todos', method: 'POST', data })
       .then(resp => {
         todos.push(resp.todo);
@@ -300,15 +301,6 @@ jQuery(document).ready(function ($) {
     inDuration: 150,
     outDuration: 200,
   });
-
-
-
-
-
-
-
-
-
 
   getCategoriesAndTodos();
 

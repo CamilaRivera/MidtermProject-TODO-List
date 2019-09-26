@@ -46,7 +46,7 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "oneLine">
           <label>
             <input type="checkbox" class="filled-in" id="checkoutBox"/>
-            <span class=" todos-list ${getColors(todo.priority)}"> Complete </span>
+            <span class=" todos-list ${getColors(todo.priority)}"> <i class="large material-icons">delete</i> </span>
           </label>
           <p class="title">${escape(todo.title)}</p>
 

@@ -28,15 +28,15 @@
         <i class="large material-icons">account_circle</i>
         <% } %>
       </a>
-      <a href="#name"><span class="blue-text name"><%= user.name %></span></a>
-      <a href="#email"><span class="blue-text email"><%= user.email %></span></a>
+      <h6 class="name"><%= user.name %></h6>
+      <h6 class="email"><%= user.email %></h6>
     </div>
   </li>
   <lu class="collapsible">
-  <li class="today-todos">
+  <li class="today-todos white">
     <div class="collapsible-header"><i class="material-icons">alarm</i>Today <span class="counter today"></span></div>
   </li>
-  <li class="weekly-todos">
+  <li class="weekly-todos white">
     <div class="collapsible-header"><i class="material-icons">insert_invitation</i>Next 7 days <span
         class="counter week"></span></div>
   </li>
@@ -44,23 +44,32 @@
   <li>
     <div class="divider"></div>
   </li>
-  <lu class="collapsible"><a>Categories</a>
-    <li class="watch-todos">
+  <lu class="collapsible">
+    <li class="p-l-20"><h6>Categories</h6></li>
+    <li class="watch-todos white">
       <div class="collapsible-header"><i class="material-icons">local_movies</i>Watch <span
           class="counter to_watch"></span></div>
     </li>
-    <li class="buy-todos">
+    <li class="buy-todos white">
       <div class="collapsible-header"><i class="material-icons">attach_money</i>Buy <span class="counter to_buy"></span>
       </div>
     </li>
-    <li class="read-todos">
+    <li class="read-todos white">
       <div class="collapsible-header"><i class="material-icons">library_books</i>Read <span
           class="counter to_read"></span></div>
     </li>
-    <li class="eat-todos">
+    <li class="eat-todos white">
       <div class="collapsible-header"><i class="material-icons">local_dining</i>Eat <span class="counter to_eat"></span>
       </div>
     </li>
+    <li>
+      <div class="divider"></div>
+    </li>
+    <li class="p-l-20"><h6>Completed Todos</h6></li>
+    <li class="completed-todos white">
+        <div class="collapsible-header"><i class="material-icons">check</i>Completed <span class="counter to_completed"></span>
+        </div>
+      </li>
   </lu>
 </ul>
 <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -95,8 +104,6 @@
         </div>
         <div class="row">
           <div class="input-field col s6">
-            <!--input name="category_id" id="category_selection" type="text" class="validate">
-            <label for="category_selection">Category</label-->
             <select name="category_id" id="category_selection">
               <option value="1">Movie</option>
               <option value="2">Product</option>
