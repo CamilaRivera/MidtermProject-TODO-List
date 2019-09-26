@@ -56,7 +56,7 @@ $(document).ready(function() { // Runs reloading the page
         <div class = "oneLine">
           <label>
             <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
-            <span class="todos-list"></span> 
+            <span class="todos-list"></span>
             <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
           </label>
           <p class="title">${escape(todo.title)}</p>
@@ -131,7 +131,7 @@ $(document).ready(function() { // Runs reloading the page
             next7TODO.push(todo);
           } else {
             if (todo.complete === false){
-              allTODOsArray.push(todo);  
+              allTODOsArray.push(todo);
             }
           }
         } else {

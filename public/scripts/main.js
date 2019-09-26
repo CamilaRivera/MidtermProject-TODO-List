@@ -6,11 +6,31 @@
 let categories = [];
 let todos = [];
 const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
+let creating = true;
 
 const WATCH_MAIN_CATEGORY = 1;
 const BUY_MAIN_CATEGORY = 2;
 const READ_MAIN_CATEGORY = 3;
 const EAT_MAIN_CATEGORY = 4;
+
+const fillModal = function(todo){
+  $('#todo_title').val(todo.title || '');
+  $('#todo_description').val(todo.description || '');
+  $('#todo_start_date').val(todo.start_date ? todo.start_date.substring(0, 10): '');
+  $('#todo_end_date').val(todo.end_date ? todo.end_date.substring(0, 10): '');
+  $('#category_selection').val(todo.category_id);
+  $('#priority').val(todo.priority);
+  $('.create-todo.modal-close').text('Update todo');
+  M.updateTextFields();
+  $("#category_selection").formSelect();
+  $("#priority").formSelect();
+  if (todo.id) {
+    creating = true;
+  }
+  else {
+    creating = false;
+  }
+};
 
 
 const generateStars = (rating, max) => {
@@ -80,9 +100,8 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   let today = 0;
   let week = 0;
   let pastTodos = 0;
-  const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
+  const date = new Date(new Date().getTime());
   const dateToString = date.toISOString().substring(0, 10);
-
   for (let category of categories) {
     const categoryTodos = todos.filter(todo => category.id === todo.category_id);
     for (let todo of categoryTodos) {
@@ -170,6 +189,20 @@ const renderTodos = function (todos) {
     outDuration: 200,
   });
 
+  $('.edit-button').on('click', function () {
+    const todoId = Number($(this).data('todoid'));
+    $("#category_selection").formSelect()
+    const todo = todos.find(todo => todo.id === todoId);
+    fillModal(todo);
+    $('#modal1').modal('open');
+
+  })
+
+  $('.addTodo.modal-trigger').on('click', function() {
+    fillModal({category_id: 1, priority: 4});
+    $('.create-todo.modal-close').text('Create todo');
+  })
+
   $('.todo input[type=checkbox]').change(function () {
     const todoId = Number($(this).data('todoid'));
     const todo = todos.find(todo => todo.id === todoId);
@@ -183,9 +216,10 @@ const renderTodos = function (todos) {
     // Update server
     const data = { complete: todo.complete };
     $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
-
-    countAndAddTodosPerCategory(categories, todos);
+    $.ajax({ url: '/api/todos', method: 'GET' })
+    .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
   });
+
   $('.delete-button').on('click', function () {
     const todoId = Number($(this).data('todoid'));
     todos = todos.filter(todo => todo.id !== todoId);
@@ -193,7 +227,8 @@ const renderTodos = function (todos) {
     $(this).parent().parent().parent().remove();
     console.log($(this).data('todoid'));
     $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
-    countAndAddTodosPerCategory(categories, todos);
+    $.ajax({ url: '/api/todos', method: 'GET' })
+    .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
   });
 };
 
@@ -239,7 +274,7 @@ jQuery(document).ready(function ($) {
   $('.modal').modal();
 
   $(".today-todos").on('click', function () {
-    const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
+    const date = new Date(new Date().getTime());
     const dateToString = date.toISOString().substring(0, 10);
     const list = todos.filter(todo => !todo.complete && todo.end_date && todo.end_date.substring(0, 10) === dateToString);
     renderTodos(list);
@@ -296,7 +331,6 @@ jQuery(document).ready(function ($) {
     }
     // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-    console.log('the data sended: ', data);
     $.ajax({ url: '/api/todos', method: 'POST', data })
       .then(resp => {
         todos.push(resp.todo);

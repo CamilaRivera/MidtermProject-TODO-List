@@ -35,14 +35,14 @@ const makeDeleteCsontent = function (todo){
   `};
 
 // This file is the reaction for all jQuery events for app.js
-const clickDelete = function(id) {
-  $('.modal').modal();
-  $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-  .then(resp => {
-    const todo = resp.todo;
-    $("#modalDelete").html(makeDeleteCsontent(todo));
-  });
-};
+// const clickDelete = function(id) {
+//   $('.modal').modal();
+//   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
+//   .then(resp => {
+//     const todo = resp.todo;
+//     $("#modalDelete").html(makeDeleteCsontent(todo));
+//   });
+// };
 
 const clickUpdate = function(id) {
   $('.modal').modal();
@@ -52,7 +52,7 @@ const clickUpdate = function(id) {
     console.log(todo);
 
     // console.log(todo.end_date);
-    
+
     // const endDateAfterSlice = (todo.end_date).slice(0, 10);
     // var d = new Date("todo.end_date");
     $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
