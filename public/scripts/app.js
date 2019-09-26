@@ -13,7 +13,7 @@ $(document).ready(function() { // Runs reloading the page
     if (numberDay === null) {
       return null;
     }
-    if (numberDay < 0) {
+    if (numberDay < 0 && numberDay > -1) {
       return "Due today";
     } else {
       const day = Math.round(numberDay);
@@ -121,7 +121,10 @@ $(document).ready(function() { // Runs reloading the page
       // check each date difference
       for (let todo of todosList) {
         if (todo.end_date !== null) {
-          if (getDaysDiff(todo.end_date) < 0 && todo.complete === false && getDaysDiff(todo.end_date) > -2) {
+
+          // This check if the task is today's todo
+          // also needs to check if its passed task
+          if (getDaysDiff(todo.end_date) < 0 && todo.complete === false && getDaysDiff(todo.end_date) > -1) {
             console.log("dite diff is ", getDaysDiff(todo.end_date));
             todayTODO.push(todo);
           } else if (getDaysDiff(todo.end_date) < 7 && todo.complete === false) {
@@ -133,7 +136,7 @@ $(document).ready(function() { // Runs reloading the page
           }
         } else {
           if (todo.complete === false){
-            allTODOsArray.push(todo);  
+            allTODOsArray.push(todo);
           }
         }
       }

@@ -49,12 +49,12 @@ $(() => {
             $.ajax('api/widgets/movieInfo', { method: 'POST', data: currentMovie })
               .then(movieInfo => {
                 $('.hidden-card-content').html(`
-                    <h5 class="genre">Genere: ${movieInfo.Genre}</h5>
-                    <h5 class="type">Type: ${movieInfo.Type}</h5>
-                    <h5 class="plot">Plot:</h5>
-                    <p class="plot-text" style="font-size: 18px">${movieInfo.Plot}</p>
-                    <h5 class="year">Year: ${movieInfo.Year}</h5>
-                    <h5 class="rating">Rating:</h5>
+                    <h5 class="genre" style="font-size: 15px;">Genere: ${movieInfo.Genre}</h5>
+                    <h5 class="type" style="font-size: 15px;">Type: ${movieInfo.Type}</h5>
+                    <h5 class="plot" style="font-size: 15px;">Plot:</h5>
+                    <p class="plot-text" style="font-size: 10px">${movieInfo.Plot}</p>
+                    <h5 class="year" style="font-size: 15px;">Year: ${movieInfo.Year}</h5>
+                    <h5 class="rating" style="font-size: 15px;">Rating:</h5>
                     <div class="stars">${generateStars(movieInfo.imdbRating, 9)}</div>
                     `);
               });

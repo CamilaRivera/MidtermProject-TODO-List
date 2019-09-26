@@ -16,10 +16,10 @@ const EAT_MAIN_CATEGORY = 4;
 const generateStars = (rating, max) => {
   let starHTML = '';
   for (let i = 0; i < rating; i++) {
-    starHTML += `<i class="material-icons">star</i>`;
+    starHTML += `<i class="tiny material-icons">star</i>`;
   }
   for (let i = 0; i < max - rating; i++) {
-    starHTML += `<i class="material-icons">star_border</i>`;
+    starHTML += `<i class="tiny material-icons">star_border</i>`;
   }
   return starHTML;
 };
@@ -133,7 +133,7 @@ const createTodoElement = function (todo, i) {
         </h5>
         <div class="todo-header-buttons">
           <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
-          <a data-todoid="${todo.id}" class="edit-button btn btn-flat"><i class="large material-icons">mode_edit</i></a>
+          <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
           <a data-todoid="${todo.id}" class="delete-button btn btn-flat"><i class="large material-icons">delete</i></a>
         </div>
       </div>
@@ -191,6 +191,7 @@ const renderTodos = function (todos) {
     todos = todos.filter(todo => todo.id !== todoId);
 
     $(this).parent().parent().parent().remove();
+    console.log($(this).data('todoid'));
     $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
     countAndAddTodosPerCategory(categories, todos);
   });
@@ -234,7 +235,8 @@ const getDaysDiff = function (unixTimestamp) {
   return Difference_In_Days;
 };
 
-jQuery(document).ready(function ($) {
+jQuery(document).ready(function ($) {  
+  $('.modal').modal();
 
   $(".today-todos").on('click', function () {
     const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);

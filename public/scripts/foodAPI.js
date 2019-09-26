@@ -49,12 +49,12 @@ $(() => {
                 let open = 'Open Now!';
                 if (!open) open = 'Closed';
                 $('.hidden-card-content').html(`
-                    <h5 class="genre">Price ${foodInfo.price}</h3>
-                    <h5 class="type">Distance: ${foodInfo.distance} m</h3>
-                    <h5 class="plot">Hours: ${open}</h4>
-                    <h5 class="year">Phone: ${foodInfo.phone}</h5>
-                    <h5 class="rating">Rating: ${generateStars(foodInfo.rating, 5)}</h5>
-                    <h5 class="rating-count">Number of Reviews: ${foodInfo.reviewCount}</h5>
+                    <h5 class="genre" style="font-size: 15px;">Price ${foodInfo.price}</h3>
+                    <h5 class="type" style="font-size: 15px;">Distance: ${foodInfo.distance} m</h3>
+                    <h5 class="plot" style="font-size: 15px;">Hours: ${open}</h4>
+                    <h5 class="year" style="font-size: 15px;">Phone: ${foodInfo.phone}</h5>
+                    <h5 class="rating" style="font-size: 15px;">Rating: ${generateStars(foodInfo.rating, 5)}</h5>
+                    <h5 class="rating-count" style="font-size: 15px;">Number of Reviews: ${foodInfo.reviewCount}</h5>
                     `);
               });
           }

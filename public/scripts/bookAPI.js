@@ -46,13 +46,13 @@ $(() => {
             $.ajax('api/widgets/bookInfo', { method: 'POST', data: currentBook })
               .then(bookInfo => {
                 $('.hidden-card-content').html(`
-                    <h5 class="genre">Authors: ${bookInfo.authors}</h3>
-                    <h5 class="type">Page Count: ${bookInfo.pageCount}</h3>
-                    <h5 class="plot">About: ${bookInfo.textSnippet}</h4>
-                    <h5 class="categoryt">Categories: ${bookInfo.categories}</h4>
-                    <h5 class="year">Published Date: ${bookInfo.publishedDate}</h5>
-                    <h5 class="rating">Avg Rating: ${generateStars(bookInfo.averageRating, 5)}</h5>
-                    <h5 class="rating-count">Rating Count: ${bookInfo.ratingsCount}</h5>
+                    <h5 class="genre" style="font-size: 15px;">Authors: ${bookInfo.authors}</h3>
+                    <h5 class="type" style="font-size: 15px;">Page Count: ${bookInfo.pageCount}</h3>
+                    <h5 class="plot" style="font-size: 13px;">About: ${bookInfo.textSnippet}</h4>
+                    <h5 class="categoryt" style="font-size: 15px;">Categories: ${bookInfo.categories}</h4>
+                    <h5 class="year" style="font-size: 15px;">Published Date: ${bookInfo.publishedDate}</h5>
+                    <h5 class="rating" style="font-size: 15px;">Avg Rating: <br>${generateStars(bookInfo.averageRating, 5)}</h5>
+                    <h5 class="rating-count" style="font-size: 15px;">Rating Count: ${bookInfo.ratingsCount}</h5>
                     `);
               });
           }
