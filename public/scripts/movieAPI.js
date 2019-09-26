@@ -2,20 +2,15 @@ $(() => {
 
   $('.watch-todos').on('click', () => {
     $('.list-title').html('Watch List');
-    // const list = todos.filter(todo => !todo.complete && todo.category_id === 1);
-    // console.log('global list:', list);
-    $.ajax('api/categories/1', { method: 'GET' }) //where 1 is has to be dynamic
+    $.ajax('api/categories/1', { method: 'GET' })
       .then(list => {
-        console.log('movie ajax call was made');
         const { data } = list;
-        console.log('ajax list:', data);
         renderTodos(data);
         $('article').addClass('task-box-1'); //<<<< this is used for debuggin delete button and slider sync
         const slider = $('.carousel');
         slider.empty();
         const moviePromise = [];
         data.forEach((task) => {
-          console.log('task:', task);
           moviePromise.push($.ajax('api/widgets/movie', {
             method: 'POST',
             data: task.title,
@@ -24,10 +19,8 @@ $(() => {
             }
           }));
         });
-        console.log("moviePromise:", moviePromise);
         Promise.all(moviePromise)
           .then(movies => {
-            console.log('movies list returned after promise.all', movies);
             $('.preloader-wrapper').css('display', 'none');
             movies.forEach(movie => {
               let [poster, title] = ["", ""];
