@@ -13,11 +13,11 @@ $(document).ready(function() { // Runs reloading the page
     if (numberDay === null) {
       return null;
     }
-    if (numberDay < 1) {
+    if (numberDay < 0) {
       return "Due today";
     } else {
       const day = Math.round(numberDay);
-      if (day === 1)
+      if (day >= 0)
         return `This is due ${day} day later`;
       return `This is due ${day} days later`;
     }
