@@ -9,103 +9,101 @@ $(document).ready(function() { // Runs reloading the page
   let todosList = {};
   let cateList = {};
   const $todos = $('.todos');
-  const getDayStr = function(numberDay) {
-    if (numberDay === null) {
-      return null;
-    }
-    if (numberDay < 0 && numberDay > -1) {
-      return "Due today";
-    } else {
-      const day = Math.round(numberDay);
-      if (day >= 0)
-        return `This is due ${day} day later`;
-      return `This is due ${day} days later`;
-    }
-  };
+  // const getDayStr = function(numberDay) {
+  //   if (numberDay === null) {
+  //     return null;
+  //   }
+  //   if (numberDay < 0 && numberDay > -1) {
+  //     return "Due today";
+  //   } else {
+  //     const day = Math.round(numberDay);
+  //     if (day >= 0)
+  //       return `This is due ${day} day later`;
+  //     return `This is due ${day} days later`;
+  //   }
+  // };
 
-  const setStyle = function(priorityNumber) {
-    if (priorityNumber === 1)
-      return "color: red";
-    else if (priorityNumber === 2)
-      return "color: blue";
-    else if (priorityNumber === 3)
-      return "color: green";
-    return "visibility: hidden"
-  };
+  // const setStyle = function(priorityNumber) {
+  //   if (priorityNumber === 1)
+  //     return "color: red";
+  //   else if (priorityNumber === 2)
+  //     return "color: blue";
+  //   else if (priorityNumber === 3)
+  //     return "color: green";
+  //   return "visibility: hidden"
+  // };
 
   //
-  const getColors = function(priorityNumber) {
-    if (priorityNumber <= 3 && priorityNumber >= 1)
-      return priorityColorsArr[priorityNumber - 1];
-    return "grey-text";
-  };
+  // const getColors = function(priorityNumber) {
+  //   if (priorityNumber <= 3 && priorityNumber >= 1)
+  //     return priorityColorsArr[priorityNumber - 1];
+  //   return "grey-text";
+  // };
 
   // checks the input
-  const escape = function(str) {
-    if (str === null) {
-      str = "No specify here";
-    }
-    const div = document.createElement('div');
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
-  };
+  // const escape = function(str) {
+  //   if (str === null) {
+  //     str = "No specify here";
+  //   }
+  //   const div = document.createElement('div');
+  //   div.appendChild(document.createTextNode(str));
+  //   return div.innerHTML;
+  // };
   // passed by createTodoElement
-  const createTodoElement = function(todo) {
-    const $HTMLele = $(
-      `<article class='todo'>
-        <div class = "oneLine">
-          <label>
-            <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
-            <span class="todos-list"></span>
-            <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
-          </label>
-          <p class="title">${escape(todo.title)}</p>
-          <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
-          <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
-        </div>
-        <div class = "secondLine">
-          <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
-          <button data-target="modalUpdate" class="waves-effect waves-light btn updateTodo modal-trigger" onclick=clickUpdate(${todo.id})>Update</button>
-          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete</a>
-        </div>
-        <ul class="collapsible">
-        <li>
-          <div class="collapsible-header">Description</div>
-          <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
-        </li>
-        </ul>
-    </article>`
-    );
-    $('#flagLogo').css('color', 'red');
-    return $HTMLele;
-  };
+  // const createTodoElement = function(todo) {
+  //   const $HTMLele = $(
+  //     `<article class='todo'>
+  //       <div class = "oneLine">
+  //         <label>
+  //           <input type="checkbox" class="filled-in" id="checkoutBox" onclick=checkComplete(${todo.id}) />
+  //           <span class="todos-list"></span>
+  //           <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
+            
+  //         </label>
+  //         <p class="title">${escape(todo.title)}</p>
+  //         <a class="btn p-r-20 btn-flat col s1"><i class="large material-icons">mode_edit</i></a>
+  //         <a class=" p-l-20 btn btn-flat"><i class="large material-icons">delete</i></a>
+  //       </div>
+  //       <div class = "secondLine">
+  //         <p class="end_date">${escape(getDayStr(getDaysDiff(todo.end_date)))}</p>
+  //         <button data-target="modalUpdate" class="waves-effect waves-light btn updateTodo modal-trigger" onclick=clickUpdate(${todo.id})>Update</button>
+        //   <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete</a>
+        // </div>
+  //       <ul class="collapsible">
+  //       <li>
+  //         <div class="collapsible-header">Description</div>
+  //         <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
+  //       </li>
+  //       </ul>
+  //   </article>`
+  //   );
+  //   return $HTMLele;
+  // };
 
-  const setFlagColor = function(priorityID){
-    if (priorityID === 1) {
-      $('#flagLogo').css('color', 'red');
-    }
-  }
+  // const setFlagColor = function(priorityID){
+  //   if (priorityID === 1) {
+  //     $('#flagLogo').css('color', 'red');
+  //   }
+  // }
 
   // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
-  const renderTodos = function(todos) {
-    for (let i = 0; i < todos.length; i++) {
-      $todos.append(createTodoElement(todos[i]));
-    }
-    const $colla = $('.collapsible');
-    $('#flagLogo').css('color', 'red');
-    $colla.collapsible();
-  };
+  // const renderTodos = function(todos) {
+  //   for (let i = 0; i < todos.length; i++) {
+  //     $todos.append(createTodoElement(todos[i]));
+  //   }
+  //   const $colla = $('.collapsible');
+  //   $colla.collapsible();
+  // };
 
   // Gets a Date format string and returns a number which is the difference with the current date time
-  const getDaysDiff = function(unixTimestamp) {
-    if (unixTimestamp === null) {
-      console.log("here is some thewfasdfsdc");
-      return null;
-    }
-    let Difference_In_Time = new Date(unixTimestamp) - Date.now();
-    let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
-    return Difference_In_Days;
-  };
+  // const getDaysDiff = function(unixTimestamp) {
+  //   if (unixTimestamp === null) {
+  //     return null;
+  //   }
+  //   let Difference_In_Time = new Date(unixTimestamp) - Date.now();
+  //   let Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+  //   return Difference_In_Days;
+  // };
 
   function getCategoriesAndTodos() {
     let categories = $.ajax({ url: '/api/categories', method: 'GET' });

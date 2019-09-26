@@ -35,14 +35,14 @@ const makeDeleteCsontent = function (todo){
   `};
 
 // This file is the reaction for all jQuery events for app.js
-// const clickDelete = function(id) {
-//   $('.modal').modal();
-//   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-//   .then(resp => {
-//     const todo = resp.todo;
-//     $("#modalDelete").html(makeDeleteCsontent(todo));
-//   });
-// };
+const clickDelete = function(id) {
+  $('.modal').modal();
+  $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
+  .then(resp => {
+    const todo = resp.todo;
+    $("#modalDelete").html(makeDeleteCsontent(todo));
+  });
+};
 
 const clickUpdate = function(id) {
   $('.modal').modal();

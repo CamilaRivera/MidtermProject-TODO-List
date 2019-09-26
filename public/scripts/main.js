@@ -31,7 +31,16 @@ const fillModal = function(todo){
     creating = false;
   }
 };
-
+// set the colors for the Priority flag
+const setStyle = function(priorityNumber) {
+  if (priorityNumber === 1)
+    return "color: red";
+  else if (priorityNumber === 2)
+    return "color: blue";
+  else if (priorityNumber === 3)
+    return "color: green";
+  return "visibility: hidden"
+};
 
 const generateStars = (rating, max) => {
   let starHTML = '';
@@ -146,6 +155,7 @@ const createTodoElement = function (todo, i) {
         <label>
           <input data-todoid="${todo.id}" type="checkbox"/>
           <span></span>
+          <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
         </label>
         <h5>
           ${escape(todo.title)}
@@ -154,6 +164,7 @@ const createTodoElement = function (todo, i) {
           <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
           <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
           <a data-todoid="${todo.id}" class="delete-button btn btn-flat"><i class="large material-icons">delete</i></a>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete2</a>
         </div>
       </div>
       <ul class="collapsible more-info-collapsible">
@@ -215,9 +226,11 @@ const renderTodos = function (todos) {
 
     // Update server
     const data = { complete: todo.complete };
-    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
-    $.ajax({ url: '/api/todos', method: 'GET' })
-    .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
+    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data })
+    .then( () => {
+      $.ajax({ url: '/api/todos', method: 'GET' })
+      .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
+    })
   });
 
   $('.delete-button').on('click', function () {
@@ -225,10 +238,11 @@ const renderTodos = function (todos) {
     todos = todos.filter(todo => todo.id !== todoId);
 
     $(this).parent().parent().parent().remove();
-    console.log($(this).data('todoid'));
-    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' });
-    $.ajax({ url: '/api/todos', method: 'GET' })
-    .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
+    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
+   .then( () => {
+     $.ajax({ url: '/api/todos', method: 'GET' })
+   .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)})
+  })
   });
 };
 
