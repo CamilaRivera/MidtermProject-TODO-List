@@ -3,6 +3,9 @@
 ## Todo List App
 
 ## Final Product
+![Login](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png)
+![Create Task](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png)
+![Landing Page](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png)
 
 ## Features
 1) Users can `login`, `logout`, and `register`
