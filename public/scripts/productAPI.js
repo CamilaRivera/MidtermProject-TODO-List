@@ -1,25 +1,29 @@
 $(() => {
 
   $('.buy-todos').on('click', () => {
-    $('.list-title').html('Buy List');
-    const list = todos.filter(todo => !todo.complete && todo.category_id === 2);
-    renderTodos(list);
+    currentViewGlobal = 2;
+    rerender();
+
+    const list = getFilteredTodos(2);
     const slider = $('.carousel');
     slider.empty();
+
     const productPromise = [];
     list.forEach((task) => {
+      $('.preloader-wrapper').css('display', 'block');
       productPromise.push($.ajax('api/widgets/product', {
         method: 'POST',
-        data: task.title,
-        beforeSend: function () {
-          $('.preloader-wrapper').css('display', 'block');
-        }
+        data: task.title
       }));
     });
     Promise.all(productPromise)
       .then(products => {
         $('.preloader-wrapper').css('display', 'none');
-        products.forEach(productInfo => {
+        if ( currentViewGlobal !== 2 ) {
+          return;
+        }
+        products.forEach((productInfo, index) => {
+          const todo = list[index];
           let [image, name] = ['', ''];
           if (!productInfo[1].length) {
             image = 'https://eatatpinkys.com/wp-content/uploads/2019/03/no-image-found.jpg';
@@ -29,7 +33,7 @@ $(() => {
             name = productInfo[1][0].name;
           }
           slider.append(`
-            <div class="row carousel-item">
+          <div class="carousel-item row" data-todoid="${todo.id}">
               <div class="col s12 m12">
               <div class="card product" style="width: 20vw;">
               <div class="card-image">
@@ -48,11 +52,6 @@ $(() => {
         });
         slider.carousel();
         $('.tooltipped').tooltip();
-        $('[class*="taskButton-"]').on('click', function () {
-          console.log("LOOK AT THIS:", $(this)[0].classList);
-          let taskID = ($(this)[0].classList[4]);
-          slider.carousel('set', taskID.split('-')[1]);
-        });
       });
   });
 });
