@@ -20,7 +20,7 @@ INSERT INTO todos (id, title, description, start_date, end_date, priority, cover
 (13, 'brunch', 'eat brunch with sammy', '2019-03-03', '2019-09-28', 1, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
 (14, 'Pho', 'Pho Delicious is good!', '2019-03-03', '2019-10-03', 2, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
 (15, 'coffee', 'get coffee bean', '2019-03-03', '2019-09-30', 3, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4),
-(16, 'Vikings', 'Cant wait for it!!', '2019-03-03', '2019-09-26', 4, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1),
+(16, 'Vikings', 'Cant wait for it!!', '2019-03-03', '2019-09-27', 4, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 1),
 (17, 'Best Chinese Food', 'In Vancouver', '2019-10-03', '2019-10-03', 2, 'https://images.pexels.com/photos/1756826/pexels-photo-1756826.jpeg?auto=compress&cs=tinysrgb&h=350', 4);
 
 SELECT SETVAL('todos_id_seq', 50);

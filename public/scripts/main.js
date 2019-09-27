@@ -63,9 +63,9 @@ const generateStars = (rating, max) => {
 
 function isDateInNextWeek(date) {
   const dateToTime = new Date(date).getTime();
-  const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
+  // const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
+  const dateTomorrow = new Date(new Date().getTime()).getTime();
   const dateEightDaysMore = new Date(new Date().getTime() + 7 * 24 * 3600 * 1000).getTime();
-  // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   if (dateToTime >= dateTomorrow && dateToTime <= dateEightDaysMore) {
     return true;
@@ -310,7 +310,7 @@ const renderTodos = function (todos) {
   $todos.empty();
 
   if (todos.length === 0) {
-    let noTodoMessage = 'No todos';
+    let noTodoMessage = 'No todos for this category';
     if (currentViewGlobal === 'completed-todos') {
       noTodoMessage = 'No completed todos';
     }
@@ -318,13 +318,13 @@ const renderTodos = function (todos) {
       noTodoMessage = 'No todos pending for this week';
     }
     else if (currentViewGlobal === 'today-todos') {
-      noTodoMessage = 'No todos pending for this today';
+      noTodoMessage = 'No todos pending for today';
     }
     $('.todos').append(`
-      <div class= "notodo">
-        <h4>${noTodoMessage}</h4>
-        <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
+      <div class= "notodo row container" style="text-align:center;">
+        <h4 class="col" style="text-align:center;">${noTodoMessage}</h4> <br>
+        <img class="col s6 offset-s1" src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
+        <a class="col s6 offset-s1 waves-effect waves-light btn modal-trigger" href="#modal1" style="margin-top: 10px;">Add new todo task</a>
       </div>`
     );
   }
@@ -355,7 +355,7 @@ const getDayStr = function (numberDay) {
   if (numberDay < -0.3 && numberDay > -1.3) {
     return "Due today";
   } else {
-    const day = Math.round(numberDay) + 2;
+    const day = Math.round(numberDay) + 1;
     if (day === 1)
       return `This is due ${day} day later`;
     return `This is due ${day} days later`;
