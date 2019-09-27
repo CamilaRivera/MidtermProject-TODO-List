@@ -8,8 +8,12 @@
 ![Create Task](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png)
 ![Landing Page](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png)
 
-
-## Final Product
+### Index Page
+!["Index Page"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png?raw=true)
+### Create Todo Module
+!["Create Todo Module"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png?raw=true)
+### Login
+!["Loginr"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png?raw=true)
 
 ## Features
 1) Users can `login`, `logout`, and `register`
@@ -59,6 +63,8 @@ Todo List is a full stack web app, built with the following:
 Dependencies
 
 ## Project Team
+
 -[Camila Rivera](https://github.com/CamilaRivera)
 -[Zongxi Li](https://github.com/zongxili)
 -[Max Wong](https://github.com/MaxWong03)
+
