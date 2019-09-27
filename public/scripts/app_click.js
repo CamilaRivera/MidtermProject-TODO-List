@@ -28,7 +28,7 @@ const removeCarouselSlide = function (todoId) {
 const makeDeleteCsontent = function (todo){
   return `
   <div class="modal-content">
-    <h4>Are you sure to delete the Task ${todo.title}</h4>
+    <h4>Are you sure to delete the Todo ${todo.title}?</h4>
   </div>
   <div class="modal-footer">
   <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancel</a>
