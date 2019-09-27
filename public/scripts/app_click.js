@@ -7,7 +7,7 @@
   //   console.log(todo);
 
   //   console.log(todo.end_date);
-    
+
   //   const endDateAfterSlice = (todo.end_date).slice(0, 10);
   //   var d = new Date("todo.end_date");
   //   $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
@@ -15,13 +15,6 @@
   // });
 // }
 
-const checkComplete = function(id) {
-  // alert("This is in checkComplete " + id);
-  $.ajax(`api/todos/${id}/completed`, {
-    method: "POST"
-  }).then(() => console.log('redirecting to home page'));
-  location.reload();
-};
 
 const makeDeleteCsontent = function (todo){
   return `
@@ -35,11 +28,11 @@ const makeDeleteCsontent = function (todo){
   `};
 
 // This file is the reaction for all jQuery events for app.js
-const clickDelete = function(id, category_id) {
+const clickDelete = function(id) {
   $('.modal').modal();
-  alert("category_id is ", category_id);
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
   .then(resp => {
+    console.log(resp.todo)
     const todo = resp.todo;
     $("#modalDelete").html(makeDeleteCsontent(todo));
   });
@@ -146,7 +139,7 @@ $(() => { // get called once the page gets reload
 });
 
 const updateComplete = function(id){
-  $("#elementId :selected").val(); 
+  $("#elementId :selected").val();
   $('body').on('submit', '#submitUpdate', (e) =>{
     e.preventDefault();
     const $form = $(e.target).closest('form');
