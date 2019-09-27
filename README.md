@@ -59,6 +59,6 @@ Todo List is a full stack web app, built with the following:
 Dependencies
 
 ## Project Team
-[Camila Rivera](https://github.com/CamilaRivera)
-[Zongxi Li](https://github.com/zongxili)
-[Max Wong](https://github.com/MaxWong03)
+-[Camila Rivera](https://github.com/CamilaRivera)
+-[Zongxi Li](https://github.com/zongxili)
+-[Max Wong](https://github.com/MaxWong03)
