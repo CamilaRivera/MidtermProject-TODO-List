@@ -55,7 +55,8 @@ const generateStars = (rating, max) => {
 function isDateInNextWeek(date) {
   const dateToTime = new Date(date).getTime();
   const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
-  const dateEightDaysMore = new Date(new Date().getTime() + 8 * 24 * 3600 * 1000).getTime();
+  const dateEightDaysMore = new Date(new Date().getTime() + 7 * 24 * 3600 * 1000).getTime();
+  // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   if (dateToTime >= dateTomorrow && dateToTime <= dateEightDaysMore) {
     return true;
@@ -172,7 +173,6 @@ const createTodoElement = function (todo, i) {
         <label>
           <input data-todoid="${todo.id}" type="checkbox"/>
           <span></span>
-
         </label>
         <h5>
         ${escape(todo.title)}
@@ -181,7 +181,6 @@ const createTodoElement = function (todo, i) {
         <a class= "flag" ><i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i></a>
           <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
           <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
-
           <a data-todoid="${todo.id}" class="delete-button btn btn-flat modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})><i class="large material-icons">delete</i></a>
         </div>
       </div>
@@ -267,10 +266,10 @@ const getDayStr = function (numberDay) {
   if (numberDay === null) {
     return null;
   }
-  if (numberDay < 1) {
+  if (numberDay < -0.3 && numberDay > -1.3) {
     return "Due today";
   } else {
-    const day = Math.round(numberDay);
+    const day = Math.round(numberDay) + 2;
     if (day === 1)
       return `This is due ${day} day later`;
     return `This is due ${day} days later`;
