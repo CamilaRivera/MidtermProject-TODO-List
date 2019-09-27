@@ -111,7 +111,7 @@ const completeCheckboxListener = function () {
   const data = { complete: todo.complete };
   $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
   if (currentViewGlobal === 1 || currentViewGlobal === 2 || currentViewGlobal === 3 || currentViewGlobal === 4) {
-    removeCarouselSlide(id);;
+    removeCarouselSlide(id);
  }
   rerender();
 }
