@@ -1,10 +1,20 @@
-const checkComplete = function (id) {
-  // alert("This is in checkComplete " + id);
-  $.ajax(`api/todos/${id}/completed`, {
-    method: "POST"
-  }).then(() => console.log('redirecting to home page'));
-  location.reload();
-};
+const clickProfileUpdate = function (userID) {
+  console.log(userID);
+  // $('.modal').modal();
+  // $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
+  // .then(resp => {
+  //   const todo = resp.todo;
+  //   console.log(todo);
+
+  //   console.log(todo.end_date);
+
+  //   const endDateAfterSlice = (todo.end_date).slice(0, 10);
+  //   var d = new Date("todo.end_date");
+  //   $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
+  //   console.log("after modal update called");
+  // });
+}
+
 
 const makeDeleteCsontent = function (todo) {
   return `
@@ -18,6 +28,7 @@ const makeDeleteCsontent = function (todo) {
   `};
 
 // This file is the reaction for all jQuery events for app.js
+
 const clickDelete = function (id) {
   $('.modal').modal();
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
@@ -156,10 +167,16 @@ const updateComplete = function (id) {
 }; // end of updateComplete
 
 const deleteComplete = function (id) {
+  console.log(id);
   $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', })
     .then(() => {
       console.log("sent to the dB");
       location.reload();
+      // $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
+      //   .then(resp => {
+      //     console.log(resp.todo.category_id);
+      //     renderTodos(resp.todo.category_id);
+      //   });
     })
     .catch(function (err) {
       console.log("errr is", err);

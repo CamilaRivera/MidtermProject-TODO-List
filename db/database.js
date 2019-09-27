@@ -103,10 +103,6 @@ const addTodo = function (db, todo) {
     });
 };
 
-const markTodoCompleted = function (db, id, userId) {
-  return db.query(`UPdate todos set complete = true from todos t1 JOIN categories on t1.category_id = categories.id where categories.user_id = $2 AND todos.id = $1;`, [id, userId]);
-};
-
 const deleteTodo = function (db, id, userId) {
   return db.query(`DELETE FROM todos WHERE todos.id = $1 AND todos.category_id = ANY(
     SELECT id FROM categories WHERE user_id = $2)`, [id, userId]);
@@ -144,6 +140,5 @@ const getTodayTodos = function (db, userID) {
 module.exports = {
   addCategory, getUserById,
   getCategoriesByUserId, deleteCategory, updateCategory, getActiveTodosByCategoryId,
-  getTodosByUserId, getTodoById, addTodo, updateTodo, markTodoCompleted, deleteTodo,
-  getCompleteTodos, getWeeklyTodos, getTodayTodos
+  getTodosByUserId, getTodoById, addTodo, updateTodo, deleteTodo, getWeeklyTodos, getTodayTodos
 };
