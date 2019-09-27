@@ -132,7 +132,7 @@ const countAndAddTodosPerCategory = function (categories, todos) {
     const categoryTodos = todos.filter(todo => category.id === todo.category_id);
     for (let todo of categoryTodos) {
       if (!todo.complete) {
-        if (todo.end_date && getDaysDiff(todo.end_date) < 0 && getDaysDiff(todo.end_date) > -1.3) {
+        if (todo.end_date && getDaysDiff(todo.end_date) < -0.3 && getDaysDiff(todo.end_date) > -1.3) {
           today += 1;
         }
         if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
@@ -299,12 +299,12 @@ jQuery(document).ready(function ($) {
   $('.modal').modal();
 
   $(".today-todos").on('click', function () {
-    const date = new Date(new Date().getTime());
-    const dateToString = date.toISOString().substring(0, 10);
-    const list = todos.filter(todo => !todo.complete && todo.end_date && todo.end_date.substring(0, 10) === dateToString);
+
+    const list = todos.filter(todo => !todo.complete && getDaysDiff(todo.end_date) < -0.3 && getDaysDiff(todo.end_date) > -1.3);
     renderTodos(list);
     $('.list-title').html('Today Todos');
   });
+
   $(".weekly-todos").on('click', function () {
     const list = todos.filter(todo => !todo.complete && todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10)));
     console.log('weekly-todos', list);

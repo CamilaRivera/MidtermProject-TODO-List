@@ -32,6 +32,7 @@ const clickDelete = function(id) {
   $('.modal').modal();
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
   .then(resp => {
+    console.log(resp.todo)
     const todo = resp.todo;
     $("#modalDelete").html(makeDeleteCsontent(todo));
   });
