@@ -1,26 +1,30 @@
 $(() => {
   $('.read-todos').on('click', () => {
-    $('.list-title').html('Read List');
-    const list = todos.filter(todo =>!todo.complete && todo.category_id === 3);
-    renderTodos(list);
+    currentViewGlobal = 3;
+    rerender();
+
+    const list = getFilteredTodos(3);
     const slider = $('.carousel');
     slider.empty();
+
     const bookPromise = [];
     list.forEach((task) => {
+      $('.preloader-wrapper').css('display', 'block');
       bookPromise.push($.ajax('api/widgets/book', {
         method: 'POST',
-        data: task.title,
-        beforeSend: function() {
-          $('.preloader-wrapper').css('display', 'block');
-        }
+        data: task.title
       }));
     });
     Promise.all(bookPromise)
       .then(books => {
         $('.preloader-wrapper').css('display', 'none');
-        books.forEach(book => {
+        if ( currentViewGlobal !== 3 ) {
+          return;
+        }
+        books.forEach((book, index) => {
+          const todo = list[index];
           slider.append(`
-          <div class="row carousel-item">
+          <div class="carousel-item row" data-todoid="${todo.id}">
           <div class="col s12 m12">
           <div class="card food">
           <div class="card-image waves-effect waves-block waves-light">
@@ -56,10 +60,6 @@ $(() => {
                     `);
               });
           }
-        });
-        $('[class*="taskButton-"]').on('click', function() {
-          let taskID = ($(this)[0].classList[2]);
-          slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });

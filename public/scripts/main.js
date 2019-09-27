@@ -3,9 +3,10 @@
  * jQuery is already loaded
  */
 
-let categories = [];
-let todos = [];
-let creating = true;
+let categoriesGlobal = [];
+let todosGlobal = [];
+let currentViewGlobal = 'today-todos';
+let editTodoIdGlobal = -1;
 
 const WATCH_MAIN_CATEGORY = 1;
 const BUY_MAIN_CATEGORY = 2;
@@ -23,13 +24,8 @@ const fillModal = function (todo) {
   M.updateTextFields();
   $("#category_selection").formSelect();
   $("#priority").formSelect();
-  if (todo.id) {
-    creating = true;
-  }
-  else {
-    creating = false;
-  }
 };
+
 // set the colors for the Priority flag
 const setStyle = function (priorityNumber) {
   if (priorityNumber === 1)
@@ -68,9 +64,8 @@ function reloadAll() {
   const categoriesPromise = $.ajax({ url: '/api/categories', method: 'GET' });
   const todosPromise = $.ajax({ url: '/api/todos', method: 'GET' });
   return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
-
-    categories = categoriesData.categories;
-    todos = todosData.todo;
+    categoriesGlobal = categoriesData.categories;
+    todosGlobal = todosData.todo;
     return [categoriesData.categories, todosData.todo];
   });
 }
@@ -79,42 +74,130 @@ const textToNumber = function (string) {
   return string.replace("(", "").replace(")", "")
 }
 
-function rerender(categories, todos) {
-  renderCategories(categories);
-  countAndAddTodosPerCategory(categories, todos);
-  if (textToNumber($(".today").text()) > 0) {
-    $('.today-todos').trigger('click');
-  } else if (textToNumber($(".week").text()) > 0) {
+
+const editTodo = function (todoId) {
+  editTodoIdGlobal = todoId;
+  const todo = todosGlobal.find(todo => todo.id === todoId);
+  fillModal(todo);
+  $('#modal1').modal('open');
+}
+
+const completeCheckboxListener = function () {
+  const todoId = Number($(this).data('todoid'));
+  const todo = todosGlobal.find(todo => todo.id === todoId);
+
+  // Update local todo complete property
+  todo.complete = !todo.complete;
+
+  // Remove todo from DOM
+  $(this).parent().parent().parent().remove();
+
+  // Update server
+  const data = { complete: todo.complete };
+  $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
+  countAndAddTodosPerCategory(categoriesGlobal, todosGlobal);
+}
+
+const getFilteredTodos = function (viewId) {
+  if (viewId === 'completed-todos') {
+    return todosGlobal.filter(todo => todo.complete === true);
+  }
+  else if (viewId === 'weekly-todos') {
+    return todosGlobal.filter(todo => !todo.complete && todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10)));
+  }
+  else if (viewId === 'today-todos') {
+    return todosGlobal.filter(todo => !todo.complete && getDaysDiff(todo.end_date) < -0.3 && getDaysDiff(todo.end_date) > -1.3);
+  }
+  else {
+    // Current view is a category
+    return todosGlobal.filter(todo =>!todo.complete && todo.category_id === viewId);
+  }
+}
+
+const rerenderByTrigger = function() {
+  if (currentViewGlobal === 'completed-todos') {
+    $('.completed-todos').trigger('click');
+  }
+  else if (currentViewGlobal === 'weekly-todos') {
     $('.weekly-todos').trigger('click');
-  } else {
-    $('.todos').append(`
-    <div class= "notodo">
-      <h4> No todo task </h4>
-      <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
-      <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
-    </div>`)
+  }
+  else if (currentViewGlobal === 'today-todos') {
+    $('.today-todos').trigger('click');
+  }
+  else {
+    // Current view is a category
+    if ( currentViewGlobal === 1 ) {
+      $('.watch-todos').trigger('click');
+    }
+    else if ( currentViewGlobal === 2 ) {
+      $('.buy-todos').trigger('click');
+    }
+    else if ( currentViewGlobal === 3 ) {
+      $('.read-todos').trigger('click');
+    }
+    else if ( currentViewGlobal === 4 ) {
+      $('.eat-todos').trigger('click');
+    }
   }
 }
 
-function getCategoriesAndTodos() {
-  reloadAll().then(data => rerender(data[0], data[1]));
+const rerender = function () {
+  let filteredTodos = getFilteredTodos(currentViewGlobal);
+  if (currentViewGlobal === 'completed-todos') {
+    $('.list-title').html('Completed Todos');
+  }
+  else if (currentViewGlobal === 'weekly-todos') {
+    $('.list-title').html('Next 7 days Todos');
+  }
+  else if (currentViewGlobal === 'today-todos') {
+    $('.list-title').html('Today Todos');
+  }
+  else {
+    // Current view is a category
+    if ( currentViewGlobal === 1 ) {
+      $('.list-title').html('Watch List');
+    }
+    else if ( currentViewGlobal === 2 ) {
+      $('.list-title').html('Buy List');
+    }
+    else if ( currentViewGlobal === 3 ) {
+      $('.list-title').html('Read List');
+    }
+    else if ( currentViewGlobal === 4 ) {
+      $('.list-title').html('Food List');
+    }
+  }
+  renderTodos(filteredTodos);
+  countAndAddTodosPerCategory(categoriesGlobal, todosGlobal);
 }
 
-const renderCategories = function (categories) {
-  const allcategories = [];
-  $('.categories').empty();
-  for (const category of categories) {
-    allcategories.push(createCategoryElement(category));
-  }
-  $('.categories').append(allcategories);
-};
+function initialize() {
+  reloadAll().then(data => {
+    if ( getFilteredTodos('today-todos').length > 0 ) {
+      currentViewGlobal = 'today-todos';
+    }
+    else if ( getFilteredTodos('weekly-todos').length > 0 ) {
+      currentViewGlobal = 'weekly-todos';
+    }
+    else if ( getFilteredTodos(1).length > 0 ) {
+      currentViewGlobal = 1;
+    }
+    else if ( getFilteredTodos(2).length > 0 ) {
+      currentViewGlobal = 2;
+    }
+    else if ( getFilteredTodos(3).length > 0 ) {
+      currentViewGlobal = 3;
+    }
+    else if ( getFilteredTodos(4).length > 0 ) {
+      currentViewGlobal = 4;
+    }
+    else if ( getFilteredTodos('completed-todos').length > 0 ) {
+      currentViewGlobal = 'completed-todos';
+    }
+    rerender();
+  });
+}
 
-const createCategoryElement = function (category) {
-  const $category = $(
-    ` <li class='category collapsible'><a>${escape(category.description)}</a></li>`
-  );
-  return $category;
-};
 
 const countAndAddTodosPerCategory = function (categories, todos) {
   let watch = 0;
@@ -172,17 +255,15 @@ const createTodoElement = function (todo, i) {
         <label>
           <input data-todoid="${todo.id}" type="checkbox"/>
           <span></span>
-
         </label>
         <h5>
         ${escape(todo.title)}
         </h5>
         <div class="todo-header-buttons">
-        <a class= "flag" ><i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i></a>
-          <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
-          <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
-
-          <a data-todoid="${todo.id}" class="delete-button btn btn-flat modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})><i class="large material-icons">delete</i></a>
+          <a class="flag"><i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i></a>
+          <a class="btn btn-flat carousel-focus" data-todoindex="${i}"><i class="large material-icons">more</i></a>
+          <a class="btn btn-flat" onclick="editTodo(${todo.id})"><i class="large material-icons">mode_edit</i></a>
+          <a class="btn btn-flat" onclick="clickDelete(${todo.id})"><i class="large material-icons">delete</i></a>
         </div>
       </div>
       <ul class="collapsible more-info-collapsible">
@@ -198,6 +279,8 @@ const createTodoElement = function (todo, i) {
   );
   if (!todo.description) {
     $HTMLele.find('.more-info').remove();
+    $HTMLele.find('.collapsible-body').remove();
+    $HTMLele.find('.collapsible').removeClass('collapsible');
   }
   return $HTMLele;
   // <a data-todoid="${todo.id}" class="delete-button btn btn-flat modal-trigge"><i class="large material-icons">delete</i></a>
@@ -207,8 +290,30 @@ const createTodoElement = function (todo, i) {
 const renderTodos = function (todos) {
   const $todos = $('.todos');
   $todos.empty();
-  for (let i = 0; i < todos.length; i++) {
-    $todos.append(createTodoElement(todos[i], i));
+
+  if (todos.length === 0) {
+    let noTodoMessage = 'No todos';
+    if (currentViewGlobal === 'completed-todos') {
+      noTodoMessage = 'No completed todos';
+    }
+    else if (currentViewGlobal === 'weekly-todos') {
+      noTodoMessage = 'No todos pending for this week';
+    }
+    else if (currentViewGlobal === 'today-todos') {
+      noTodoMessage = 'No todos pending for this today';
+    }
+    $('.todos').append(`
+      <div class= "notodo">
+        <h4>${noTodoMessage}</h4>
+        <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
+        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
+      </div>`
+    );
+  }
+  else {
+    for (let i = 0; i < todos.length; i++) {
+      $todos.append(createTodoElement(todos[i], i));
+    }
   }
 
   $('.collapsible').collapsible({
@@ -216,51 +321,13 @@ const renderTodos = function (todos) {
     outDuration: 200,
   });
 
-  // $('.edit-button').on('click', function () {
-  //   const todoId = Number($(this).data('todoid'));
-  //   $("#category_selection").formSelect()
-  //   const todo = todos.find(todo => todo.id === todoId);
-  //   fillModal(todo);
-  //   $('#modal1').modal('open');
-
-  // })
-
-  $('.addTodo.modal-trigger').on('click', function () {
-    fillModal({ category_id: 1, priority: 4 });
-    $('.create-todo.modal-close').text('Create todo');
-  })
-
-  $('.todo input[type=checkbox]').change(function () {
-    const todoId = Number($(this).data('todoid'));
-    const todo = todos.find(todo => todo.id === todoId);
-
-    // Update local todo complete property
-    todo.complete = !todo.complete;
-
-    // Remove todo from DOM
-    $(this).parent().parent().parent().remove();
-
-    // Update server
-    const data = { complete: todo.complete };
-    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data })
-      .then(() => {
-        $.ajax({ url: '/api/todos', method: 'GET' })
-          .then((todos) => { countAndAddTodosPerCategory(categories, todos.todo) });
-      })
+  $('.todo .carousel-focus').on('click', function() {
+    let todoIndex = $(this).data('todoindex');
+    $('.carousel').carousel('set', todoIndex );
   });
 
-  // $('.delete-button').on('click', function () {
+  $('.todo input[type=checkbox]').change(completeCheckboxListener);
 
-  //   const todoId = Number($(this).data('todoid'));
-  //   todos = todos.filter(todo => todo.id !== todoId);
-
-  //   $(this).parent().parent().parent().remove();
-  //   $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
-  //  .then( () => {
-  //    $.ajax({ url: '/api/todos', method: 'GET' })
-  //  .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)})
-  // })
-  // });
 };
 
 const getDayStr = function (numberDay) {
@@ -299,44 +366,32 @@ jQuery(document).ready(function ($) {
   $('.modal').modal();
 
   $(".today-todos").on('click', function () {
-
-    const list = todos.filter(todo => !todo.complete && getDaysDiff(todo.end_date) < -0.3 && getDaysDiff(todo.end_date) > -1.3);
-    renderTodos(list);
-    $('.list-title').html('Today Todos');
+    currentViewGlobal = 'today-todos';
+    $('.carousel').empty();
+    rerender();
   });
 
   $(".weekly-todos").on('click', function () {
-    const list = todos.filter(todo => !todo.complete && todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10)));
-    console.log('weekly-todos', list);
-    renderTodos(list);
-    $('.list-title').html('Next 7 days Todos');
+    currentViewGlobal = 'weekly-todos';
+    $('.carousel').empty();
+    rerender();
   });
   $(".completed-todos").on('click', function () {
-    const list = todos.filter(todo => todo.complete === true);
-    renderTodos(list);
-    $('.list-title').html('Completed Todos');
+    currentViewGlobal = 'completed-todos';
+    $('.carousel').empty();
+    rerender();
+  });
+
+  $('.addTodo').on('click', function() {
+    editTodoIdGlobal = -1;
+    fillModal({category_id: 1, priority: 4});
+    $('.create-todo.modal-close').text('Create todo');
   });
 
   const getCreatedID = (data) => {
     const queryString = data.split('&')[1];
     return queryString.split('=')[1];
   };
-
-  const refreshPage = (id) => {
-    if (id == 1) {
-      $('.watch-todos').trigger('click');
-    }
-    if (id == 2) {
-      $('.buy-todos').trigger('click');
-    }
-    if (id == 3) {
-      $('.read-todos').trigger('click');
-    }
-    if (id == 4) {
-      $('.eat-todos').trigger('click');
-    }
-  };
-  // <-- NavBar -->
 
   //open modal Todo
   $('.modal').modal();
@@ -356,19 +411,26 @@ jQuery(document).ready(function ($) {
     }
     // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-    $.ajax({ url: '/api/todos', method: 'POST', data })
-      .then(resp => {
-        todos.push(resp.todo);
-        rerender(categories, todos);
-      })
-      .then(() => {
-        refreshPage(getCreatedID(data));
-      });
 
+    if(editTodoIdGlobal === -1) {
+      $.ajax({ url: '/api/todos', method: 'POST', data })
+        .then(resp => {
+          todosGlobal.push(resp.todo);
+          rerenderByTrigger();
+        });
+    } else {
+      const todoId = editTodoIdGlobal;
+      // Update server
+      $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data })
+        .then((resp) => {
+          // Update local todo
+          const index = todosGlobal.findIndex(todo => todo.id === todoId);
+          todosGlobal[index] = resp.todo;
+          rerenderByTrigger();
+        });
+    }
   });
 
-  // < -- Left Navbar -->
-
-  getCategoriesAndTodos();
+  initialize();
 
 });

@@ -1,27 +1,31 @@
 $(() => {
-
   $('.eat-todos').on('click', () => {
-    $('.list-title').html('Food List');
-    const list = todos.filter(todo => !todo.complete && todo.category_id === 4);
-    renderTodos(list);
+    currentViewGlobal = 4;
+    rerender();
+
+    const list = getFilteredTodos(4);
+
     const slider = $('.carousel');
     slider.empty();
+
     const foodPromise = [];
     list.forEach((todo) => {
+      $('.preloader-wrapper').css('display', 'block');
       foodPromise.push($.ajax('api/widgets/food', {
         method: 'POST',
-        data: todo.title,
-        beforeSend: function() {
-          $('.preloader-wrapper').css('display', 'block');
-        }
+        data: todo.title
       }));
     });
     Promise.all(foodPromise)
       .then(foods => {
         $('.preloader-wrapper').css('display', 'none');
-        foods.forEach(food => {
+        if ( currentViewGlobal !== 4 ) {
+          return;
+        }
+        foods.forEach((food, index) => {
+          const todo = list[index];
           slider.append(`
-          <div class="row carousel-item">
+          <div class="carousel-item" data-todoid="${todo.id}">
             <div class="col s12 m12">
               <div class="card food" style="width: 20vw;">
                 <div class="card-image waves-effect waves-block waves-light">
@@ -58,10 +62,6 @@ $(() => {
                     `);
               });
           }
-        });
-        $('[class*="taskButton"]').on('click', function() {
-          let taskID = ($(this)[0].classList[2]);
-          slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });

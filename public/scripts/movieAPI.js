@@ -1,23 +1,29 @@
 $(() => {
 
   $('.watch-todos').on('click', () => {
-    $('.list-title').html('Watch List');
-    console.log($('.brand-logo'));
-    const list = todos.filter(todo =>!todo.complete && todo.category_id === 1);
-    renderTodos(list);
-    console.log('todo-list', list);
+    currentViewGlobal = 1;
+    rerender();
+
+    const list = getFilteredTodos(1);
     const slider = $('.carousel');
     slider.empty();
+
     const moviePromise = [];
-    list.forEach((task) => {
+    list.forEach((todo) => {
+      $('.preloader-wrapper').css('display', 'block');
       moviePromise.push($.ajax('api/widgets/movie', {
         method: 'POST',
-        data: task.title
+        data: todo.title
       }));
     });
     Promise.all(moviePromise)
       .then(movies => {
-        movies.forEach(movie => {
+        $('.preloader-wrapper').css('display', 'none');
+        if ( currentViewGlobal !== 1 ) {
+          return;
+        }
+        movies.forEach((movie, index) => {
+          const todo = list[index];
           let [poster, title] = ["", ""];
           if (!Object.entries(movie).length) {
             poster = 'https://eatatpinkys.com/wp-content/uploads/2019/03/no-image-found.jpg';
@@ -27,7 +33,7 @@ $(() => {
             title = movie.Title;
           }
           slider.append(`
-          <div class="carousel-item">
+          <div class="carousel-item" data-todoid="${todo.id}">
             <div class="card movie">
               <div class="card-image waves-effect waves-block waves-light">
                 <img class="activator" src="${poster}">
@@ -59,10 +65,6 @@ $(() => {
                     `);
               });
           }
-        });
-        $('[class*="taskButton"]').on('click', function () {
-          let taskID = ($(this)[0].classList[2]);
-          slider.carousel('set', taskID.split('-')[1]);
         });
       });
   });

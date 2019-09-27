@@ -15,6 +15,15 @@ const clickProfileUpdate = function(userID) {
   // });
 }
 
+const removeCarouselSlide = function (todoId) {
+  const slider = $('.carousel').carousel();
+  const child = slider.find(`.carousel-item[data-todoid=${todoId}]`);
+  if (child.length > 0 ) {
+    child.remove();
+    slider.removeClass('initialized');
+    slider.carousel();
+  }
+}
 
 const makeDeleteCsontent = function (todo){
   return `
@@ -29,13 +38,9 @@ const makeDeleteCsontent = function (todo){
 
 // This file is the reaction for all jQuery events for app.js
 const clickDelete = function(id) {
-  $('.modal').modal();
-  $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-  .then(resp => {
-    console.log(resp.todo)
-    const todo = resp.todo;
-    $("#modalDelete").html(makeDeleteCsontent(todo));
-  });
+  const todo = todosGlobal.find(todo => todo.id === id);
+  $("#modalDelete").html(makeDeleteCsontent(todo));
+  $("#modalDelete").modal('open');
 };
 
 const clickUpdate = function(id) {
@@ -168,12 +173,8 @@ const updateComplete = function(id){
 }; // end of updateComplete
 
 const deleteComplete = function(id){
-  $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', })
-  .then(() => {
-    console.log("sent to the dB");
-    location.reload();
-  })
-  .catch(function(err){
-    console.log("errr is", err);
-  });
-}; // end of deleteComplete
+  removeCarouselSlide(id);
+  todosGlobal = todosGlobal.filter(todo => todo.id !== id);
+  rerender();
+  $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', });
+};
