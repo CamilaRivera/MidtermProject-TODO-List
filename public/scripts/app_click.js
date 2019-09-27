@@ -173,8 +173,8 @@ const updateComplete = function(id){
 }; // end of updateComplete
 
 const deleteComplete = function(id){
-  removeCarouselSlide(id);
   todosGlobal = todosGlobal.filter(todo => todo.id !== id);
+  removeCarouselSlide(id);
   rerender();
   $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', });
 };

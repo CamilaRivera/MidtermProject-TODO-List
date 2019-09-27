@@ -26,6 +26,8 @@ const fillModal = function (todo) {
   $("#priority").formSelect();
 };
 
+
+
 // set the colors for the Priority flag
 const setStyle = function (priorityNumber) {
   if (priorityNumber === 1)
@@ -36,6 +38,17 @@ const setStyle = function (priorityNumber) {
     return "color: #ffd600";
   return "visibility: hidden"
 };
+
+//order by priority
+const orderByPriority = function ( a, b ) {
+  if ( a.priority < b.priority ){
+    return -1;
+  }
+  if ( a.priority > b.priority ){
+    return 1;
+  }
+  return 0;
+}
 
 const generateStars = (rating, max) => {
   let starHTML = '';
@@ -67,6 +80,7 @@ function reloadAll() {
   return Promise.all([categoriesPromise, todosPromise]).then(function ([categoriesData, todosData]) {
     categoriesGlobal = categoriesData.categories;
     todosGlobal = todosData.todo;
+    todosGlobal.sort(orderByPriority);
     return [categoriesData.categories, todosData.todo];
   });
 }
@@ -96,7 +110,10 @@ const completeCheckboxListener = function () {
   // Update server
   const data = { complete: todo.complete };
   $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
-  countAndAddTodosPerCategory(categoriesGlobal, todosGlobal);
+  //countAndAddTodosPerCategory(categoriesGlobal, todosGlobal);
+  // rerenderByTrigger()
+  removeCarouselSlide(todoId);
+  rerender();
 }
 
 const getFilteredTodos = function (viewId) {
@@ -389,11 +406,6 @@ jQuery(document).ready(function ($) {
     $('.create-todo.modal-close').text('Create todo');
   });
 
-  const getCreatedID = (data) => {
-    const queryString = data.split('&')[1];
-    return queryString.split('=')[1];
-  };
-
   //open modal Todo
   $('.modal').modal();
 
@@ -417,6 +429,7 @@ jQuery(document).ready(function ($) {
       $.ajax({ url: '/api/todos', method: 'POST', data })
         .then(resp => {
           todosGlobal.push(resp.todo);
+          todosGlobal.sort(orderByPriority);
           rerenderByTrigger();
         });
     } else {
@@ -427,6 +440,7 @@ jQuery(document).ready(function ($) {
           // Update local todo
           const index = todosGlobal.findIndex(todo => todo.id === todoId);
           todosGlobal[index] = resp.todo;
+          todosGlobal.sort(orderByPriority);
           rerenderByTrigger();
         });
     }
