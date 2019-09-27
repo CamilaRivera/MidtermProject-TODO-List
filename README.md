@@ -5,8 +5,12 @@
 
 ## Final Product
 
-
-## Final Product
+### Index Page
+!["Index Page"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png?raw=true)
+### Create Todo Module
+!["Create Todo Module"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png?raw=true)
+### Login
+!["Loginr"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png?raw=true)
 
 ## Features
 1) Users can `login`, `logout`, and `register`
