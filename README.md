@@ -4,9 +4,6 @@
 ## Todo List App
 
 ## Final Product
-![Login](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png)
-![Create Task](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png)
-![Landing Page](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png)
 
 ### Index Page
 !["Index Page"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png?raw=true)
