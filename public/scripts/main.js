@@ -131,7 +131,12 @@ const countAndAddTodosPerCategory = function (categories, todos) {
     const categoryTodos = todos.filter(todo => category.id === todo.category_id);
     for (let todo of categoryTodos) {
       if (!todo.complete) {
-        if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
+        // needs to get the correct date count
+
+
+        // getDaysDiff 1.3
+        if (todo.end_date && getDaysDiff(todo.end_date) < -0.3 &&  getDaysDiff(todo.end_date) > -1.3) {
+          console.log(todo.end_date);
           today += 1;
         }
         if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
@@ -180,7 +185,7 @@ const createTodoElement = function (todo, i) {
           <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
           <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
           <a data-todoid="${todo.id}" class="delete-button btn btn-flat"><i class="large material-icons">delete</i></a>
-          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete2</a>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick="return clickDelete(${todo.id, todo.category_id})">Delete2</a>
         </div>
       </div>
       <ul class="collapsible more-info-collapsible">

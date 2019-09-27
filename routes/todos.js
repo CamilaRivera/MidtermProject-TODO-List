@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { getLoggedUserId } = require('../utils');
-const { getTodosByCategoryId, getTodosByUserId, getTodoById, addTodo, deleteTodo, markTodoCompleted, updateTodo } = require('../db/database.js');
+const { getTodosByCategoryId, getTodosByUserId, getTodoById, addTodo, deleteTodo, updateTodo } = require('../db/database.js');
 
 const router = express.Router();
 
@@ -52,23 +52,6 @@ module.exports = (db) => {
       // .then(res.send("Success"))
       .then(() => {
         console.log("success");
-        res.send("Success");
-      })
-      .catch(err => {
-        console.log("About to error out", err);
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
-  router.post("/:id/completed", (req, res) => {
-    console.log("in the API completed");
-    const userId = getLoggedUserId(req);
-    markTodoCompleted(db, req.params.id, userId)
-      // .then(res.send("Success"))
-      .then(() => {
-        console.log("success marked the task " + req.params.id + " as completed" );
         res.send("Success");
       })
       .catch(err => {

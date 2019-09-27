@@ -63,9 +63,6 @@ const getTodoById = function (db, userId, todoId) {
 };
 
 const updateTodo = function (db, todo, userId) {
-
-  console.log('todo>>>', todo);
-  
   const validColumns = todosColumnsNames.filter(column => column in todo);
   const values = validColumns.map(column => todo[column]);
 
@@ -96,10 +93,6 @@ const addTodo = function (db, todo) {
     });
 };
 
-const markTodoCompleted = function (db, id, userId) {
-  return db.query(`UPdate todos set complete = true from todos t1 JOIN categories on t1.category_id = categories.id where categories.user_id = $2 AND todos.id = $1;`, [id, userId]);
-};
-
 const deleteTodo = function (db, id, userId) {
   return db.query(`DELETE FROM todos WHERE todos.id = $1 AND todos.category_id = ANY(
     SELECT id FROM categories WHERE user_id = $2)`, [id, userId]);
@@ -108,5 +101,5 @@ const deleteTodo = function (db, id, userId) {
 module.exports = {
   addCategory, getUserById,
   getCategoriesByUserId, deleteCategory, updateCategory, getTodosByCategoryId,
-  getTodosByUserId, getTodoById, addTodo, updateTodo, markTodoCompleted, deleteTodo
+  getTodosByUserId, getTodoById, addTodo, updateTodo, deleteTodo
 };

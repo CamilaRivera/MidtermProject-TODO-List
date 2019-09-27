@@ -35,8 +35,9 @@ const makeDeleteCsontent = function (todo){
   `};
 
 // This file is the reaction for all jQuery events for app.js
-const clickDelete = function(id) {
+const clickDelete = function(id, category_id) {
   $('.modal').modal();
+  alert("category_id is ", category_id);
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
   .then(resp => {
     const todo = resp.todo;
