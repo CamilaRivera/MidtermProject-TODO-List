@@ -1,7 +1,6 @@
 $(() => {
   const browser = $(document);
   browser.scroll(() => {
-    // console.log(browser.scrollTop());
     if (browser.scrollTop() >= 90) {
       $('.task-0').animate({opacity: 0.3}, 15);
     } else {
