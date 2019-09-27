@@ -46,6 +46,9 @@ const todosRoutes = require('./routes/todos');
 const registerRoutes = require("./routes/register");
 const loginRoutes = require('./routes/login');
 const logoutRoutes = require('./routes/logout');
+const completeRoutes = require('./routes/complete');
+const weeklyRoutes = require('./routes/weekly');
+const todayRoutes = require('./routes/today');
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -56,6 +59,9 @@ app.use('/api/todos', todosRoutes(db));
 app.use("/register", registerRoutes(db));
 app.use('/login', loginRoutes(db));
 app.use('/logout', logoutRoutes());
+app.use('/api/complete', completeRoutes(db));
+app.use('/api/weekly', weeklyRoutes(db));
+app.use('/api/today', todayRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 // Home page

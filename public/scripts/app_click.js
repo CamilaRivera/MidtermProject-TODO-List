@@ -39,15 +39,19 @@ const clickUpdate = function (id) {
       // const endDateAfterSlice = (todo.end_date).slice(0, 10);
       // var d = new Date("todo.end_date");
       $("#modalUpdate .modal-content").html(takeInputTOHTML(todo));
-
-      $('.datepicker').datepicker({
-        // defaultDate: new Date(todo.end_date),
-        // setDefaultDate: true,
+      console.log("after modal update called");
+      $('.startDatepicker').datepicker({
+        defaultDate: new Date(todo.start_date),
+        setDefaultDate: true,
         format: 'yyyy-mm-dd'
       });
-      $('select').formSelect();
+      $('.endDatepicker').datepicker({
+        defaultDate: new Date(todo.end_date),
+        setDefaultDate: true,
+        format: 'yyyy-mm-dd'
+      });
     });
-}
+};
 
 const takeInputTOHTML = function (todo) {
   return `
@@ -70,11 +74,11 @@ const takeInputTOHTML = function (todo) {
       <div class="row">
         <div class="input-field col s6">
           Start Date<br>
-          <input id="todo_start_date" name="start_date" type="text" class="datepicker" value="${(todo.start_date).slice(0, 10)}">
+          <input id="todo_start_date" name="start_date" type="text" class="startDatepicker" value="${(todo.start_date).slice(0, 10)}">
         </div>
         <div class="input-field col s6">
           End date <br>
-          <input id="end_date" name="end_date" type="text" class="datepicker endDate" value="${(todo.end_date).slice(0, 10)}">
+          <input id="end_date" name="end_date" type="text" class="endDatepicker endDate" value="${(todo.end_date).slice(0, 10)}">
         </div>
       </div>
       <div class="row" style="height: 100px;">
@@ -105,10 +109,7 @@ const takeInputTOHTML = function (todo) {
   `;
 }
 
-
-$(() => {
-
-
+$(() => { // get called once the page gets reload
   $('body').on('submit', '#submitUpdate', (e) => {
     e.preventDefault();
     const $form = $(e.target).closest('form');
@@ -123,25 +124,10 @@ $(() => {
         console.log("errr is", err);
       });
   });
-
 });
 
-
-
 const updateComplete = function (id) {
-  // var e = document.getElementById("ddlViewBy");
   $("#elementId :selected").val();
-  // console.log("todo_id is ", $("#category_selection :selected").val());
-  // console.log(typeof $("#category_selection :selected").val());
-  // console.log("todo_id is ", $("#priorityID :selected").val());
-  // console.log($('form.todo-form'));
-  // console.log($('form.todo-form').serialize());
-  // console.log($('form.todo-form').serialize().replace(/[^&]+=&/g, ''));
-  // console.log($('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, ''));
-
-
-  // const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-
   $('body').on('submit', '#submitUpdate', (e) => {
     e.preventDefault();
     const $form = $(e.target).closest('form');
@@ -156,8 +142,6 @@ const updateComplete = function (id) {
         console.log("errr is", err);
       });
   });
-
-
 
   const data = $('form.todo-form:first').serialize();
 
@@ -169,7 +153,7 @@ const updateComplete = function (id) {
     .catch(function (err) {
       console.log("errr is", err);
     });
-};
+}; // end of updateComplete
 
 const deleteComplete = function (id) {
   $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', })
@@ -180,4 +164,4 @@ const deleteComplete = function (id) {
     .catch(function (err) {
       console.log("errr is", err);
     });
-};
+}; // end of deleteComplete

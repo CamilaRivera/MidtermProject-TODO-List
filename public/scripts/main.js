@@ -6,20 +6,49 @@
 let categories = [];
 let todos = [];
 const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
+let creating = true;
 
 const WATCH_MAIN_CATEGORY = 1;
 const BUY_MAIN_CATEGORY = 2;
 const READ_MAIN_CATEGORY = 3;
 const EAT_MAIN_CATEGORY = 4;
 
+const fillModal = function (todo) {
+  $('#todo_title').val(todo.title || '');
+  $('#todo_description').val(todo.description || '');
+  $('#todo_start_date').val(todo.start_date ? todo.start_date.substring(0, 10) : '');
+  $('#todo_end_date').val(todo.end_date ? todo.end_date.substring(0, 10) : '');
+  $('#category_selection').val(todo.category_id);
+  $('#priority').val(todo.priority);
+  $('.create-todo.modal-close').text('Update todo');
+  M.updateTextFields();
+  $("#category_selection").formSelect();
+  $("#priority").formSelect();
+  if (todo.id) {
+    creating = true;
+  }
+  else {
+    creating = false;
+  }
+};
+// set the colors for the Priority flag
+const setStyle = function (priorityNumber) {
+  if (priorityNumber === 1)
+    return "color: red";
+  else if (priorityNumber === 2)
+    return "color: blue";
+  else if (priorityNumber === 3)
+    return "color: green";
+  return "visibility: hidden"
+};
 
 const generateStars = (rating, max) => {
   let starHTML = '';
   for (let i = 0; i < rating; i++) {
-    starHTML += `<i class="material-icons">star</i>`;
+    starHTML += `<i class="tiny material-icons">star</i>`;
   }
   for (let i = 0; i < max - rating; i++) {
-    starHTML += `<i class="material-icons">star_border</i>`;
+    starHTML += `<i class="tiny material-icons">star_border</i>`;
   }
   return starHTML;
 };
@@ -47,9 +76,25 @@ function reloadAll() {
   });
 }
 
+const textToNumber = function (string) {
+  return string.replace("(", "").replace(")", "")
+}
+
 function rerender(categories, todos) {
   renderCategories(categories);
   countAndAddTodosPerCategory(categories, todos);
+  if (textToNumber($(".today").text()) > 0) {
+    $('.today-todos').trigger('click');
+  } else if (textToNumber($(".week").text()) > 0) {
+    $('.weekly-todos').trigger('click');
+  } else {
+    $('.todos').append(`
+    <div class= "notodo">
+      <h4> No todo task </h4>
+      <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
+      <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
+    </div>`)
+  }
 }
 
 function getCategoriesAndTodos() {
@@ -80,9 +125,8 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   let today = 0;
   let week = 0;
   let pastTodos = 0;
-  const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
+  const date = new Date(new Date().getTime());
   const dateToString = date.toISOString().substring(0, 10);
-
   for (let category of categories) {
     const categoryTodos = todos.filter(todo => category.id === todo.category_id);
     for (let todo of categoryTodos) {
@@ -127,14 +171,16 @@ const createTodoElement = function (todo, i) {
         <label>
           <input data-todoid="${todo.id}" type="checkbox"/>
           <span></span>
+          <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
         </label>
         <h5>
           ${escape(todo.title)}
         </h5>
         <div class="todo-header-buttons">
           <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
-          <a data-todoid="${todo.id}" class="edit-button btn btn-flat"><i class="large material-icons">mode_edit</i></a>
+          <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
           <a data-todoid="${todo.id}" class="delete-button btn btn-flat"><i class="large material-icons">delete</i></a>
+          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete2</a>
         </div>
       </div>
       <ul class="collapsible more-info-collapsible">
@@ -146,7 +192,6 @@ const createTodoElement = function (todo, i) {
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
         </li>
       </ul>
-
       <div class="row secondLine">
         <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date ? escape(getDayStr(getDaysDiff(todo.end_date))) : ""}</p>
       </div>
@@ -172,6 +217,15 @@ const refreshPage = (id) => {
   if (id == 4) {
     $('.eat-todos').trigger('click');
   }
+  if (id == 5) {
+    $('.today-todos').trigger('click');
+  }
+  if (id == 6) {
+    $('.weekly-todos').trigger('click');
+  }
+  if (id == 7) {
+    $('.completed-todos').trigger('click');
+  }
 };
 
 // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
@@ -187,10 +241,26 @@ const renderTodos = function (todos) {
     outDuration: 200,
   });
 
+  $('.edit-button').on('click', function () {
+    const todoId = Number($(this).data('todoid'));
+    $("#category_selection").formSelect()
+    const todo = todos.find(todo => todo.id === todoId);
+    fillModal(todo);
+    $('#modal1').modal('open');
+
+  })
+
+  $('.addTodo.modal-trigger').on('click', function () {
+    fillModal({ category_id: 1, priority: 4 });
+    $('.create-todo.modal-close').text('Create todo');
+  })
+
   $('.todo input[type=checkbox]').change(function () {
     const todoId = Number($(this).data('todoid'));
     const todo = todos.find(todo => todo.id === todoId);
-
+    const updateEL = $($(this).parents()[2]); //max
+    console.log("updateEL:", updateEL);
+    const updateCategoryID = getClickCategoryID(updateEL);
     // Update local todo complete property
     todo.complete = !todo.complete;
 
@@ -199,9 +269,13 @@ const renderTodos = function (todos) {
 
     // Update server
     const data = { complete: todo.complete };
-    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
+    $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data })
+      .then(() => {
 
-    countAndAddTodosPerCategory(categories, todos);
+        refreshPage(updateCategoryID);
+        $.ajax({ url: '/api/todos', method: 'GET' })
+          .then((todos) => { countAndAddTodosPerCategory(categories, todos.todo) });
+      });
   });
 
   /**
@@ -212,8 +286,18 @@ const renderTodos = function (todos) {
    * zongxi implemented
    */
   const getClickCategoryID = (clickEL) => {
-    const clickCategory = clickEL[0].classList[2];
-    return clickCategory.split('-')[2];
+    let clickCategory = '';
+    if (clickEL[0].classList.length === 3) {
+      clickCategory = clickEL[0].classList[2];
+      // console.log('clickCatgeory for length 4 Is:', clickCategory);
+      // console.log('getClickCategoryID returns:', clickCategory.split('-')[2]);
+      return clickCategory.split('-')[2];
+    } else {
+      const listTitle = $('.list-title').text();
+      if (listTitle === 'Today Todos') return 5;
+      else if (listTitle === 'Next 7 days Todos') return 6;
+      else return 7;
+    }
   };
 
   $('.delete-button').on('click', function () {
@@ -222,12 +306,12 @@ const renderTodos = function (todos) {
     const deleteEL = $($(this).parents()[2]); //max
     const deleteCategoryID = getClickCategoryID(deleteEL);
     $(this).parent().parent().parent().remove();
-    console.log($(this).data('todoid'));
     $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
-      .then(() =>{
+      .then(() => {
         refreshPage(deleteCategoryID);
+        $.ajax({ url: '/api/todos', method: 'GET' })
+          .then((todos) => { countAndAddTodosPerCategory(categories, todos.todo) })
       });
-    countAndAddTodosPerCategory(categories, todos);
   });
 
 };
@@ -271,24 +355,41 @@ const getDaysDiff = function (unixTimestamp) {
 };
 
 jQuery(document).ready(function ($) {
+  $('.modal').modal();
 
   $(".today-todos").on('click', function () {
-    const date = new Date(new Date().getTime() - 1 * 24 * 3600 * 1000);
-    const dateToString = date.toISOString().substring(0, 10);
-    const list = todos.filter(todo => !todo.complete && todo.end_date && todo.end_date.substring(0, 10) === dateToString);
-    renderTodos(list);
     $('.list-title').html('Today Todos');
+    $.ajax('api/today', { method: 'GET'})
+      .then(list => {
+        console.log(list);
+        const { data } = list;
+        renderTodos(data);
+        const slider = $('.carousel');
+        slider.empty();
+      });
   });
+
   $(".weekly-todos").on('click', function () {
-    const list = todos.filter(todo => !todo.complete && todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10)));
-    console.log('weekly-todos', list);
-    renderTodos(list);
     $('.list-title').html('Next 7 days Todos');
+    $.ajax('api/weekly', { method: 'GET' })
+      .then(list => {
+        console.log(list);
+        const { data } = list;
+        renderTodos(data);
+        const slider = $('.carousel');
+        slider.empty();
+      });
   });
+
   $(".completed-todos").on('click', function () {
-    const list = todos.filter(todo => todo.complete === true);
-    renderTodos(list);
     $('.list-title').html('Completed Todos');
+    $.ajax('api/complete', { method: 'GET' })
+      .then(list => {
+        const { data } = list;
+        renderTodos(data);
+        const slider = $('.carousel');
+        slider.empty();
+      });
   });
 
   const getCreatedID = (data) => {
@@ -316,7 +417,6 @@ jQuery(document).ready(function ($) {
     }
     // Clean empty fields from (https://stackoverflow.com/questions/6240529/jquery-serialize-how-to-eliminate-empty-fields?sdfsdf=#$54T)
     const data = $('form.todo-form').serialize().replace(/[^&]+=&/g, '').replace(/&[^&]+=$/g, '');
-    console.log('the data sended: ', data);
     $.ajax({ url: '/api/todos', method: 'POST', data })
       .then(resp => {
         todos.push(resp.todo);

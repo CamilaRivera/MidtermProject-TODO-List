@@ -1,7 +1,7 @@
 const express = require('express');
 const classifier = require('./helpers/classificator');
 const { getLoggedUserId } = require('../utils');
-const { addCategory, getCategoriesByUserId, deleteCategory, updateCategory, getTodosByCategoryId } = require('../db/database.js');
+const { addCategory, getCategoriesByUserId, deleteCategory, updateCategory, getActiveTodosByCategoryId} = require('../db/database.js');
 
 const router = express.Router();
 
@@ -11,14 +11,16 @@ module.exports = (db) => {
     getCategoriesByUserId(db, userId)
       .then(data => {
         res.json({ categories: data });
-      })
+      });
 
   });
+
 
   router.get("/:id", (req, res) => {
-    getTodosByCategoryId(db, req.cookies.userID, req.params.id)
+    getActiveTodosByCategoryId(db, req.cookies.userID, req.params.id)
       .then(data => res.json({data}));
   });
+
 
   router.post("/", (req, res) => {
     addCategory(db, { ...req.body, user_id: getLoggedUserId(req) })

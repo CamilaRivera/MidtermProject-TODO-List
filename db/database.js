@@ -43,9 +43,15 @@ const updateCategory = function (db, editableCategory) {
     .then(res => res.rows[0]);
 };
 
-const getTodosByCategoryId = function (db, userId, categoryID) {
+const getActiveTodosByCategoryId = function (db, userId, categoryID) {
   return db.query(`SELECT todos.id as id, category_id, complete, todos.creation_date, todos.description, end_date, priority, start_date, title FROM todos JOIN categories ON todos.category_id = categories.id WHERE
-  categories.user_id = $1 AND categories.id = $2`, [userId, categoryID])
+  categories.user_id = $1 AND categories.id = $2 AND todos.complete = False`, [userId, categoryID])
+    .then(res => res.rows);
+};
+
+const getCompleteTodos = function (db, userId) {
+  return db.query(`SELECT todos.id as id, category_id, complete, todos.creation_date, todos.description, end_date, priority, start_date, title FROM todos JOIN categories ON todos.category_id = categories.id WHERE
+  categories.user_id = $1 AND todos.complete = True`, [userId])
     .then(res => res.rows);
 };
 
@@ -106,8 +112,38 @@ const deleteTodo = function (db, id, userId) {
     SELECT id FROM categories WHERE user_id = $2)`, [id, userId]);
 };
 
+const getWeeklyTodos = function (db, userID) {
+  return db.query(
+    `
+    SELECT todos.id as id, category_id, complete, todos.creation_date, todos.description, end_date, priority, start_date, title 
+    FROM todos JOIN categories 
+    ON todos.category_id = categories.id WHERE
+    categories.user_id = $1 
+    AND todos.complete = False
+    AND todos.end_date <= current_date + interval '6' day
+    AND todos.end_date != current_date
+    `
+    , [userID])
+    .then((res) => res.rows);
+};
+
+const getTodayTodos = function (db, userID) {
+  return db.query(
+    `
+    SELECT todos.id as id, category_id, complete, todos.creation_date, todos.description, end_date, priority, start_date, title 
+    FROM todos JOIN categories 
+    ON todos.category_id = categories.id WHERE
+    categories.user_id = $1 
+    AND todos.complete = False
+    AND todos.end_date <= current_date + interval '0' day;
+    `
+    , [userID])
+    .then((res) => res.rows);
+};
+
 module.exports = {
   addCategory, getUserById,
-  getCategoriesByUserId, deleteCategory, updateCategory, getTodosByCategoryId,
-  getTodosByUserId, getTodoById, addTodo, updateTodo, markTodoCompleted, deleteTodo
+  getCategoriesByUserId, deleteCategory, updateCategory, getActiveTodosByCategoryId,
+  getTodosByUserId, getTodoById, addTodo, updateTodo, markTodoCompleted, deleteTodo,
+  getCompleteTodos, getWeeklyTodos, getTodayTodos
 };
