@@ -307,7 +307,7 @@ const renderTodos = function (todos) {
   $todos.empty();
 
   if (todos.length === 0) {
-    let noTodoMessage = 'No todos';
+    let noTodoMessage = 'No todos for this category';
     if (currentViewGlobal === 'completed-todos') {
       noTodoMessage = 'No completed todos';
     }
@@ -315,13 +315,13 @@ const renderTodos = function (todos) {
       noTodoMessage = 'No todos pending for this week';
     }
     else if (currentViewGlobal === 'today-todos') {
-      noTodoMessage = 'No todos pending for this today';
+      noTodoMessage = 'No todos pending for today';
     }
     $('.todos').append(`
-      <div class= "notodo">
-        <h4>${noTodoMessage}</h4>
-        <img src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
-        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Add new todo task</a>
+      <div class= "notodo row container" style="text-align:center;">
+        <h4 class="col" style="text-align:center;">${noTodoMessage}</h4> <br>
+        <img class="col s6 offset-s1" src="https://i.pinimg.com/originals/a3/81/87/a38187708e26901e5796a89dd6d7d590.jpg" alt="cover_photo_url" height="400">
+        <a class="col s6 offset-s1 waves-effect waves-light btn modal-trigger" href="#modal1" style="margin-top: 10px;">Add new todo task</a>
       </div>`
     );
   }
