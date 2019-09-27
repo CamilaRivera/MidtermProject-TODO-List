@@ -14,10 +14,10 @@
 ## Features
 1) Users can `login`, `logout`, and `register`
 2) Users can have their tasks `auto categorized` in to one of the four main list
-  1) Watch List
-  2) Buy List
-  3) Read List
-  4) Eat List
+  - Watch List
+  - Buy List
+  - Read List
+  - Eat List
 3) Users can `edit`, `delete`, or `complete` a task
 4) Users can see their `task count` for `all four main lists`, as well as `today's`, the `weekly's`, and `completed tasks` on the side nav bar.
 5) Users can get `additional information` related to their tasks through the carousel 
