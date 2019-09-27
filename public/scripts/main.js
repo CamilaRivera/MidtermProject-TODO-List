@@ -50,9 +50,9 @@ const generateStars = (rating, max) => {
 
 function isDateInNextWeek(date) {
   const dateToTime = new Date(date).getTime();
-  const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
+  // const dateTomorrow = new Date(new Date().getTime() + 1 * 24 * 3600 * 1000).getTime();
+  const dateTomorrow = new Date(new Date().getTime()).getTime();
   const dateEightDaysMore = new Date(new Date().getTime() + 7 * 24 * 3600 * 1000).getTime();
-  // var nextWeek = new Date(firstDay.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   if (dateToTime >= dateTomorrow && dateToTime <= dateEightDaysMore) {
     return true;
@@ -338,7 +338,7 @@ const getDayStr = function (numberDay) {
   if (numberDay < -0.3 && numberDay > -1.3) {
     return "Due today";
   } else {
-    const day = Math.round(numberDay) + 2;
+    const day = Math.round(numberDay) + 1;
     if (day === 1)
       return `This is due ${day} day later`;
     return `This is due ${day} days later`;
