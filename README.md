@@ -4,6 +4,9 @@
 ## Todo List App
 
 ## Final Product
+![Login](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png)
+![Create Task](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png)
+![Landing Page](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png)
 
 
 ## Final Product
@@ -11,10 +14,10 @@
 ## Features
 1) Users can `login`, `logout`, and `register`
 2) Users can have their tasks `auto categorized` in to one of the four main list
-  1) Watch List
-  2) Buy List
-  3) Read List
-  4) Eat List
+  - Watch List
+  - Buy List
+  - Read List
+  - Eat List
 3) Users can `edit`, `delete`, or `complete` a task
 4) Users can see their `task count` for `all four main lists`, as well as `today's`, the `weekly's`, and `completed tasks` on the side nav bar.
 5) Users can get `additional information` related to their tasks through the carousel 
@@ -56,6 +59,6 @@ Todo List is a full stack web app, built with the following:
 Dependencies
 
 ## Project Team
-[Camila Rivera](https://github.com/CamilaRivera)
-[Zongxi Li](https://github.com/zongxili)
-[Max Wong](https://github.com/MaxWong03)
+-[Camila Rivera](https://github.com/CamilaRivera)
+-[Zongxi Li](https://github.com/zongxili)
+-[Max Wong](https://github.com/MaxWong03)
