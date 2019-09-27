@@ -174,7 +174,7 @@ const updateComplete = function(id){
 
 const deleteComplete = function(id){
   todosGlobal = todosGlobal.filter(todo => todo.id !== id);
-  removeCarouselSlide(id);
-  rerender();
+  // removeCarouselSlide(id);
+  rerenderByTrigger();
   $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', });
 };

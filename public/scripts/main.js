@@ -110,10 +110,7 @@ const completeCheckboxListener = function () {
   // Update server
   const data = { complete: todo.complete };
   $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data });
-  //countAndAddTodosPerCategory(categoriesGlobal, todosGlobal);
-  // rerenderByTrigger()
-  removeCarouselSlide(todoId);
-  rerender();
+  rerenderByTrigger();
 }
 
 const getFilteredTodos = function (viewId) {
