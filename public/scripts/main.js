@@ -5,7 +5,6 @@
 
 let categories = [];
 let todos = [];
-const priorityColorsArr = ["blue-text", "orange-text", "green-text"];
 let creating = true;
 
 const WATCH_MAIN_CATEGORY = 1;
@@ -13,11 +12,11 @@ const BUY_MAIN_CATEGORY = 2;
 const READ_MAIN_CATEGORY = 3;
 const EAT_MAIN_CATEGORY = 4;
 
-const fillModal = function(todo){
+const fillModal = function (todo) {
   $('#todo_title').val(todo.title || '');
   $('#todo_description').val(todo.description || '');
-  $('#todo_start_date').val(todo.start_date ? todo.start_date.substring(0, 10): '');
-  $('#todo_end_date').val(todo.end_date ? todo.end_date.substring(0, 10): '');
+  $('#todo_start_date').val(todo.start_date ? todo.start_date.substring(0, 10) : '');
+  $('#todo_end_date').val(todo.end_date ? todo.end_date.substring(0, 10) : '');
   $('#category_selection').val(todo.category_id);
   $('#priority').val(todo.priority);
   $('.create-todo.modal-close').text('Update todo');
@@ -32,13 +31,13 @@ const fillModal = function(todo){
   }
 };
 // set the colors for the Priority flag
-const setStyle = function(priorityNumber) {
+const setStyle = function (priorityNumber) {
   if (priorityNumber === 1)
     return "color: red";
   else if (priorityNumber === 2)
-    return "color: blue";
+    return "color: orange";
   else if (priorityNumber === 3)
-    return "color: green";
+    return "color: #ffd600";
   return "visibility: hidden"
 };
 
@@ -76,16 +75,16 @@ function reloadAll() {
   });
 }
 
-const textToNumber = function(string){
-  return string.replace("(", "").replace(")","")
+const textToNumber = function (string) {
+  return string.replace("(", "").replace(")", "")
 }
 
 function rerender(categories, todos) {
   renderCategories(categories);
   countAndAddTodosPerCategory(categories, todos);
-  if(textToNumber($(".today").text()) > 0){
+  if (textToNumber($(".today").text()) > 0) {
     $('.today-todos').trigger('click');
-  } else if(textToNumber($(".week").text()) > 0){
+  } else if (textToNumber($(".week").text()) > 0) {
     $('.weekly-todos').trigger('click');
   } else {
     $('.todos').append(`
@@ -125,13 +124,15 @@ const countAndAddTodosPerCategory = function (categories, todos) {
   let today = 0;
   let week = 0;
   let pastTodos = 0;
-  const date = new Date(new Date().getTime());
-  const dateToString = date.toISOString().substring(0, 10);
+  var date = new Date();
+  var timestamp = date.getTime();
+  // const date = new Date();
+  // const dateToString = date.toISOString().substring(0, 10);
   for (let category of categories) {
     const categoryTodos = todos.filter(todo => category.id === todo.category_id);
     for (let todo of categoryTodos) {
       if (!todo.complete) {
-        if (todo.end_date && todo.end_date.substring(0, 10) === dateToString) {
+        if (todo.end_date && getDaysDiff(todo.end_date) < 0 && getDaysDiff(todo.end_date) > -1.3) {
           today += 1;
         }
         if (todo.end_date && isDateInNextWeek(todo.end_date.substring(0, 10))) {
@@ -171,16 +172,17 @@ const createTodoElement = function (todo, i) {
         <label>
           <input data-todoid="${todo.id}" type="checkbox"/>
           <span></span>
-          <i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i>
+
         </label>
         <h5>
-          ${escape(todo.title)}
+        ${escape(todo.title)}
         </h5>
         <div class="todo-header-buttons">
+        <a class= "flag" ><i class="material-icons" id="flagLogo" style="${setStyle(todo.priority)}">flag</i></a>
           <a class="btn btn-flat"><i class="large material-icons taskButton-${i}">more</i></a>
           <a href="#modalUpdate" data-todoid="${todo.id}" class="edit-button btn btn-flat modal-trigger" onclick='clickUpdate(${todo.id})'><i class="large material-icons">mode_edit</i></a>
-          <a data-todoid="${todo.id}" class="delete-button btn btn-flat"><i class="large material-icons">delete</i></a>
-          <a class="waves-effect waves-light btn modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})>Delete2</a>
+
+          <a data-todoid="${todo.id}" class="delete-button btn btn-flat modal-trigger" href="#modalDelete" onclick=clickDelete(${todo.id})><i class="large material-icons">delete</i></a>
         </div>
       </div>
       <ul class="collapsible more-info-collapsible">
@@ -192,15 +194,13 @@ const createTodoElement = function (todo, i) {
           <div class="collapsible-body"><span>${escape(todo.description)}</span></div>
         </li>
       </ul>
-      <div class="row secondLine">
-        <p class="col s9 end_date m-t-0 m-l-10">${todo.end_date ? escape(getDayStr(getDaysDiff(todo.end_date))) : ""}</p>
-      </div>
   </article>`
   );
   if (!todo.description) {
     $HTMLele.find('.more-info').remove();
   }
   return $HTMLele;
+  // <a data-todoid="${todo.id}" class="delete-button btn btn-flat modal-trigge"><i class="large material-icons">delete</i></a>
 };
 
 // accepts an array of Objects for all todo objects, then passes it to createTodoElement and generate HTML elements
@@ -216,17 +216,17 @@ const renderTodos = function (todos) {
     outDuration: 200,
   });
 
-  $('.edit-button').on('click', function () {
-    const todoId = Number($(this).data('todoid'));
-    $("#category_selection").formSelect()
-    const todo = todos.find(todo => todo.id === todoId);
-    fillModal(todo);
-    $('#modal1').modal('open');
+  // $('.edit-button').on('click', function () {
+  //   const todoId = Number($(this).data('todoid'));
+  //   $("#category_selection").formSelect()
+  //   const todo = todos.find(todo => todo.id === todoId);
+  //   fillModal(todo);
+  //   $('#modal1').modal('open');
 
-  })
+  // })
 
-  $('.addTodo.modal-trigger').on('click', function() {
-    fillModal({category_id: 1, priority: 4});
+  $('.addTodo.modal-trigger').on('click', function () {
+    fillModal({ category_id: 1, priority: 4 });
     $('.create-todo.modal-close').text('Create todo');
   })
 
@@ -243,23 +243,24 @@ const renderTodos = function (todos) {
     // Update server
     const data = { complete: todo.complete };
     $.ajax({ url: `/api/todos/${todoId}/edit`, method: 'POST', data })
-    .then( () => {
-      $.ajax({ url: '/api/todos', method: 'GET' })
-      .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)});
-    })
+      .then(() => {
+        $.ajax({ url: '/api/todos', method: 'GET' })
+          .then((todos) => { countAndAddTodosPerCategory(categories, todos.todo) });
+      })
   });
 
-  $('.delete-button').on('click', function () {
-    const todoId = Number($(this).data('todoid'));
-    todos = todos.filter(todo => todo.id !== todoId);
+  // $('.delete-button').on('click', function () {
 
-    $(this).parent().parent().parent().remove();
-    $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
-   .then( () => {
-     $.ajax({ url: '/api/todos', method: 'GET' })
-   .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)})
-  })
-  });
+  //   const todoId = Number($(this).data('todoid'));
+  //   todos = todos.filter(todo => todo.id !== todoId);
+
+  //   $(this).parent().parent().parent().remove();
+  //   $.ajax({ url: `/api/todos/${$(this).data('todoid')}/delete`, method: 'POST' })
+  //  .then( () => {
+  //    $.ajax({ url: '/api/todos', method: 'GET' })
+  //  .then( (todos)=> {countAndAddTodosPerCategory(categories, todos.todo)})
+  // })
+  // });
 };
 
 const getDayStr = function (numberDay) {
@@ -276,12 +277,6 @@ const getDayStr = function (numberDay) {
   }
 };
 
-
-const getColors = function (priorityNumber) {
-  if (priorityNumber <= 3 && priorityNumber >= 1)
-    return priorityColorsArr[priorityNumber - 1];
-  return "grey-text";
-};
 
 // checks the input
 const escape = function (str) {
@@ -300,7 +295,7 @@ const getDaysDiff = function (unixTimestamp) {
   return Difference_In_Days;
 };
 
-jQuery(document).ready(function ($) {  
+jQuery(document).ready(function ($) {
   $('.modal').modal();
 
   $(".today-todos").on('click', function () {
