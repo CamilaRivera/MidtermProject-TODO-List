@@ -1,31 +1,31 @@
 // const clickProfileUpdate = function(userID) {
 //   console.log(userID);
-  // $('.modal').modal();
-  // $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-  // .then(resp => {
-  //   const todo = resp.todo;
-  //   console.log(todo);
+// $('.modal').modal();
+// $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
+// .then(resp => {
+//   const todo = resp.todo;
+//   console.log(todo);
 
-  //   console.log(todo.end_date);
+//   console.log(todo.end_date);
 
-  //   const endDateAfterSlice = (todo.end_date).slice(0, 10);
-  //   var d = new Date("todo.end_date");
-  //   $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
-  //   console.log("after modal update called");
-  // });
+//   const endDateAfterSlice = (todo.end_date).slice(0, 10);
+//   var d = new Date("todo.end_date");
+//   $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
+//   console.log("after modal update called");
+// });
 // }
 
 const removeCarouselSlide = function (todoId) {
   const slider = $('.carousel').carousel();
   const child = slider.find(`.carousel-item[data-todoid=${todoId}]`);
-  if (child.length > 0 ) {
+  if (child.length > 0) {
     child.remove();
     slider.removeClass('initialized');
     slider.carousel();
   }
 }
 
-const makeDeleteCsontent = function (todo){
+const makeDeleteCsontent = function (todo) {
   return `
   <div class="modal-content">
     <h4>Are you sure to delete the Todo ${todo.title}?</h4>
@@ -37,40 +37,40 @@ const makeDeleteCsontent = function (todo){
   `};
 
 // This file is the reaction for all jQuery events for app.js
-const clickDelete = function(id) {
+const clickDelete = function (id) {
   const todo = todosGlobal.find(todo => todo.id === id);
   $("#modalDelete").html(makeDeleteCsontent(todo));
   $("#modalDelete").modal('open');
 };
 
-const clickUpdate = function(id) {
+const clickUpdate = function (id) {
   $('.modal').modal();
   $.ajax({ url: `/api/todos/${id}`, method: 'GET' })
-  .then(resp => {
-    const todo = resp.todo;
-    console.log(todo);
+    .then(resp => {
+      const todo = resp.todo;
+      console.log(todo);
 
-    // console.log(todo.end_date);
+      // console.log(todo.end_date);
 
-    // const endDateAfterSlice = (todo.end_date).slice(0, 10);
-    // var d = new Date("todo.end_date");
-    $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
-    console.log("after modal update called");
-    $('.startDatepicker').datepicker({
-      defaultDate: new Date(todo.start_date),
-      setDefaultDate: true,
-      format: 'yyyy-mm-dd'
+      // const endDateAfterSlice = (todo.end_date).slice(0, 10);
+      // var d = new Date("todo.end_date");
+      $("#modalUpdate .modal-content").html(takeInputTOHTML(todo));
+      console.log("after modal update called");
+      $('.startDatepicker').datepicker({
+        defaultDate: new Date(todo.start_date),
+        setDefaultDate: true,
+        format: 'yyyy-mm-dd'
+      });
+      $('.endDatepicker').datepicker({
+        defaultDate: new Date(todo.end_date),
+        setDefaultDate: true,
+        format: 'yyyy-mm-dd'
+      });
+      $('select').formSelect();
     });
-    $('.endDatepicker').datepicker({
-      defaultDate: new Date(todo.end_date),
-      setDefaultDate: true,
-      format: 'yyyy-mm-dd'
-    });
-    $('select').formSelect();
-  });
 }
 
-const takeInputTOHTML = function(todo){
+const takeInputTOHTML = function (todo) {
   return `
   <form id="submitUpdate" class="col s12 todo-form">
     <div class="row">
@@ -133,50 +133,47 @@ $(() => { // get called once the page gets reload
     const data = $form.serialize();
     const todoID = $form.find('[name="todo_id"]').val();
     $.ajax({ url: `/api/todos/${todoID}/edit`, method: 'POST', data })
-    .then(() => {
-      console.log("sent to the dB");
-      location.reload();
-    })
-    .catch(function(err){
-      console.log("errr is", err);
-    });
+      .then(() => {
+        console.log("sent to the dB");
+        location.reload();
+      })
+      .catch(function (err) {
+        console.log("errr is", err);
+      });
   });
 });
 
-const updateComplete = function(id){
+const updateComplete = function (id) {
   $("#elementId :selected").val();
-  $('body').on('submit', '#submitUpdate', (e) =>{
+  $('body').on('submit', '#submitUpdate', (e) => {
     e.preventDefault();
     const $form = $(e.target).closest('form');
     const data = $form.serialize();
     const todoID = $form.find('[name="todo_id"]').val();
     $.ajax({ url: `/api/todos/${todoID}/edit`, method: 'POST', data })
-    .then(() => {
-      console.log("sent to the dB");
-      location.reload();
-    })
-    .catch(function(err){
-      console.log("errr is", err);
-    });
+      .then(() => {
+        console.log("sent to the dB");
+        location.reload();
+      })
+      .catch(function (err) {
+        console.log("errr is", err);
+      });
   });
 
   const data = $('form.todo-form:first').serialize();
 
   $.ajax({ url: `/api/todos/${id}/edit`, method: 'POST', data })
-  .then(() => {
-    console.log("sent to the dB");
-    location.reload();
-  })
-  .catch(function(err){
-    console.log("errr is", err);
-  });
+    .then(() => {
+      console.log("sent to the dB");
+      location.reload();
+    })
+    .catch(function (err) {
+      console.log("errr is", err);
+    });
 }; // end of updateComplete
 
-const deleteComplete = function(id){
+const deleteComplete = function (id) {
   todosGlobal = todosGlobal.filter(todo => todo.id !== id);
-  if (currentViewGlobal === 1 || currentViewGlobal === 2 || currentViewGlobal === 3 || currentViewGlobal === 4) {
-    removeCarouselSlide(id);;
- }
-  rerender();
+  rerenderByTrigger();
   $.ajax({ url: `/api/todos/${id}/delete`, method: 'POST', });
 };
