@@ -7,7 +7,7 @@ const clickProfileUpdate = function(userID) {
   //   console.log(todo);
 
   //   console.log(todo.end_date);
-    
+
   //   const endDateAfterSlice = (todo.end_date).slice(0, 10);
   //   var d = new Date("todo.end_date");
   //   $( "#modalUpdate .modal-content" ).html(takeInputTOHTML(todo));
@@ -15,13 +15,6 @@ const clickProfileUpdate = function(userID) {
   // });
 }
 
-const checkComplete = function(id) {
-  // alert("This is in checkComplete " + id);
-  $.ajax(`api/todos/${id}/completed`, {
-    method: "POST"
-  }).then(() => console.log('redirecting to home page'));
-  location.reload();
-};
 
 const makeDeleteCsontent = function (todo){
   return `
@@ -145,7 +138,7 @@ $(() => { // get called once the page gets reload
 });
 
 const updateComplete = function(id){
-  $("#elementId :selected").val(); 
+  $("#elementId :selected").val();
   $('body').on('submit', '#submitUpdate', (e) =>{
     e.preventDefault();
     const $form = $(e.target).closest('form');
