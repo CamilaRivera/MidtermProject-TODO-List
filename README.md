@@ -2,15 +2,28 @@
 
 
 ## Todo List App
+This app is the Midterm Project for Lighthouse Labs 2019 Web Development Bootcamp, which was fully implemented multi-functions within one week. Group members include [Camila Rivera](https://github.com/CamilaRivera), [Max Wong](https://github.com/MaxWong03) and [Zongxi Li](https://github.com/zongxili).
 
 ## Final Product
+### Register & Login page
 
 ### Index Page
-!["Index Page"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/landing_page.png?raw=true)
+!["Register & Create Page"](/docs/gifs/login_register.gif)
+
 ### Create Todo Module
-!["Create Todo Module"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/create_todo_module.png?raw=true)
-### Login
-!["Loginr"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png?raw=true)
+!["Create Todo Module"](/docs/gifs/Create_Update.gif)
+
+<!-- ### Login
+!["Loginr"](https://github.com/CamilaRivera/MidtermProject-TODO-List/blob/master/docs/login.png?raw=true) -->
+
+### Edit Todo Module
+!["Edit Todo Module"](/docs/gifs/edit_des.gif)
+
+### Mark Todo Module as Completed
+!["Mark Todo Module as Completed"](/docs/gifs/markAsCompleted.gif)
+
+### Delete Todo Module
+!["Delete Todo Module"](/docs/gifs/delete.gif)
 
 ## Features
 1) Users can `login`, `logout`, and `register`
@@ -61,7 +74,7 @@ Dependencies
 
 ## Project Team
 
--[Camila Rivera](https://github.com/CamilaRivera)
--[Zongxi Li](https://github.com/zongxili)
--[Max Wong](https://github.com/MaxWong03)
+- [Camila Rivera](https://github.com/CamilaRivera)
+- [Zongxi Li](https://github.com/zongxili)
+- [Max Wong](https://github.com/MaxWong03)
 
